@@ -1,0 +1,202 @@
+/*progressbar*/
+
+.progressbar {
+    overflow: hidden;
+    /*CSS counters to number the steps*/
+    counter-reset: step;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 auto 30px;
+}
+
+.progressbar li {
+    list-style: none;
+    color: white;
+    /* text-transform: uppercase; */
+    width: 33.33%;
+    height: 8rem;
+    margin-inline: 10px;
+    padding: 0.5rem;
+    /* float: left; */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    /* text-decoration: none; */
+}
+
+.step-box-active {
+    background-color: #007aff !important;
+}
+
+.step-box-deactive {
+    background-color: rgb(204, 204, 204) !important;
+}
+
+.step-count {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    position: absolute;
+    top: 1.5rem;
+    left: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.step-active-circel {
+    background-color: #005cbf;
+}
+
+.step-deactive-circel {
+    background-color: rgb(146, 146, 146) !important;
+    ;
+}
+
+.step-count p {
+    text-align: center;
+    color: #fff !important;
+    font-size: 10px;
+    font-weight: 600;
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.step-box {
+    width: 100%;
+}
+
+.step-box h4 {
+    color: #fff !important;
+    font-size: 14px;
+    padding-left: 30px;
+    font-weight: 600;
+    text-align: left !important;
+    /* margin: 0 !important;
+    margin-bottom: 0 !important; */
+}
+
+.step-box p {
+    color: #d1d1d1 !important;
+    text-align: left !important;
+    font-size: 12px;
+    padding-left: 30px;
+    font-weight: 600;
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.displayNone {
+    display: none !important;
+}
+
+.btnRow {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: end !important;
+    padding-inline: 10px !important;
+    margin-top: 20px;
+}
+
+.switch {
+    position: relative !important;
+    display: inline-block !important;
+    width: 100px !important;
+    height: 32px !important;
+}
+
+.slider {
+    position: absolute !important;
+    cursor: pointer !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background-color: #ca2222 !important;
+    -webkit-transition: .4s !important;
+    transition: .4s !important;
+}
+
+input:checked+.slider {
+    background-color: #2ab934 !important;
+}
+
+.slider.round {
+    border-radius: 17px !important;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(68px) !important;
+    -ms-transform: translateX(68px) !important;
+    transform: translateX(68px) !important;
+}
+
+.slider.round:before {
+    border-radius: 50% !important;
+}
+
+.slider:before {
+    position: absolute !important;
+    content: "" !important;
+    height: 28px !important;
+    width: 28px !important;
+    left: 2px !important;
+    bottom: 2px !important;
+    background-color: white !important;
+    -webkit-transition: .4s !important;
+    transition: .4s !important;
+}
+
+input:checked+.slider .off {
+    display: none !important;
+}
+
+input:checked+.slider .on {
+    display: block !important;
+}
+
+.on {
+    display: none !important;
+}
+
+.on,
+.off {
+    color: white !important;
+    position: absolute !important;
+    transform: translate(-50%, -50%) !important;
+    top: 25% !important;
+    left: 25% !important;
+    font-size: 11px !important;
+    font-family: Verdana, sans-serif !important;
+}
+
+.on {
+    left: 10px !important;
+    right: 0 !important;
+    text-align: end !important;
+    top: 15px !important;
+}
+
+.off {
+    left: auto !important;
+    right: 0px !important;
+    top: 15px !important;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007aff;
+    border-color: #007aff;
+    -webkit-box-shadow: 0;
+    box-shadow: 0;
+}
+
+.btn {
+    font-weight: 600;
+}

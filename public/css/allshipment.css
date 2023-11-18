@@ -1,0 +1,115 @@
+.bg-color {
+    background-color: #e3ac13 !important;
+}
+
+.tag-2-for-Model {
+    background-color: #df5412;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.box-icon-for-Model {
+    width: 37px;
+    height: 37px;
+    margin: 0px 0px;
+    text-align: center;
+    font-size: 14px;
+    padding: 9px 0px 0px 0px;
+}
+
+.custom-media-object {
+    width: 95px;
+    height: 95px;
+    min-width: 30px;
+    overflow: hidden;
+    font-size: 50px;
+    padding: 31px 0px 0px 0px;
+    line-height: 30px;
+    text-align: center;
+    color: #6f6f6f;
+    background: #bbb;
+    margin: -5px 0;
+    -webkit-border-radius: 30px;
+    border-radius: 30px;
+}
+
+.bg-orange {
+    background-color: #df5412 !important;
+}
+
+.bg-orange {
+    background-color: #ff9500 !important;
+}
+
+.rounded-corner {
+    border-radius: 100px !important;
+}
+
+.email-user {
+    width: 35px;
+    height: 35px;
+    min-width: 30px;
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 29px;
+    text-align: center;
+    padding-top: 3px;
+    color: #6f6f6f;
+    background: #bbb;
+    margin: -5px 0;
+    -webkit-border-radius: 30px;
+    border-radius: 30px;
+}
+
+.bg-blue {
+    background-color: #007aff !important;
+}
+
+.text-yellow {
+    color: #fc0 !important;
+}
+
+.bg-green {
+    background-color: #4cd964 !important;
+}
+
+.bg-red {
+    background-color: #ff3b30 !important;
+}
+
+.text-teal-darker {
+    color: #42b079 !important;
+}
+
+.bg-grey {
+    background-color: #eee !important;
+}
+
+.timeline {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.btn-success:hover {
+    color: #fff;
+    background-color: #2ac845;
+    border-color: #2ac845;
+}
+
+.map-container {
+    overflow: hidden;
+    padding-bottom: 56.25%;
+    position: relative;
+    height: 0;
+}
+
+.map-container iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
