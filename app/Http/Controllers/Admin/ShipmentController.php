@@ -1178,6 +1178,7 @@ class ShipmentController extends Controller
 
     public function get_search(Request $request)
     {
+        // dd($request->all());
         $get_data = Shipment::leftJoin('status', 'shipments.status', '=', 'status.id')
             ->leftJoin('shippers AS shipper', 'shipments.shipper_code', '=', 'shipper.id')
             ->leftJoin('countrys AS shipment_country', 'shipments.country', '=', 'shipment_country.id')

@@ -136,7 +136,7 @@
                                             </div>
                                         </div> --}}
                                         <div class="col-sm-4">
-                                            <a href="javascript:void(0);" id="open_modal_button" data-toggle="modal"
+                                            <a href="javascript:void(0);" id="open_edit_modal_button" data-toggle="modal"
                                                 class="btn btn-sm" type="button"
                                                 style="background-color: #4d4d4d; color:#fff;">EDIT ORDER</a>
                                         </div>
@@ -186,6 +186,7 @@
                                                     <div class="col-6 mb-2">
                                                         <div class="card">
                                                             <div class="card-body text-dark">
+                                                                <input type="hidden" id="reference_number" name="reference_number" class="s-reference_number">
                                                                 <div class="row">
                                                                     <div class="col-lg-4">
                                                                         <div href="javascript:void(0);"
@@ -776,14 +777,14 @@
 {{-- Edit Modal --}}
 
 <script>
-    $("#open_modal_button").on("click", function() {
-        $('#operationeditorder').modal('show'); // Show the modal
-    });
+    // $("#open_modal_button").on("click", function() {
+    //     $('#operationeditorder').modal('show'); // Show the modal
+    // });
 
-    // Close the modal when the close button is clicked
-    $('.close').click(function() {
-        $('#operationeditorder').modal('hide'); // Hide the modal
-    });
+    // // Close the modal when the close button is clicked
+    // $('.close').click(function() {
+    //     $('#operationeditorder').modal('hide'); // Hide the modal
+    // });
 
     // Add comments on form submission
     $("#TrackingHistoryComment").on("submit", function(e) {
@@ -1016,5 +1017,77 @@
     function submitForm() {
         document.getElementById('exportForm').submit();
     }
+
+    $("#open_edit_modal_button").on("click", function() {
+            var id = $('.s-reference_number').val();
+            // alert(id);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                },
+                url: "{{ route('admin.shipment.get_search') }}",
+                type: "POST",
+                data: {
+                    id: id,
+                },
+                success: function(response) {
+                    // console.log(response);
+                    $('#operationeditorder').modal('show'); // Show the modal
+                    $('.e-id').val(response.id);
+                    $('.e-reference_number').val(response.reference_number);
+                    $('.e-barcode').val(response.barcode);
+                    $('.e-status').val(response.status_name);
+                    $('.e-status_id').val(response.status);
+                    $('.e-order_date').val(response.order_date);
+                    $('.e-shipper_code').val(response.shipper_code);
+                    $('.e-shippers_contact').val(response.shipper_contact);
+                    $('.e-reciver_name').val(response.reciver_name);
+                    $('.e-shipper_country').val(response.shipper_country);
+                    $('.e-shipper_city').val(response.shipper_city);
+                    $('.e-shipper_area').val(response.shipper_area);
+                    $('.e-shipper_address').val(response.shipper_address);
+                    $('.e-reciver_country').val(response.country);
+                    $('.e-reciver_city').val(response.city);
+                    $('.e-reciver_area').val(response.area);
+                    $('.e-reciver_address').val(response.street_address);
+                    $('.e-mobile_1').val(response.mobile_1);
+                    $('.e-driver_id').val(response.driver_id);
+                    $('.e-employee_mobile').val(response.employee_mobile);
+                    $('.e-driver_code').val(response.driver_code);
+                    $('.e-cod').val(response.cod);
+                    $('.e-instruction').val(response.instruction);
+                    $('.e-description').val(response.description);
+                    $('.e-shipper_name').val(response.shipper_name);
+                    $('.e-s_code').val(response.s_code);
+                    $('.e-service_charges').val(response.service_charges);
+                    $('.e-contact_office_1').val(response.contact_office_1);
+                    $('.e-mobile_2').val(response.mobile_2);
+                    $('.e-no_of_peices').val(response.no_of_peices);
+                    $('.e-service_type').val(response.service_type);
+                    $('.e-delivery_code').val(response.delivery_code);
+                    // $('.u-details_of_products').val(response.details_of_products);
+                    // $('.u-cod_peice').val(response.cod_peice);
+
+                    var detailsArray = response.details_of_products.split(',').map(item => item.trim());
+                    var codArray = response.cod_peice.split(',').map(item => item.trim());
+
+                    $('.e-details_of_products').each(function(index, element) {
+                        $(element).val(detailsArray[index]);
+                    });
+
+                    $('.e-cod_peice').each(function(index, element) {
+                        $(element).val(codArray[index]);
+                    });
+
+                }
+            });
+        });
+
+    // Close the modal when the close button is clicked
+    $('.close').click(function() {
+        $('#operationeditorder').modal('hide'); // Hide the modal
+    });
+
+
 </script>
 

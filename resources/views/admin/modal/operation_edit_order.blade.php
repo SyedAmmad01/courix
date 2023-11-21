@@ -63,7 +63,7 @@
                                     <div class="row ml-2 mr-2">
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <input type="hidden" id="" name="id" class="u-id">
+                                                <input type="hidden" id="" name="id" class="e-id">
                                                 <input type="hidden" id="EditOrderModalContent"
                                                     name="EditOrderModalContent" readonly>
                                                 <input type="hidden" id="co_id" name="id" readonly>
@@ -72,7 +72,7 @@
                                                 <div class="input-group m-b-10">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="fa fa-user"></i></span></div>
-                                                    <select class="form-control" id="" name="shipper">
+                                                    <select class="form-control e-shipper_code" id="" name="shipper">
                                                         @foreach ($fetch_shippers as $key)
                                                             <option value="{{ $key->id }}">
                                                                 {{ $key->shipper_code }}|{{ $key->company_name }}|{{ $key->contact_office_1 }}
@@ -90,7 +90,7 @@
                                                     </div>
                                                     <input type="date" name="order_date" id=""
                                                         data-parsley-group="step-1" data-parsley-required="true"
-                                                        class="form-control txtValidate">
+                                                        class="form-control e-order_date txtValidate">
                                                 </div>
                                             </div>
 
@@ -101,7 +101,7 @@
                                                     <div class="input-group-prepend"><span class="input-group-text">
                                                             <i class="fas fa-lg fa-fw  fa-flag-checkered"></i></span>
                                                     </div>
-                                                    <select class="form-control" id="" name="shipment_status">
+                                                    <select class="form-control e-status_id" id="" name="shipment_status">
                                                         @foreach ($fetch_status as $key)
                                                             <option value="{{ $key->id }}">{{ $key->name }}
                                                             </option>
@@ -118,7 +118,7 @@
                                                             <i class="fas fa-lg fa-fw fa-barcode"></i></span></div>
                                                     <input type="text" name="" id=""
                                                         placeholder="Barcode" data-parsley-group="step-1"
-                                                        data-parsley-required="true" class="form-control txtValidate">
+                                                        data-parsley-required="true" class="form-control e-barcode txtValidate">
                                                 </div>
                                             </div>
 
@@ -130,7 +130,7 @@
                                                             <i class="fas fa-lg fa-fw fa-quote-left"></i></span></div>
                                                     <input type="text" name="instruction" id=""
                                                         placeholder="Remarks" data-parsley-group="step-1"
-                                                        data-parsley-required="true" class="form-control txtValidate">
+                                                        data-parsley-required="true" class="form-control e-instruction txtValidate">
                                                 </div>
                                             </div>
 
@@ -143,7 +143,7 @@
                                                             <i class="fas fa-lg fa-fw fa-edit"></i></span></div>
                                                     <input type="text" name="description" id=""
                                                         placeholder="Description" data-parsley-group="step-1"
-                                                        data-parsley-required="true" class="form-control txtValidate">
+                                                        data-parsley-required="true" class="form-control e-description txtValidate">
                                                 </div>
                                             </div>
 
@@ -157,8 +157,8 @@
                                                 <div class="input-group m-b-10">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="fa fa-user"></i></span></div>
-                                                    <select class="form-control" id="" name="driver"
-                                                        readonly>
+                                                    <select class="form-control e-driver_id" id="" name="driver"
+                                                        disabled="true">
                                                         @foreach ($fetch_drivers as $key)
                                                             <option value="{{ $key->id }}">
                                                                 {{ $key->driver_code }}|{{ $key->employee_name }}
@@ -178,7 +178,7 @@
                                                     <div class="input-group-prepend"><span class="input-group-text">
                                                             <i class="fas fa-lg fa-fw  fa-flag-checkered"></i></span>
                                                     </div>
-                                                    <select class="form-control" id="" name="service_type">
+                                                    <select class="form-control e-service_type" id="" name="service_type">
                                                         <option value="">NDD - Next Day Delivery</option>
                                                         <option value="">SDD - Same Day Delivery</option>
                                                         <option value="">ODA - Out Of Service Area</option>
@@ -196,7 +196,7 @@
                                                     <input type="text" name="reference_number" id=""
                                                         placeholder="Reference Number(Optional)"
                                                         data-parsley-group="step-1" data-parsley-required="true"
-                                                        class="form-control txtValidate">
+                                                        class="form-control e-reference_number txtValidate">
                                                 </div>
                                             </div>
 
@@ -209,7 +209,7 @@
                                                     </div>
                                                     <input type="number" name="cod" id=""
                                                         placeholder="COD" data-parsley-group="step-1"
-                                                        data-parsley-required="true" class="form-control txtValidate">
+                                                        data-parsley-required="true" class="form-control e-cod txtValidate">
                                                 </div>
                                             </div>
 
@@ -221,7 +221,7 @@
                                                             <i class="fab fa-lg fa-fw fa-slack-hash"></i></span></div>
                                                     <input type="number" name="service_charges" id=""
                                                         placeholder="Service Charges" data-parsley-group="step-1"
-                                                        data-parsley-required="true" class="form-control txtValidate">
+                                                        data-parsley-required="true" class="form-control e-service_charges txtValidate" readonly>
                                                 </div>
                                             </div>
 
@@ -262,7 +262,7 @@
                                                                 class="fa fa-user"></i></span></div>
                                                     <input type="text" name="shipper_name" id=""
                                                         placeholder="Shipper Name" data-parsley-group="step-2"
-                                                        data-parsley-required="true" class="form-control txtValidate">
+                                                        data-parsley-required="true" class="form-control e-shipper_name txtValidate" readonly>
                                                 </div>
                                             </div>
                                             <div class="mb-3">
@@ -273,7 +273,7 @@
                                                             <i class="fa fa-user"></i></span></div>
                                                     <input type="text" name="shipper_name" id=""
                                                         placeholder="Shipper Code" data-parsley-group="step-2"
-                                                        data-parsley-required="true" class="form-control txtValidate">
+                                                        data-parsley-required="true" class="form-control e-s_code txtValidate" readonly>
 
                                                 </div>
                                             </div>
@@ -287,7 +287,7 @@
                                                     </div>
                                                     <input type="text" name="contact_office_1" id=""
                                                         placeholder="Contact Office 1" data-parsley-group="step-2"
-                                                        data-parsley-required="true" class="form-control txtValidate">
+                                                        data-parsley-required="true" class="form-control e-contact_office_1 txtValidate" readonly>
                                                 </div>
                                             </div>
 
@@ -299,7 +299,7 @@
                                                             <i class="fa fa-phone"></i></span></div>
                                                     <input type="text" name="contact_office_2" id=""
                                                         placeholder="Contact Office 2" data-parsley-group="step-2"
-                                                        data-parsley-required="true" class="form-control txtValidate">
+                                                        data-parsley-required="true" class="form-control e-contact_office_2 txtValidate" readonly>
                                                 </div>
                                             </div>
 
@@ -315,8 +315,8 @@
                                                 <div class="input-group m-b-10">
                                                     <div class="input-group-prepend"><span class="input-group-text">
                                                             <i class="fas fa-lg fa-fw  fa-flag"></i></span></div>
-                                                    <select class="form-control" id=""
-                                                        name="shipper_country" readonly>
+                                                    <select class="form-control e-shipper_country" id=""
+                                                        name="shipper_country" disabled>
                                                         @foreach ($fetch_countrys as $key)
                                                             <option value="{{ $key->id }}">{{ $key->name }}
                                                             </option>
@@ -335,8 +335,8 @@
                                                     <div class="input-group-prepend"><span class="input-group-text">
                                                             <i class="fas fa-lg fa-fw  fa-flag"></i></span>
                                                     </div>
-                                                    <select class="form-control" id="" name="shipper_city"
-                                                        readonly>
+                                                    <select class="form-control e-shipper_city" id="" name="shipper_city"
+                                                        disabled>
                                                         @foreach ($cities as $key)
                                                             <option value="{{ $key->id }}">{{ $key->name }}
                                                             </option>
@@ -351,8 +351,8 @@
                                                 <div class="input-group m-b-10">
                                                     <div class="input-group-prepend"><span class="input-group-text">
                                                             <i class="fas fa-lg fa-fw  fa-flag"></i></span></div>
-                                                    <select class="form-control" id="" name="shipper_area"
-                                                        readonly>
+                                                    <select class="form-control e-shipper_area" id="" name="shipper_area"
+                                                        disabled>
                                                         @foreach ($fetch_areas as $key)
                                                             <option value="{{ $key->id }}">{{ $key->name }}
                                                             </option>
@@ -369,7 +369,7 @@
                                                             <i class="fas fa-lg fa-fw m-r-10 fa-road"></i></span></div>
                                                     <input type="text" name="shipper_address" id=""
                                                         placeholder="Street" data-parsley-group="step-2"
-                                                        data-parsley-required="true" class="form-control txtValidate">
+                                                        data-parsley-required="true" class="form-control e-shipper_address txtValidate" readonly>
                                                 </div>
                                             </div>
 
@@ -420,7 +420,7 @@
                                                                 class="fa fa-user"></i></span></div>
                                                     <input type="text" name="reciver_name" id=""
                                                         placeholder="Shipper Name" data-parsley-group="step-3"
-                                                        data-parsley-required="true" class="form-control txtValidate">
+                                                        data-parsley-required="true" class="form-control e-reciver_name txtValidate">
                                                 </div>
                                             </div>
                                             <div class="mb-3">
@@ -431,7 +431,7 @@
                                                             <i class="fa fa-user"></i></span></div>
                                                     <input type="text" name="mobile_1" id=""
                                                         placeholder="Shipper Code" data-parsley-group="step-3"
-                                                        data-parsley-required="true" class="form-control txtValidate">
+                                                        data-parsley-required="true" class="form-control e-mobile_1 txtValidate">
 
                                                 </div>
                                             </div>
@@ -445,7 +445,7 @@
                                                     </div>
                                                     <input type="text" name="mobile_2" id=""
                                                         placeholder="Contact Office 1" data-parsley-group="step-3"
-                                                        data-parsley-required="true" class="form-control txtValidate">
+                                                        data-parsley-required="true" class="form-control e-mobile_2 txtValidate">
                                                 </div>
                                             </div>
 
@@ -469,7 +469,7 @@
                                                             <i class="fa fa-phone"></i></span></div>
                                                     <input type="text" name="" id=""
                                                         placeholder="Delivery Code" data-parsley-group="step-3"
-                                                        data-parsley-required="true" class="form-control txtValidate">
+                                                        data-parsley-required="true" class="form-control e-delivery_code txtValidate">
                                                 </div>
                                             </div>
 
@@ -483,7 +483,7 @@
                                                 <div class="input-group m-b-10">
                                                     <div class="input-group-prepend"><span class="input-group-text">
                                                             <i class="fas fa-lg fa-fw  fa-flag"></i></span></div>
-                                                    <select class="form-control" id=""
+                                                    <select class="form-control e-reciver_country" id=""
                                                         name="reciver_country" readonly>
                                                         @foreach ($fetch_countrys as $key)
                                                             <option value="{{ $key->id }}">{{ $key->name }}
@@ -502,7 +502,7 @@
                                                     <div class="input-group-prepend"><span class="input-group-text">
                                                             <i class="fas fa-lg fa-fw  fa-flag"></i></span>
                                                     </div>
-                                                    <select class="form-control" id="" name="reciver_city"
+                                                    <select class="form-control e-reciver_city" id="" name="reciver_city"
                                                         readonly>
                                                         @foreach ($cities as $key)
                                                             <option value="{{ $key->id }}">{{ $key->name }}
@@ -518,7 +518,7 @@
                                                 <div class="input-group m-b-10">
                                                     <div class="input-group-prepend"><span class="input-group-text">
                                                             <i class="fas fa-lg fa-fw  fa-flag"></i></span></div>
-                                                    <select class="form-control" id="" name="reciver_area"
+                                                    <select class="form-control e-reciver_area" id="" name="reciver_area"
                                                         readonly>
                                                         @foreach ($fetch_areas as $key)
                                                             <option value="{{ $key->id }}">{{ $key->name }}
@@ -536,7 +536,7 @@
                                                             <i class="fas fa-lg fa-fw m-r-10 fa-road"></i></span></div>
                                                     <input type="text" name="reciver_address" id=""
                                                         placeholder="Street" data-parsley-group="step-3"
-                                                        data-parsley-required="true" class="form-control txtValidate">
+                                                        data-parsley-required="true" class="form-control e-reciver_address txtValidate">
                                                 </div>
                                             </div>
 
@@ -593,18 +593,18 @@
                                                 <div class="input-group m-b-10">
                                                     <div class="input-group-prepend"><span class="input-group-text">
                                                             <i class="fas fa-lg fa-fw fa-cubes"></i></span></div>
-                                                    <input type="text" name="no_of_peices" id=""
+                                                    <input type="text" name="no_of_peices" id="no_of_peices"
                                                         placeholder="No. of Pieces" data-parsley-group="step-4"
-                                                        data-parsley-required="true" class="form-control txtValidate"
+                                                        data-parsley-required="true" class="form-control e-no_of_peices txtValidate"
                                                         onblur="generateFields()">
                                                 </div>
                                             </div>
 
                                             <div class="mb-3">
-                                                <input type="text" name="details_of_products" id=""
+                                                <input type="text" name="details_of_products[]" id="details_of_products"
                                                     placeholder="" data-parsley-group="step-4"
                                                     data-parsley-required="true"
-                                                    class="form-control u-details_of_products txtValidate">
+                                                    class="form-control e-details_of_products txtValidate">
                                             </div>
 
                                         </div>
@@ -622,9 +622,9 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <input type="text" name="cod_peice" id="read" placeholder=""
+                                                <input type="text" name="cod_peice[]" id="read" placeholder=""
                                                     data-parsley-group="step-4" data-parsley-required="true"
-                                                    class="form-control u-cod_peice txtValidate" readonly>
+                                                    class="form-control e-cod_peice txtValidate" readonly>
                                             </div>
 
                                         </div>
@@ -844,7 +844,7 @@
                 input1.type = 'text';
                 input1.name = 'details_of_products[]';
                 input1.placeholder = 'Tell Us About Price';
-                input1.className = 'form-control u-details_of_products';
+                input1.className = 'form-control e-details_of_products';
 
                 inputGroupDiv1.appendChild(input1);
                 formGroupDiv1.appendChild(label1);
@@ -872,7 +872,7 @@
                 input2.type = 'text';
                 input2.name = 'cod_peice[]';
                 input2.placeholder = 'COD';
-                input2.className = 'form-control u-cod_peice';
+                input2.className = 'form-control e-cod_peice';
                 // input2.readOnly = true; // Set readonly attribute by default
 
 

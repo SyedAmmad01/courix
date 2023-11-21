@@ -2024,6 +2024,7 @@
 
                         // console.log(data);
                         $('.s-id').val(data.id);
+                        $('.s-reference_number').val(data.reference_number);
 
 
                         // Use a single point of reference for accessing DOM elements
