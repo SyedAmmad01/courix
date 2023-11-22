@@ -860,7 +860,7 @@
             }
 
             // Generate and append new fields based on the count
-            for (var i = 1; i <= count; i++) {
+            for (var i = 2; i <= count; i++) {
                 // Create the parent row div
                 var rowDiv = document.createElement('div');
                 rowDiv.className = 'row';

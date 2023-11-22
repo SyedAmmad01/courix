@@ -28,7 +28,7 @@
         aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <form class="needs-validation" id="" novalidate>
+                <form class="needs-validation" id="EditOrderForm" novalidate>
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel" style="font-weight: bold;">Edit Order</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -64,15 +64,16 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <input type="hidden" id="" name="id" class="e-id">
-                                                <input type="hidden" id="EditOrderModalContent"
-                                                    name="EditOrderModalContent" readonly>
-                                                <input type="hidden" id="co_id" name="id" readonly>
+                                                 {{-- <input type="hidden" id="EditOrderModalContent"
+                                                    name="EditOrderModalContent" readonly> --}}
+                                                {{-- <input type="hidden" id="co_id" name="id" readonly> --}}
                                                 <label class=" text-lg-right col-form-label">Shipper<span
                                                         class="text-danger">*</span></label>
                                                 <div class="input-group m-b-10">
                                                     <div class="input-group-prepend"><span class="input-group-text"><i
                                                                 class="fa fa-user"></i></span></div>
                                                     <select class="form-control e-shipper_code" id="" name="shipper">
+                                                        <option selected disabled>Please Select Option</option>
                                                         @foreach ($fetch_shippers as $key)
                                                             <option value="{{ $key->id }}">
                                                                 {{ $key->shipper_code }}|{{ $key->company_name }}|{{ $key->contact_office_1 }}
@@ -179,10 +180,10 @@
                                                             <i class="fas fa-lg fa-fw  fa-flag-checkered"></i></span>
                                                     </div>
                                                     <select class="form-control e-service_type" id="" name="service_type">
-                                                        <option value="">NDD - Next Day Delivery</option>
-                                                        <option value="">SDD - Same Day Delivery</option>
-                                                        <option value="">ODA - Out Of Service Area</option>
-                                                        <option value="">RS - Return Service</option>
+                                                        <option value="NDD">NDD - Next Day Delivery</option>
+                                                        <option value="SDD">SDD - Same Day Delivery</option>
+                                                        <option value="ODA">ODA - Out Of Service Area</option>
+                                                        <option value="RS">RS - Return Service</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -808,7 +809,7 @@
 
         function generateFields() {
             // alert('hellow');
-            var count = parseInt(document.getElementById('u-no_of_peices').value);
+            var count = parseInt(document.getElementById('no_of_peices').value);
             var container = document.getElementById('fieldContainer');
 
             // Clear existing fields
@@ -817,7 +818,7 @@
             }
 
             // Generate and append new fields based on the count
-            for (var i = 1; i <= count; i++) {
+            for (var i = 2; i <= count; i++) {
                 // Create the parent row div
                 var rowDiv = document.createElement('div');
                 rowDiv.className = 'row';
@@ -889,11 +890,100 @@
 
         function box() {
             var checkBox = document.getElementById("Check");
-            var codInputs = document.getElementsByClassName("u-cod_peice");
+            var codInputs = document.getElementsByClassName("e-cod_peice");
 
             for (var i = 0; i < codInputs.length; i++) {
                 var readInput = codInputs[i];
                 readInput.readOnly = !checkBox.checked;
             }
         }
+
+        $("#EditOrderForm").on("submit", function(e) {
+            e.preventDefault()
+
+            // var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            var _token = '{{ csrf_token() }}';
+            var id = $(".e-id").val();
+            var driver_id = $(".e-driver_id").val();
+            var barcode = $(".e-barcode").val();
+            var reference_number = $(".e-reference_number").val();
+            var order_date = $(".e-order_date").val();
+            var service_type = $(".e-service_type").val();
+            var shipper_code = $(".e-shipper_code").val();
+            var shipper_name = $(".e-shipper_name").val();
+            var contact_office_1 = $(".e-contact_office_1").val();
+            var reciver_name = $(".e-reciver_name").val();
+            var mobile_1 = $(".e-mobile_1").val();
+            var mobile_2 = $(".e-mobile_2").val();
+            var cod = $(".e-cod").val();
+            var service_charges = $(".e-service_charges").val();
+            var instruction = $(".e-instruction").val();
+            var description = $(".e-description").val();
+            var reciver_country = $(".e-reciver_country").val();
+            var reciver_city = $(".e-reciver_city").val();
+            var reciver_area = $(".e-reciver_area").val();
+            var reciver_street_address = $(".e-reciver_address").val();
+            var delivery_code = $(".e-delivery_code").val();
+            var no_of_peices = $(".e-no_of_peices").val();
+            var details_of_productsArray = $("textarea[name='details_of_products[]']")
+                .map(function() {
+                    return $(this).val();
+                })
+                .get();
+            var cod_peiceArray = $("input[name='cod_peice[]']")
+                .map(function() {
+                    return $(this).val();
+                })
+                .get();
+
+
+            var formData = new FormData();
+            formData.append('_token', _token);
+            formData.append('id', id);
+            formData.append('driver_id', driver_id);
+            formData.append('barcode', barcode);
+            formData.append('reference_number', reference_number);
+            formData.append('order_date', order_date);
+            formData.append('service_type', service_type);
+            formData.append('shipper_code', shipper_code);
+            formData.append('shipper_name', shipper_name);
+            formData.append('contact_office_1', contact_office_1);
+            formData.append('reciver_name', reciver_name);
+            formData.append('mobile_1', mobile_1);
+            formData.append('mobile_2', mobile_2);
+            formData.append('cod', cod);
+            formData.append('service_charges', service_charges);
+            formData.append('instruction', instruction);
+            formData.append('description', description);
+            formData.append('country', reciver_country);
+            formData.append('city', reciver_city);
+            formData.append('area', reciver_area);
+            formData.append('street_address', reciver_street_address);
+            formData.append('delivery_code', delivery_code);
+            formData.append('no_of_peices', no_of_peices);
+            for (var i = 0; i < details_of_productsArray.length; i++) {
+                formData.append('details_of_products[]', details_of_productsArray[i]);
+                formData.append('cod_peice[]', cod_peiceArray[i]);
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('admin.shipment.update_order') }}",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // $('#changelocation').modal('hide'); // Hide the modal
+                    alert('Order Updated Successfully');
+                    // location.reload(true);
+
+                    // Reset all input fields
+                    $("#EditOrderForm")[0].reset();
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    alert('Order Updated Unsuccessfully');
+                }
+            });
+        });
+
     </script>

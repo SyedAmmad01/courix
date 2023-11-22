@@ -20,11 +20,12 @@
                                 <div class="col-3">
                                     <div class="tracking-info">
                                         <span>TRACKING :</span>
-                                        <span id="o-reference_number"></span>
+                                        {{-- <span id="o-awb_number"></span> --}}
                                         <span id="copy" class="fa fa-copy pl-1 pointer"
                                             onclick="JSCommon.CopyToClipboard('#o-reference_number')"></span>
                                         <br>
                                         <span>Shipper Ref :</span>
+                                        <span id="o-awb_number"></span>
                                         <span id="BarCode"></span>
                                     </div>
                                 </div>

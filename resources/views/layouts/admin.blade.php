@@ -220,7 +220,7 @@
                     </div> --}}
                     <!--end::Toolbar-->
                     <!--begin::Post-->
-                    @yield('content');
+                    @yield('content')
                     <!--end::Post-->
                 </div>
                 <!--end::Content-->

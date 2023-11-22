@@ -2032,6 +2032,7 @@
                             'o-id': data.id,
                             'o-driver_code': fullName,
                             'o-reference_number': data.reference_number,
+                            'o-awb_number': data.awb_number,
                             'o-shipper_name': data.shipper_name,
                             'o-contact_office_1': data.contact_office_1,
                             'o-mobile_1': data.mobile_1,
