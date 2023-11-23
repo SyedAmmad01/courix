@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('shipments', function (Blueprint $table) {
             $table->id();
             $table->string('barcode')->nullable();
+            $table->string('tracking_number')->nullable();
             $table->string('awb_number');
             $table->string('reference_number');
             $table->string('order_date');

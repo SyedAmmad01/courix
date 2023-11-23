@@ -32,6 +32,10 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'dashboard'])->name('admin.dashboard');
         Route::get('/logout', [App\Http\Controllers\Admin\AdminController::class, 'logout'])->name('admin.logout');
 
+
+
+
+
         // Employee Routes On Admin
         Route::get('/employee/allEmployees', [App\Http\Controllers\Admin\EmployeeController::class, 'allEmployees'])->name('admin.employee.all_employees');
         Route::get('/employee/addEmployee', [App\Http\Controllers\Admin\EmployeeController::class, 'addEmployee'])->name('admin.employee.add_employee');
