@@ -165,6 +165,7 @@ class ShipmentController extends Controller
 
     public function save(Request $request)
     {
+        dd($request->all());
         $lastShipment = Shipment::orderBy('id', 'desc')->first();
         if ($lastShipment) {
         $lastBarcode = $lastShipment->barcode;  // Get the last inserted barcode
