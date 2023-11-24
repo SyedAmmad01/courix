@@ -8,6 +8,7 @@
                 <div class="card card-custom example example-compact w-100">
                     <div class="card-body">
                         <form class="forms-sample" id="place_order">
+                            <input type="hidden" name="tracking_number" id="tracking_number" value="{{ $tracking_number }}"> 
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-12">
@@ -517,6 +518,7 @@
             $("#place_order").on("submit", function(e) {
                 e.preventDefault()
                 var _token = '{{ csrf_token() }}';
+                var tracking_number = $("#tracking_number").val();
                 var awb_number = $("#awb_number").val();
                 var reference_number = $("#reference_number").val();
                 var order_date = $("#order_date").val();
@@ -552,6 +554,7 @@
                     .get();
                 var formData = new FormData();
                 formData.append('_token', _token);
+                formData.append('tracking_number', tracking_number);
                 formData.append('awb_number', awb_number);
                 formData.append('reference_number', reference_number);
                 formData.append('order_date', order_date);

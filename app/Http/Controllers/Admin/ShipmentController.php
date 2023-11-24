@@ -71,10 +71,16 @@ class ShipmentController extends Controller
         $countrys = DB::table('countrys')->get();
         $shippers = Shipper::get();
         $last = Shipment::latest('id')->first();
+        $tracking_number = Shipment::latest('id')->first();
         if ($last == null) {
             $last = 1;
         } else {
             $last = $last->id + 1;
+        }
+        if ($tracking_number == null) {
+            $tracking_number = 1;
+        } else {
+            $tracking_number = $tracking_number->id + 1;
         }
         $data = array(
             'page_title' => $page_title,
@@ -82,6 +88,7 @@ class ShipmentController extends Controller
             'fetch_countrys' => $countrys,
             'fetch_shippers' => $shippers,
             'last' => $last,
+            'tracking_number' => $tracking_number,
         );
         return view('admin.shipment.place_order')->with($data);
     }
@@ -164,7 +171,7 @@ class ShipmentController extends Controller
 
     public function save(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $lastShipment = Shipment::orderBy('id', 'desc')->first();
         if ($lastShipment) {
         $lastBarcode = $lastShipment->barcode;  // Get the last inserted barcode
@@ -183,6 +190,7 @@ class ShipmentController extends Controller
         $shipments = new Shipment();
         $shipments->barcode = $lastBarcode;
         $shipments->awb_number = $request->input('awb_number');
+        $shipments->tracking_number = $request->input('tracking_number');
         $shipments->reference_number = $request->input('reference_number');
         $shipments->order_date = $request->input('order_date');
         $shipments->service_type = $request->input('service_type');
@@ -225,6 +233,7 @@ class ShipmentController extends Controller
         $shipment_logs = new ShipmentLogs();
         $shipment_logs->barcode = $lastBarcode;
         $shipment_logs->awb_number = $request->input('awb_number');
+        $shipment_logs->tracking_number = $request->input('tracking_number');
         $shipment_logs->reference_number = $request->input('reference_number');
         $shipment_logs->order_date = $request->input('order_date');
         $shipment_logs->service_type = $request->input('service_type');
@@ -1128,7 +1137,6 @@ class ShipmentController extends Controller
 
     public function get_edit_orders($id)
     {
-
         $shipments = Shipment::leftJoin('status', 'shipments.status', '=', 'status.id')
             ->leftJoin('shippers AS shipper', 'shipments.shipper_code', '=', 'shipper.id')
             ->leftJoin('countrys AS shipment_country', 'shipments.country', '=', 'shipment_country.id')

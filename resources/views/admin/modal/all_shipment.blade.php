@@ -20,7 +20,7 @@
                                 <div class="col-3">
                                     <div class="tracking-info">
                                         <span>TRACKING :</span>
-                                        {{-- <span id="o-awb_number"></span> --}}
+                                        <span id="o-tracking_number"></span>
                                         <span id="copy" class="fa fa-copy pl-1 pointer"
                                             onclick="JSCommon.CopyToClipboard('#o-reference_number')"></span>
                                         <br>
@@ -40,7 +40,7 @@
                                         <div class="col-sm-10 item-detail">
                                             <div class="item-detail">
                                                 <span class="info-label">In Scan:</span>
-                                                <span id="InScanDateTime">1st Apr 2023 | 03:53 am</span>
+                                                <span id="o-created_at"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -56,8 +56,7 @@
                                         <div class="col-sm-10 item-detail">
                                             <div class="item-detail">
                                                 <span class="info-label">Airway Created On:</span>
-                                                <span class="text-uppercase" id="CreatedDateTime">1st Apr 2023 | 03:53
-                                                    am</span>
+                                                <span id="o-airway_created_at"></span>
                                             </div>
                                         </div>
                                     </div>

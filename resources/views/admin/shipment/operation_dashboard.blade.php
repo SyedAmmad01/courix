@@ -496,7 +496,11 @@
                                                                                                 data-toggle="modal"
                                                                                                 data-target=""
                                                                                                 data-url="{{ route('admin.shipment.get_edit_orders', ['id' => $ship->id]) }}"
-                                                                                                onclick="comments({{ $ship->id }})">{{ $ship->reference_number }}
+                                                                                                onclick="comments({{ $ship->id }})">{{ $ship->tracking_number }}
+                                                                                                <br>
+                                                                                                {{ $ship->awb_number }}
+                                                                                                <br>
+                                                                                                {{ $ship->reference_number }}
                                                                                             </a>
                                                                                         </td>
                                                                                         <td></td>
@@ -597,7 +601,11 @@
                                                                                                 data-toggle="modal"
                                                                                                 data-target=""
                                                                                                 data-url="{{ route('admin.shipment.get_edit_orders', ['id' => $picked_up->id]) }}"
-                                                                                                onclick="comments({{ $picked_up->id }})">{{ $picked_up->reference_number }}
+                                                                                                onclick="comments({{ $picked_up->id }})">{{ $picked_up->tracking_number }}
+                                                                                                <br>
+                                                                                                {{ $picked_up->awb_number }}
+                                                                                                <br>
+                                                                                                {{ $picked_up->reference_number }}
                                                                                             </a>
                                                                                         </td>
                                                                                         <td></td>
@@ -697,7 +705,11 @@
                                                                                                 data-toggle="modal"
                                                                                                 data-target=""
                                                                                                 data-url="{{ route('admin.shipment.get_edit_orders', ['id' => $shipments_picked->id]) }}"
-                                                                                                onclick="comments({{ $shipments_picked->id }})">{{ $shipments_picked->reference_number }}
+                                                                                                onclick="comments({{ $shipments_picked->id }})">{{ $shipments_picked->tracking_number }}
+                                                                                                <br>
+                                                                                                {{ $shipments_picked->awb_number }}
+                                                                                                <br>
+                                                                                                {{ $shipments_picked->reference_number }}
                                                                                             </a>
                                                                                         </td>
                                                                                         <td></td>
@@ -798,7 +810,11 @@
                                                                                                 data-toggle="modal"
                                                                                                 data-target=""
                                                                                                 data-url="{{ route('admin.shipment.get_edit_orders', ['id' => $shipments_delivered->id]) }}"
-                                                                                                onclick="comments({{ $shipments_delivered->id }})">{{ $shipments_delivered->reference_number }}
+                                                                                                onclick="comments({{ $shipments_delivered->id }})">{{ $shipments_delivered->tracking_number }}
+                                                                                                <br>
+                                                                                                {{ $shipments_delivered->awb_number }}
+                                                                                                <br>
+                                                                                                {{ $shipments_delivered->reference_number }}
                                                                                             </a>
                                                                                         </td>
                                                                                         <td></td>
@@ -899,7 +915,11 @@
                                                                                                 data-toggle="modal"
                                                                                                 data-target=""
                                                                                                 data-url="{{ route('admin.shipment.get_edit_orders', ['id' => $del->id]) }}"
-                                                                                                onclick="comments({{ $del->id }})">{{ $del->reference_number }}
+                                                                                                onclick="comments({{ $del->id }})">{{ $del->tracking_number }}
+                                                                                                <br>
+                                                                                                {{ $del->awb_number }}
+                                                                                                <br>
+                                                                                                {{ $del->reference_number }}
                                                                                             </a>
                                                                                         </td>
                                                                                         <td></td>
@@ -1000,7 +1020,11 @@
                                                                                                 data-toggle="modal"
                                                                                                 data-target=""
                                                                                                 data-url="{{ route('admin.shipment.get_edit_orders', ['id' => $shipments_lost->id]) }}"
-                                                                                                onclick="comments({{ $shipments_lost->id }})">{{ $shipments_lost->reference_number }}
+                                                                                                onclick="comments({{ $shipments_lost->id }})">{{ $shipments_lost->tracking_number }}
+                                                                                                <br>
+                                                                                                {{ $shipments_lost->awb_number }}
+                                                                                                <br>
+                                                                                                {{ $shipments_lost->reference_number }}
                                                                                             </a>
                                                                                         </td>
                                                                                         <td></td>
@@ -1101,7 +1125,11 @@
                                                                                                 data-toggle="modal"
                                                                                                 data-target=""
                                                                                                 data-url="{{ route('admin.shipment.get_edit_orders', ['id' => $shipments_returned->id]) }}"
-                                                                                                onclick="comments({{ $shipments_returned->id }})">{{ $shipments_returned->reference_number }}
+                                                                                                onclick="comments({{ $shipments_returned->id }})">{{ $shipments_returned->tracking_number }}
+                                                                                                <br>
+                                                                                                {{ $shipments_returned->awb_number }}
+                                                                                                <br>
+                                                                                                {{ $shipments_returned->reference_number }}
                                                                                             </a>
                                                                                         </td>
                                                                                         <td></td>
@@ -1202,7 +1230,11 @@
                                                                                                 data-toggle="modal"
                                                                                                 data-target=""
                                                                                                 data-url="{{ route('admin.shipment.get_edit_orders', ['id' => $cancelled->id]) }}"
-                                                                                                onclick="comments({{ $cancelled->id }})">{{ $cancelled->reference_number }}
+                                                                                                onclick="comments({{ $cancelled->id }})">{{ $cancelled->tracking_number }}
+                                                                                                <br>
+                                                                                                {{ $cancelled->awb_number }}
+                                                                                                <br>
+                                                                                                {{ $cancelled->reference_number }}
                                                                                             </a>
                                                                                         </td>
                                                                                         <td></td>
@@ -1303,7 +1335,11 @@
                                                                                                 data-toggle="modal"
                                                                                                 data-target=""
                                                                                                 data-url="{{ route('admin.shipment.get_edit_orders', ['id' => $rtos->id]) }}"
-                                                                                                onclick="comments({{ $rtos->id }})">{{ $rtos->reference_number }}
+                                                                                                onclick="comments({{ $rtos->id }})">{{ $rtos->tracking_number }}
+                                                                                                <br>
+                                                                                                {{ $rtos->awb_number }}
+                                                                                                <br>
+                                                                                                {{ $rtos->reference_number }}
                                                                                             </a>
                                                                                         </td>
                                                                                         <td></td>
@@ -1529,7 +1565,12 @@
                             responseData.forEach((item) => {
                                 html += `<tr>
                                 <td><input type="checkbox"  class="checkbox" value="${item.id}" name="checkbox[]"></td>
-                                <td><a href="javascript:void(0);" id="show-employee" data-toggle="modal" data-target="${item.id ? '{{ route('admin.shipment.get_edit_orders', ['id' => "' + item.id + '"]) }}' : ''}  onclick="comments(${item.id})">${item.reference_number}</a></td>
+                                <td><a href="javascript:void(0);" id="show-employee" data-toggle="modal" data-target="${item.id ? '{{ route('admin.shipment.get_edit_orders', ['id' => "' + item.id + '"]) }}' : ''}  onclick="comments(${item.id})">${item.tracking_number}
+                                    <br>
+                                    ${item.awb_number}
+                                    <br>
+                                    ${item.reference_number}
+                                    </a></td>
                                 <td></td>
                                 <td>${item.shipper_name}</td>
                                 <td>${item.driver_id === null
@@ -1587,7 +1628,12 @@
                             responseData.forEach((item) => {
                                 html += `<tr>
                                 <td><input type="checkbox" class="checkbox" value="${item.id}" name="checkbox[]"></td>
-                                <td><a href="javascript:void(0);" id="show-employee" data-toggle="modal" data-target="${item.id ? '{{ route('admin.shipment.get_edit_orders', ['id' => "' + item.id + '"]) }}' : ''}  onclick="comments(${item.id})">${item.reference_number}</a></td>
+                                <td><a href="javascript:void(0);" id="show-employee" data-toggle="modal" data-target="${item.id ? '{{ route('admin.shipment.get_edit_orders', ['id' => "' + item.id + '"]) }}' : ''}  onclick="comments(${item.id})">${item.tracking_number}
+                                    <br>
+                                    ${item.awb_number}
+                                    <br>
+                                    ${item.reference_number}
+                                </a></td>
                                 <td></td>
                                 <td>${item.shipper_name}</td>
                                 <td>${item.driver_id === null
@@ -1636,7 +1682,12 @@
                             responseData.forEach((item) => {
                                 html += `<tr>
                                 <td><input type="checkbox" class="checkbox" value="${item.id}" name="checkbox[]"></td>
-                                <td><a href="javascript:void(0);" id="show-employee" data-toggle="modal" data-target="${item.id ? '{{ route('admin.shipment.get_edit_orders', ['id' => "' + item.id + '"]) }}' : ''}  onclick="comments(${item.id})">${item.reference_number}</a></td>
+                                <td><a href="javascript:void(0);" id="show-employee" data-toggle="modal" data-target="${item.id ? '{{ route('admin.shipment.get_edit_orders', ['id' => "' + item.id + '"]) }}' : ''}  onclick="comments(${item.id})">${item.tracking_number}
+                                    <br>
+                                    ${item.awb_number}
+                                    <br>
+                                    ${item.reference_number}
+                                </a></td>
                                 <td></td>
                                 <td>${item.shipper_name}</td>
                                 <td>${item.driver_id === null
@@ -2022,15 +2073,16 @@
 
                         $('#allshipment').modal('show');
 
-                        // console.log(data);
+                        
                         $('.s-id').val(data.id);
                         $('.s-reference_number').val(data.reference_number);
-
+                        var formattedDate = moment(data.created_at).format('Do MMM YYYY | h:mm A');
 
                         // Use a single point of reference for accessing DOM elements
                         var modalElements = {
                             'o-id': data.id,
                             'o-driver_code': fullName,
+                            'o-tracking_number': data.tracking_number,
                             'o-reference_number': data.reference_number,
                             'o-awb_number': data.awb_number,
                             'o-shipper_name': data.shipper_name,
@@ -2042,7 +2094,9 @@
                             'o-no_of_peices': data.no_of_peices,
                             'o-cod': data.cod,
                             'o-sender_address': sender_address,
-                            'o-reciver_address': receiver_address
+                            'o-reciver_address': receiver_address,
+                            'o-created_at': formattedDate,
+                            'o-airway_created_at': formattedDate,
                         };
 
                         for (var key in modalElements) {
