@@ -46,6 +46,7 @@
                                                     <th> License No </th>
                                                     <th> Email </th>
                                                     <th> City </th>
+                                                    <th> Action </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -58,6 +59,18 @@
                                                         <td>{{ $shipper->trade_license_no }}</td>
                                                         <td>{{ $shipper->shipper_email }}</td>
                                                         <td>{{ $shipper->name }}</td>
+                                                        <td style="display: flex;">
+                                                            <a href="{{ route('admin.shipper.edit', ['id' => $shipper->id]) }}"
+                                                                class="btn btn-primary btn-sm fa fa-edit"
+                                                                style="background-color: #007aff;"></a>
+                                                            &nbsp;
+                                                            <button class="delete-btn btn btn-danger btn-sm fa fa-trash"
+                                                                data-shipper-id="{{ $shipper->id }}" data-toggle="modal"
+                                                                data-target="#shipperdeleteModal"></button>
+                                                            &nbsp;
+                                                            <a href="{{ route('admin.shipper.view', ['id' => $shipper->id]) }}"
+                                                                class="btn btn-warning  btn-sm fa fa-eye"></a>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>

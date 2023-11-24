@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Hash;
 
 class ShipperController extends Controller
 {
-
     public function index(Request $request)
     {
         $page_title = 'View Shippers';

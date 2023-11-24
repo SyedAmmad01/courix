@@ -40,7 +40,6 @@ use PDF;
 
 class ShipmentController extends Controller
 {
-
     public function tracking(Request $request)
     {
         $page_title = 'Tracking';
