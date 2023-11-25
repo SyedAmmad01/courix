@@ -2073,7 +2073,7 @@
 
                         $('#allshipment').modal('show');
 
-                        
+
                         $('.s-id').val(data.id);
                         $('.s-reference_number').val(data.reference_number);
                         var formattedDate = moment(data.created_at).format('Do MMM YYYY | h:mm A');

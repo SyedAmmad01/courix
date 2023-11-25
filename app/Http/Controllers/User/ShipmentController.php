@@ -20,10 +20,16 @@ class ShipmentController extends Controller
         $shippers = Shipper::where('id', $userId)->first();
         $random = rand(000000000000, 9999999999);
         $last = Shipment::latest('id')->first();
+        $tracking_number = Shipment::latest('id')->first();
         if ($last == null) {
             $last = 1;
         } else {
             $last = $last->id + 1;
+        }
+        if ($tracking_number == null) {
+            $tracking_number = 1;
+        } else {
+            $tracking_number = $tracking_number->id + 1;
         }
         $data = array(
             'page_title' => $page_title,
@@ -31,6 +37,7 @@ class ShipmentController extends Controller
             'shippers' => $shippers,
             'random_no' => $random,
             'last' => $last,
+            'tracking_number' => $tracking_number,
         );
         // dd($data);
         return view('user.shipment.place_order')->with($data);

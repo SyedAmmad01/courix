@@ -125,6 +125,7 @@
                                             <div data-step-label="Step-1" class="step-title waves-effect waves-dark">Step 1:
                                                 Sender Information</div>
                                             <div class="step-new-content" style="display: none;">
+                                                <input type="text" name="tracking_number" id="tracking_number" value="{{ $tracking_number }}">
                                                 <!-- Step-1 content goes here -->
                                                 <br>
                                                 <div class="row">
