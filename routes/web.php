@@ -231,16 +231,18 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     // Shipment Routes On User
-    Route::get('/place_order', [App\Http\Controllers\User\ShipmentController::class, 'place_order_page'])->name('user.shipment.place_order');
-    Route::post('/shipment/save', [App\Http\Controllers\User\ShipmentController::class, 'save'])->name('user.shipment.save');
-    Route::get('/edit_order', [App\Http\Controllers\User\ShipmentController::class, 'edit_order_page'])->name('user.shipment.edit_order');
-    Route::get('/upload_orders', [App\Http\Controllers\User\ShipmentController::class, 'upload_orders_page'])->name('user.shipment.upload_orders');
-    Route::get('/shipments', [App\Http\Controllers\User\ShipmentController::class, 'shipments_page'])->name('user.shipment.shipments');
-    Route::get('/manifests', [App\Http\Controllers\User\ShipmentController::class, 'manifests_page'])->name('user.shipment.manifests');
-    Route::get('/invoices', [App\Http\Controllers\User\ShipmentController::class, 'invoices_page'])->name('user.shipment.invoices');
-    Route::get('/address_book', [App\Http\Controllers\User\ShipmentController::class, 'address_book_page'])->name('user.shipment.address_book');
-    Route::get('/manage_profile', [App\Http\Controllers\User\ShipmentController::class, 'manage_profile_page'])->name('user.shipment.manage_profile');
-    Route::get('/update_password', [App\Http\Controllers\User\ShipmentController::class, 'update_password_page'])->name('user.shipment.update_password');
+    Route::get('/user/place_order', [App\Http\Controllers\User\ShipmentController::class, 'place_order_page'])->name('user.shipment.place_order');
+    Route::post('/user/getcity', [App\Http\Controllers\Admin\ShipmentController::class, 'getcity'])->name('user.shipment.getcity');
+    Route::post('/user/getarea', [App\Http\Controllers\Admin\ShipmentController::class, 'getarea'])->name('user.shipment.getarea');
+    Route::post('/user/shipment/save', [App\Http\Controllers\User\ShipmentController::class, 'save'])->name('user.shipment.save');
+    Route::get('/user/edit_order', [App\Http\Controllers\User\ShipmentController::class, 'edit_order_page'])->name('user.shipment.edit_order');
+    Route::get('/user/upload_orders', [App\Http\Controllers\User\ShipmentController::class, 'upload_orders_page'])->name('user.shipment.upload_orders');
+    Route::get('/user/shipments', [App\Http\Controllers\User\ShipmentController::class, 'shipments_page'])->name('user.shipment.shipments');
+    Route::get('/user/manifests', [App\Http\Controllers\User\ShipmentController::class, 'manifests_page'])->name('user.shipment.manifests');
+    Route::get('/user/invoices', [App\Http\Controllers\User\ShipmentController::class, 'invoices_page'])->name('user.shipment.invoices');
+    Route::get('/user/address_book', [App\Http\Controllers\User\ShipmentController::class, 'address_book_page'])->name('user.shipment.address_book');
+    Route::get('/user/manage_profile', [App\Http\Controllers\User\ShipmentController::class, 'manage_profile_page'])->name('user.shipment.manage_profile');
+    Route::get('/user/update_password', [App\Http\Controllers\User\ShipmentController::class, 'update_password_page'])->name('user.shipment.update_password');
 
     //
 });

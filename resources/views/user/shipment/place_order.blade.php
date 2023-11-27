@@ -272,25 +272,24 @@
 
                                                             <div class="col-4 mt-4">
                                                                 <div class="form-group">
-                                                                    <label class="text-lg-right col-form-label">Country
-                                                                        <span class="text-danger">*</span></label>
+                                                                    <label class="text-lg-right col-form-label">Country<span
+                                                                            class="text-danger">*</span></label>
                                                                     <div class="input-group m-b-10">
-                                                                        <select class="form-control" id="country"
-                                                                            name="country">
-                                                                            <option value="" selected disabled
-                                                                                hidden>Please Select Country</option>
-                                                                            <option value="AD">Abu Dhabi</option>
-                                                                            <option value="D">Dubai</option>
-                                                                            <option value="S">Sharjah</option>
-                                                                            <option value="A">Ajman</option>
-                                                                            <option value="AA">Al Ain</option>
-                                                                            <option value="F">Fujeriah</option>
-                                                                            <option value="UAQ">Um Al Qwain</option>
-                                                                            <option value="RAK">Ras Al Khaimah</option>
-                                                                            <option value="OOSA">Out Of Service Area
+                                                                        <select class="form-control kt-select2 select2" id="country"
+                                                                            name="country" onchange="fun()" style="width:70%;">
+                                                                            <option value="" disabled selected>Please Select Country
                                                                             </option>
-                                                                            <option value="AA50">Abu Dhabi 50</option>
-                                                                            <option value="AA50">Al Ain 50</option>
+                                                                            @foreach ($fetch_countrys as $key)
+                                                                                @if (old('country') == $key->id)
+                                                                                    <option value="{{ $key->id }}" selected>
+                                                                                        {{ $key->name }}
+                                                                                    </option>
+                                                                                @else
+                                                                                    <option value="{{ $key->id }}">
+                                                                                        {{ $key->name }}
+                                                                                    </option>
+                                                                                @endif
+                                                                            @endforeach
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -298,25 +297,13 @@
 
                                                             <div class="col-4 mt-4">
                                                                 <div class="form-group">
-                                                                    <label class="text-lg-right col-form-label">City
-                                                                        <span class="text-danger">*</span></label>
+                                                                    <label class="text-lg-right col-form-label">City<span
+                                                                            class="text-danger">*</span></label>
                                                                     <div class="input-group m-b-10">
-                                                                        <select class="form-control" id="city"
-                                                                            name="city">
-                                                                            <option value="" selected disabled
-                                                                                hidden>Please Select City</option>
-                                                                            <option value="AD">Abu Dhabi</option>
-                                                                            <option value="D">Dubai</option>
-                                                                            <option value="S">Sharjah</option>
-                                                                            <option value="A">Ajman</option>
-                                                                            <option value="AA">Al Ain</option>
-                                                                            <option value="F">Fujeriah</option>
-                                                                            <option value="UAQ">Um Al Qwain</option>
-                                                                            <option value="RAK">Ras Al Khaimah</option>
-                                                                            <option value="OOSA">Out Of Service Area
+                                                                        <select class="form-control kt-select2 select2" id="city"
+                                                                            name="city" style="width:70%;">
+                                                                            <option value="" disabled selected>Please Select City
                                                                             </option>
-                                                                            <option value="AA50">Abu Dhabi 50</option>
-                                                                            <option value="AA50">Al Ain 50</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -324,25 +311,13 @@
 
                                                             <div class="col-4 mt-4">
                                                                 <div class="form-group">
-                                                                    <label class="text-lg-right col-form-label">Area
-                                                                        <span class="text-danger">*</span></label>
+                                                                    <label class="text-lg-right col-form-label">Area<span
+                                                                            class="text-danger">*</span></label>
                                                                     <div class="input-group m-b-10">
-                                                                        <select class="form-control" id="area"
-                                                                            name="area">
-                                                                            <option value="" selected disabled
-                                                                                hidden>Please Select Area</option>
-                                                                            <option value="AD">Abu Dhabi</option>
-                                                                            <option value="D">Dubai</option>
-                                                                            <option value="S">Sharjah</option>
-                                                                            <option value="A">Ajman</option>
-                                                                            <option value="AA">Al Ain</option>
-                                                                            <option value="F">Fujeriah</option>
-                                                                            <option value="UAQ">Um Al Qwain</option>
-                                                                            <option value="RAK">Ras Al Khaimah</option>
-                                                                            <option value="OOSA">Out Of Service Area
+                                                                        <select class="form-control kt-select2 select2" id="area"
+                                                                            name="area" style="width:70%;">
+                                                                            <option value="" disabled selected>Please Select Area
                                                                             </option>
-                                                                            <option value="AA50">Abu Dhabi 50</option>
-                                                                            <option value="AA50">Al Ain 50</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -835,5 +810,44 @@
                 container.appendChild(rowDiv);
             }
         });
+
+
+        jQuery(document).ready(function() {
+                jQuery('#city').change(function() {
+                    let cid = jQuery(this).val();
+                    jQuery.ajax({
+                        url: "{{ route('user.shipment.getcity') }}",
+                        type: 'post',
+                        data: 'cid=' + cid + '&_token={{ csrf_token() }}',
+                        success: function(result) {
+
+                            jQuery('#area').html(result);
+
+                        }
+
+                    });
+                });
+            });
+
+
+            function fun() {
+                var id = $('#country :selected').val();
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                    },
+                    url: "{{ route('user.shipment.getarea') }}",
+                    type: "POST",
+                    data: {
+                        id: id,
+                    },
+                    success: function(response) {
+                        $('#city').html(response);
+                    }
+                });
+            }
+
+
+
     </script>
 @endsection
