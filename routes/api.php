@@ -31,6 +31,7 @@ Route::group(['middleware' => 'auth:sanctum'],function(){
     Route::get('driver_allorders',[DashboardController::class,'allOrders']);
     Route::get('driver_deliverdOrders',[DashboardController::class,'deliverdOrders']);
     Route::post('driver_collectionjobs',[DashboardController::class,'collectionjobs']);
+    Route::post('driver_quick_delivery',[DashboardController::class,'quick_delivery']);
     // Route::get('logout',[DriverController::class,'logout']);
     // Dashboard Controller
 });
