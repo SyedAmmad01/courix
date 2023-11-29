@@ -48,6 +48,8 @@ return new class extends Migration
             $table->string('warehouse')->nullable();
             $table->string('rack')->nullable();
             $table->string('delivery_attempt')->nullable();
+            $table->string('payment_method')->nullable();
+            $table->string('transition_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
