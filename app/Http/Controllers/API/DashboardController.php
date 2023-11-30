@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\OrderOutscan;
 use App\Models\Shipment;
+use App\Models\ShipmentLogs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -51,18 +52,28 @@ class DashboardController extends Controller
 
         // dd($request->all());
         $shipments = Shipment::find($id);
-        if ($shipments->payment_method == 1) {
+        if ($request->payment_method == 1) {
             $shipments->status = $request->input('status');
             $shipments->payment_method = $request->input('payment_method');
-            $shipments->transition_id = $request->input('transition_id');
         } else {
             $shipments->status = $request->input('status');
             $shipments->payment_method = $request->input('payment_method');
             $shipments->transition_id = $request->input('transition_id');
         }
+
+        $shipment_logs = ShipmentLogs::find($id);
+        if ($request->payment_method == 1) {
+            $shipment_logs->status = $request->input('status');
+            $shipment_logs->payment_method = $request->input('payment_method');
+        } else {
+            $shipment_logs->status = $request->input('status');
+            $shipment_logs->payment_method = $request->input('payment_method');
+            $shipment_logs->transition_id = $request->input('transition_id');
+        }
+
+        $shipment_logs->update();
         $shipments->update();
-        // $order_outscan->update();
-        return response()->json($shipments , 200);
+        return response()->json(['shipments' => $shipments, 'shipment_logs' => $shipment_logs], 200);
     }
 
     public function deliverdOrders()
