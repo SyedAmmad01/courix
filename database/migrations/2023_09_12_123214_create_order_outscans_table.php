@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('order_outscans', function (Blueprint $table) {
             $table->id();
             $table->string('shipment_id');
-            $table->string('auth_id');
+            $table->string('auth_id')->nullable();
             $table->string('order_date');
             $table->string('driver_id');
             $table->softDeletes();

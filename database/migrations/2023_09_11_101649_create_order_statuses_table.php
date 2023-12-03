@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('shipment_id');
             $table->string('status');
-            $table->string('auth_id');
+            $table->string('auth_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

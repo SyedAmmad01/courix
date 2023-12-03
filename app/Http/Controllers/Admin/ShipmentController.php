@@ -1252,7 +1252,7 @@ class ShipmentController extends Controller
 
     public function tracking_comments(Request $request)
     {
-        // dd($request->all());
+        dd($request->all());
         // Create the first log entry
         $logs = new logs;
         $logs->shipment_id = $request->id;

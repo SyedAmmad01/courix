@@ -5,6 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\OrderOutscan;
 use App\Models\Shipment;
+use App\Models\logs;
+use App\Models\ShipmentFile;
+use App\Models\OrderStatus;
 use App\Models\ShipmentLogs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,13 +48,12 @@ class DashboardController extends Controller
 
     public function order_proceed(Request $request, $id)
     {
-        // $currentDate = Carbon::today();
-        // $user = Auth::guard('drivers')->user();
-        // $order_assigned = OrderOutscan::join('shipments', 'order_outscans.driver_id', '=', 'shipments.id')->select('shipments.*','order_outscans.id As order_id','order_outscans.shipment_id As order_shipment_id','order_outscans.auth_id As order_auth_id','order_outscans.order_date As order_order_date','order_outscans.driver_id As order_driver_id','order_outscans.deleted_at As order_deleted_at','order_outscans.created_at As order_created_at','order_outscans.updated_at As order_updated_at')->where('shipments.driver_id', $user->id)->where('shipments.id', $id)->whereDate('order_outscans.created_at', $currentDate)->where('shipments.status', 7)->get();
-        // dd($order_assigned);
 
-        // dd($request->all());
+        $currentDate = Carbon::today();
+        $formattedDate = $currentDate->format('Y-m-d');
+        $user = Auth::guard('drivers')->user();
         $shipments = Shipment::find($id);
+        // Payment Method 1 Means Cash And 2 Means Card
         if ($request->payment_method == 1) {
             $shipments->status = $request->input('status');
             $shipments->payment_method = $request->input('payment_method');
@@ -71,9 +73,50 @@ class DashboardController extends Controller
             $shipment_logs->transition_id = $request->input('transition_id');
         }
 
+        $logs = new logs;
+        $logs->shipment_id = $id;
+        $logs->status_type = 1;
+        $logs->status = $request->input('status');
+        $logs->driver_id = $user;
+        $logs->comments = $request->comments;
+
+        $OrderOutscan = OrderOutscan::where('shipment_id' ,  $id)->first();
+        $OrderOutscan->shipment_id = $id;
+        $OrderOutscan->order_date = $formattedDate;
+        $OrderOutscan->driver_id = $user;
+
+
+        // Create the Order Status second entry
+        $OrderStatus = OrderStatus::where('shipment_id' ,  $id)->first();
+        $OrderStatus->shipment_id = $id;
+        $OrderStatus->status = $request->input('status');  // Change the status value
+
+
+        if (!$request->hasFile('myfile')) {
+            $shipmentfile = null;
+            // You can add additional handling here if needed
+            // (e.g., return a response, log a message, etc.)
+        } else {
+            $file = $request->file('myfile');
+            $fileName_img = $file->getClientOriginalName();
+            $destinationPath = public_path() . '/shippment_files_images';
+            $file->move($destinationPath, $fileName_img);
+
+            $shipmentfile = new ShipmentFile;
+            $shipmentfile->shipment_id = $id;
+            $shipmentfile->file_name = "File";
+            $shipmentfile->selected_file = $fileName_img;
+            $shipmentfile->file_type = "POD";
+
+            $shipmentfile->save();
+        }
+
+        $OrderOutscan->update();
+        $OrderStatus->update();
+        $logs->save();
         $shipment_logs->update();
         $shipments->update();
-        return response()->json(['shipments' => $shipments, 'shipment_logs' => $shipment_logs], 200);
+        return response()->json(['message' => 'Order added successfully', 'shipments' => $shipments, 'shipment_logs' => $shipment_logs, 'logs' => $logs, 'orderoutscan' => $OrderOutscan , 'orderstatus' => $OrderStatus], 200);
     }
 
     public function deliverdOrders()

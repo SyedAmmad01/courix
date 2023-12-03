@@ -75,7 +75,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/export-shippers', [App\Http\Controllers\Admin\ExportController::class, 'exportShippersToExcel'])->name('admin.exportshippersToExcel');
 
 
-        
+
 
         // Route::post('/shipper/export-excel', [App\Http\Controllers\Admin\ShipperController::class, 'exportexcel'])->name('admin.shipper.quick_add');
 

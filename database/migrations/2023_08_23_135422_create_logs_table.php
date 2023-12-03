@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('status_type')->nullable();
             $table->string('status')->nullable();
             $table->string('auth_id')->nullable();
+            $table->string('driver_id')->nullable();
             $table->string('comments')->nullable();
             $table->string('remarks')->nullable();
             $table->softDeletes();
