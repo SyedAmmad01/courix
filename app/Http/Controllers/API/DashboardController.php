@@ -17,7 +17,6 @@ use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-    private $orderAssignedData;
     public function allOrders()
     {
         $currentDate = Carbon::today();
@@ -77,17 +76,17 @@ class DashboardController extends Controller
         $logs->shipment_id = $id;
         $logs->status_type = 1;
         $logs->status = $request->input('status');
-        $logs->driver_id = $user;
+        $logs->driver_id = $user->id;
         $logs->comments = $request->comments;
 
-        $OrderOutscan = OrderOutscan::where('shipment_id' ,  $id)->first();
+        $OrderOutscan = OrderOutscan::where('shipment_id',  $id)->first();
         $OrderOutscan->shipment_id = $id;
         $OrderOutscan->order_date = $formattedDate;
-        $OrderOutscan->driver_id = $user;
+        $OrderOutscan->driver_id = $user->id;
 
 
         // Create the Order Status second entry
-        $OrderStatus = OrderStatus::where('shipment_id' ,  $id)->first();
+        $OrderStatus = OrderStatus::where('shipment_id',  $id)->first();
         $OrderStatus->shipment_id = $id;
         $OrderStatus->status = $request->input('status');  // Change the status value
 
@@ -116,7 +115,7 @@ class DashboardController extends Controller
         $logs->save();
         $shipment_logs->update();
         $shipments->update();
-        return response()->json(['message' => 'Order added successfully', 'shipments' => $shipments, 'shipment_logs' => $shipment_logs, 'logs' => $logs, 'orderoutscan' => $OrderOutscan , 'orderstatus' => $OrderStatus], 200);
+        return response()->json(['message' => 'Order Updated Successfully', 'shipments' => $shipments, 'shipment_logs' => $shipment_logs, 'logs' => $logs, 'orderoutscan' => $OrderOutscan, 'orderstatus' => $OrderStatus], 200);
     }
 
     public function deliverdOrders()
@@ -147,7 +146,14 @@ class DashboardController extends Controller
     {
         $currentDate = Carbon::today();
         $user = Auth::guard('drivers')->user();
-        $order_outscan = OrderOutscan::join('shipments', 'order_outscans.driver_id', '=', 'shipments.id')->select('shipments.*', 'order_outscans.id As order_id', 'order_outscans.shipment_id As order_shipment_id', 'order_outscans.auth_id As order_auth_id', 'order_outscans.order_date As order_order_date', 'order_outscans.driver_id As order_driver_id', 'order_outscans.deleted_at As order_deleted_at', 'order_outscans.created_at As order_created_at', 'order_outscans.updated_at As order_updated_at')->where('shipments.driver_id', $user->id)->where('shipments.tracking_number', $request->tracking_number)->whereDate('order_outscans.created_at', $currentDate)->get();
+        $order_outscan = OrderOutscan::join('shipments', 'order_outscans.driver_id', '=', 'shipments.id')
+            ->select('shipments.*', 'order_outscans.id As order_id', 'order_outscans.shipment_id As order_shipment_id', 'order_outscans.auth_id As order_auth_id', 'order_outscans.order_date As order_order_date', 'order_outscans.driver_id As order_driver_id', 'order_outscans.deleted_at As order_deleted_at', 'order_outscans.created_at As order_created_at', 'order_outscans.updated_at As order_updated_at')
+            ->where('shipments.driver_id', $user->id)
+            ->where('shipments.tracking_number', $request->tracking_number)
+            ->whereDate('order_outscans.created_at', $currentDate)
+            ->where('shipments.status', '!=', 5) // Exclude records where order status is 5
+            ->get();
+        // $order_outscan = OrderOutscan::join('shipments', 'order_outscans.driver_id', '=', 'shipments.id')->select('shipments.*', 'order_outscans.id As order_id', 'order_outscans.shipment_id As order_shipment_id', 'order_outscans.auth_id As order_auth_id', 'order_outscans.order_date As order_order_date', 'order_outscans.driver_id As order_driver_id', 'order_outscans.deleted_at As order_deleted_at', 'order_outscans.created_at As order_created_at', 'order_outscans.updated_at As order_updated_at')->where('shipments.driver_id', $user->id)->where('shipments.tracking_number', $request->tracking_number)->whereDate('order_outscans.created_at', $currentDate)->get();
         $data = [
             'user' => $user,
             'order_outscan' => $order_outscan,
