@@ -9,6 +9,7 @@ use App\Models\logs;
 use App\Models\ShipmentFile;
 use App\Models\OrderStatus;
 use App\Models\ShipmentLogs;
+use App\Models\CashCollected;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -48,6 +49,7 @@ class DashboardController extends Controller
     public function order_proceed(Request $request, $id)
     {
 
+        // dd($request->all());
         $currentDate = Carbon::today();
         $formattedDate = $currentDate->format('Y-m-d');
         $user = Auth::guard('drivers')->user();
@@ -107,14 +109,24 @@ class DashboardController extends Controller
             $shipmentfile->selected_file = $fileName_img;
             $shipmentfile->file_type = "POD";
 
-            $shipmentfile->save();
+            // $shipmentfile->save();
         }
 
-        $OrderOutscan->update();
-        $OrderStatus->update();
-        $logs->save();
-        $shipment_logs->update();
-        $shipments->update();
+        if($request->status == 5)
+        {
+            $shipments = Shipment::where('id' , $id)->first();
+            $cash_collected = new CashCollected;
+            $cash_collected->shipment_id = $id;
+            $cash_collected->cash_collected = $shipments->cod;
+            $cash_collected->driver_id = $user->id;
+        }
+
+        // $cash_collected->save();
+        // $OrderOutscan->update();
+        // $OrderStatus->update();
+        // $logs->save();
+        // $shipment_logs->update();
+        // $shipments->update();
         return response()->json(['message' => 'Order Updated Successfully', 'shipments' => $shipments, 'shipment_logs' => $shipment_logs, 'logs' => $logs, 'orderoutscan' => $OrderOutscan, 'orderstatus' => $OrderStatus], 200);
     }
 
