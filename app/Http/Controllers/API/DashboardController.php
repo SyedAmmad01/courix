@@ -48,87 +48,94 @@ class DashboardController extends Controller
 
     public function order_proceed(Request $request, $id)
     {
-
-        // dd($request->all());
-        $currentDate = Carbon::today();
-        $formattedDate = $currentDate->format('Y-m-d');
-        $user = Auth::guard('drivers')->user();
-        $shipments = Shipment::find($id);
-        // Payment Method 1 Means Cash And 2 Means Card
-        if ($request->payment_method == 1) {
-            $shipments->status = $request->input('status');
-            $shipments->payment_method = $request->input('payment_method');
+        $order = Shipment::where('id', $id)->first();
+        if ($order->status == 5) {
+            return response()->json(['message' => 'Order Already Delivered'], 200);
         } else {
-            $shipments->status = $request->input('status');
-            $shipments->payment_method = $request->input('payment_method');
-            $shipments->transition_id = $request->input('transition_id');
+            // dd($request->all());
+            $currentDate = Carbon::today();
+            $formattedDate = $currentDate->format('Y-m-d');
+            $user = Auth::guard('drivers')->user();
+            $shipments = Shipment::find($id);
+            // Payment Method 1 Means Cash And 2 Means Card
+            if ($request->payment_method == 1) {
+                $shipments->status = $request->input('status');
+                $shipments->payment_method = $request->input('payment_method');
+                $shipments->update();
+            } else {
+                $shipments->status = $request->input('status');
+                $shipments->payment_method = $request->input('payment_method');
+                $shipments->transition_id = $request->input('transition_id');
+                $shipments->update();
+            }
+
+            $shipment_logs = ShipmentLogs::find($id);
+            if ($request->payment_method == 1) {
+                $shipment_logs->status = $request->input('status');
+                $shipment_logs->payment_method = $request->input('payment_method');
+                $shipment_logs->update();
+            } else {
+                $shipment_logs->status = $request->input('status');
+                $shipment_logs->payment_method = $request->input('payment_method');
+                $shipment_logs->transition_id = $request->input('transition_id');
+                $shipment_logs->update();
+            }
+
+            $logs = new logs;
+            $logs->shipment_id = $id;
+            $logs->status_type = 1;
+            $logs->status = $request->input('status');
+            $logs->driver_id = $user->id;
+            $logs->comments = $request->comments;
+            $logs->save();
+
+
+            $OrderOutscan = OrderOutscan::where('shipment_id',  $id)->first();
+            $OrderOutscan->shipment_id = $id;
+            $OrderOutscan->order_date = $formattedDate;
+            $OrderOutscan->driver_id = $user->id;
+            $OrderOutscan->update();
+
+
+
+            // Create the Order Status second entry
+            $OrderStatus = OrderStatus::where('shipment_id',  $id)->first();
+            $OrderStatus->shipment_id = $id;
+            $OrderStatus->status = $request->input('status');  // Change the status value
+            $OrderStatus->update();
+
+
+            if (!$request->hasFile('myfile')) {
+                $shipmentfile = null;
+                // You can add additional handling here if needed
+                // (e.g., return a response, log a message, etc.)
+            } else {
+                $file = $request->file('myfile');
+                $fileName_img = $file->getClientOriginalName();
+                $destinationPath = public_path() . '/shippment_files_images';
+                $file->move($destinationPath, $fileName_img);
+
+                $shipmentfile = new ShipmentFile;
+                $shipmentfile->shipment_id = $id;
+                $shipmentfile->file_name = "File";
+                $shipmentfile->selected_file = $fileName_img;
+                $shipmentfile->file_type = "POD";
+
+                $shipmentfile->save();
+            }
+
+            if ($request->status == 5) {
+                $shipments = Shipment::where('id', $id)->first();
+                $cash_collected = new CashCollected;
+                $cash_collected->shipment_id = $id;
+                $cash_collected->cash_collected = $shipments->cod;
+                $cash_collected->driver_id = $user->id;
+                $cash_collected->save();
+            }
+            return response()->json(['message' => 'Order Delivered Successfully', 'shipments' => $shipments, 'shipment_logs' => $shipment_logs, 'logs' => $logs, 'orderoutscan' => $OrderOutscan, 'orderstatus' => $OrderStatus, 'cash_collected' => $cash_collected], 200);
         }
-
-        $shipment_logs = ShipmentLogs::find($id);
-        if ($request->payment_method == 1) {
-            $shipment_logs->status = $request->input('status');
-            $shipment_logs->payment_method = $request->input('payment_method');
-        } else {
-            $shipment_logs->status = $request->input('status');
-            $shipment_logs->payment_method = $request->input('payment_method');
-            $shipment_logs->transition_id = $request->input('transition_id');
-        }
-
-        $logs = new logs;
-        $logs->shipment_id = $id;
-        $logs->status_type = 1;
-        $logs->status = $request->input('status');
-        $logs->driver_id = $user->id;
-        $logs->comments = $request->comments;
-
-        $OrderOutscan = OrderOutscan::where('shipment_id',  $id)->first();
-        $OrderOutscan->shipment_id = $id;
-        $OrderOutscan->order_date = $formattedDate;
-        $OrderOutscan->driver_id = $user->id;
-
-
-        // Create the Order Status second entry
-        $OrderStatus = OrderStatus::where('shipment_id',  $id)->first();
-        $OrderStatus->shipment_id = $id;
-        $OrderStatus->status = $request->input('status');  // Change the status value
-
-
-        if (!$request->hasFile('myfile')) {
-            $shipmentfile = null;
-            // You can add additional handling here if needed
-            // (e.g., return a response, log a message, etc.)
-        } else {
-            $file = $request->file('myfile');
-            $fileName_img = $file->getClientOriginalName();
-            $destinationPath = public_path() . '/shippment_files_images';
-            $file->move($destinationPath, $fileName_img);
-
-            $shipmentfile = new ShipmentFile;
-            $shipmentfile->shipment_id = $id;
-            $shipmentfile->file_name = "File";
-            $shipmentfile->selected_file = $fileName_img;
-            $shipmentfile->file_type = "POD";
-
-            // $shipmentfile->save();
-        }
-
-        if($request->status == 5)
-        {
-            $shipments = Shipment::where('id' , $id)->first();
-            $cash_collected = new CashCollected;
-            $cash_collected->shipment_id = $id;
-            $cash_collected->cash_collected = $shipments->cod;
-            $cash_collected->driver_id = $user->id;
-        }
-
-        // $cash_collected->save();
-        // $OrderOutscan->update();
-        // $OrderStatus->update();
-        // $logs->save();
-        // $shipment_logs->update();
-        // $shipments->update();
-        return response()->json(['message' => 'Order Updated Successfully', 'shipments' => $shipments, 'shipment_logs' => $shipment_logs, 'logs' => $logs, 'orderoutscan' => $OrderOutscan, 'orderstatus' => $OrderStatus], 200);
     }
+
 
     public function deliverdOrders()
     {
@@ -196,29 +203,61 @@ class DashboardController extends Controller
     // }
 
     public function attempt_order(Request $request)
+    {
+        $currentDate = Carbon::today();
+        $user = Auth::guard('drivers')->user();
+
+        $attempt_order = OrderOutscan::join('shipments', 'order_outscans.shipment_id', '=', 'shipments.id')
+            ->select('shipments.*', 'order_outscans.id As order_id', 'order_outscans.shipment_id As order_shipment_id', 'order_outscans.auth_id As order_auth_id', 'order_outscans.order_date As order_order_date', 'order_outscans.driver_id As order_driver_id', 'order_outscans.deleted_at As order_deleted_at', 'order_outscans.created_at As order_created_at', 'order_outscans.updated_at As order_updated_at')
+            ->where('shipments.driver_id', $user->id)
+            ->where('shipments.status', '!=', 5)
+            ->whereDate('order_outscans.created_at', $currentDate)
+            ->distinct()
+            ->get();
+
+        $attempt_order_count = $attempt_order->count();
+
+        $data = [
+            'attempt_order' => $attempt_order,
+            'attempt_order_count' => $attempt_order_count,
+        ];
+
+        return response()->json($data, 200);
+    }
+
+    // public function cash_collected(Request $request)
+    // {
+    //     $currentDate = Carbon::today();
+    //     $user = Auth::guard('drivers')->user();
+    //     $cash = CashCollected::join('shipments', 'cash_collecteds.shipment_id', '=', 'shipments.id')
+    //     ->select('cash_collecteds.*' , 'shipments.driver_id' , 'shipments.status')
+    //         ->where('shipments.driver_id', $user->id)
+    //         ->where('shipments.status', '=', 5)
+    //         ->whereDate('cash_collecteds.created_at', $currentDate)
+    //         ->first();
+
+    //     $cash->cash_collected[0];
+
+    //     dd($cash);
+    // }
+
+    public function cash_collected(Request $request)
 {
-    $currentDate = Carbon::today();
+    $currentDate = now();
     $user = Auth::guard('drivers')->user();
 
-    $attempt_order = OrderOutscan::join('shipments', 'order_outscans.shipment_id', '=', 'shipments.id')
-        ->select('shipments.*' , 'order_outscans.id As order_id', 'order_outscans.shipment_id As order_shipment_id', 'order_outscans.auth_id As order_auth_id', 'order_outscans.order_date As order_order_date', 'order_outscans.driver_id As order_driver_id', 'order_outscans.deleted_at As order_deleted_at', 'order_outscans.created_at As order_created_at', 'order_outscans.updated_at As order_updated_at')
+    // Sum the cash collected amounts
+    $totalCashCollected = CashCollected::join('shipments', 'cash_collecteds.shipment_id', '=', 'shipments.id')
         ->where('shipments.driver_id', $user->id)
-        ->where('shipments.status', '!=', 5)
-        ->whereDate('order_outscans.created_at', $currentDate)
-        ->distinct()
-        ->get();
+        ->where('shipments.status', '=', 5)
+        ->whereDate('cash_collecteds.created_at', $currentDate)
+        ->sum('cash_collected');
 
-    $attempt_order_count = $attempt_order->count();
+    // Debugging or return the total amount as needed
+    // dd($totalCashCollected);
 
-    $data = [
-        'attempt_order' => $attempt_order,
-        'attempt_order_count' => $attempt_order_count,
-    ];
-
-    return response()->json($data, 200);
+    return response()->json($totalCashCollected, 200);
 }
-
-
 
 
 }
