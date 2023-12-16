@@ -1266,7 +1266,8 @@ class ShipmentController extends Controller
     {
         $get_data = logs::leftJoin('admins', 'logs.auth_id', '=', 'admins.id')
             ->leftJoin('status', 'logs.status', '=', 'status.id')
-            ->select('logs.*', 'admins.name', 'status.name AS status_name')
+            ->leftJoin('drivers', 'logs.driver_id', '=', 'drivers.id')
+            ->select('logs.*', 'admins.name', 'status.name AS status_name' , 'drivers.app_username AS driver_name')
             ->where('shipment_id', $request->id)
             ->where(function ($query) {
                 $query->where('status_type', 1)
