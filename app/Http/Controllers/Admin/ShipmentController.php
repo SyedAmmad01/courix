@@ -22,6 +22,7 @@ use App\Models\OrderStatus;
 use App\Models\OrderInscan;
 use App\Models\OrderOutscan;
 use App\Models\ShipmentLogs;
+use App\Models\DeliveryJobs;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -1006,6 +1007,13 @@ class ShipmentController extends Controller
                     $OrderStatus->status = 7;  // Change the status value
                     $OrderStatus->auth_id = Auth::user()->id;
                     $OrderStatus->save();
+
+                    // Create the Delivery Jobs entry
+                    $DeliveryJobs = new DeliveryJobs;
+                    $DeliveryJobs->shipment_id = $shipment->id;
+                    $DeliveryJobs->status_type = 1;
+                    $DeliveryJobs->auth_id = Auth::user()->id;
+                    $DeliveryJobs->save();
                 }
             }
         }
@@ -1223,10 +1231,12 @@ class ShipmentController extends Controller
 
         $get_data['logs'] = logs::leftJoin('admins', 'logs.auth_id', '=', 'admins.id')
             ->leftJoin('status', 'logs.status', '=', 'status.id')
-            ->select('logs.*', 'admins.name', 'status.name AS status_name')
+            ->leftJoin('drivers', 'logs.driver_id', '=', 'drivers.id')
+            ->select('logs.*', 'admins.name', 'status.name AS status_name' , 'drivers.app_username AS driver_name')
             ->where('shipment_id', $get_data->id)
             ->whereIn('status_type', [1, 2]) // Use whereIn to match multiple values
             ->get();
+
 
         $get_data['remarks'] = logs::leftJoin('admins', 'logs.auth_id', '=', 'admins.id')
             ->leftJoin('status', 'logs.status', '=', 'status.id')

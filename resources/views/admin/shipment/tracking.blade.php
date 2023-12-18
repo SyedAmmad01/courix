@@ -619,10 +619,19 @@
 
                 let statusText = "";
 
+                // if (log.status == null) {
+                //     statusText = `Comment: ${log.comments} by ${log.name}`; // Include comment and name
+                // } else if (log.status !== null) {
+                //     statusText = `Status changed to: ${log.status_name} by ${log.name}`; // Include status and name
+                // }
+
                 if (log.status == null) {
-                    statusText = `Comment: ${log.comments} by ${log.name}`; // Include comment and name
+                    statusText = log.name ?
+                        `Comment: ${log.comments} by ${log.name}` :
+                        `Comment: ${log.comments} by ${log.driver_name || 'Unknown Driver'}`;
                 } else if (log.status !== null) {
-                    statusText = `Status changed to: ${log.status_name} by ${log.name}`; // Include status and name
+                    statusText =
+                        `Status changed to: ${log.status_name} by ${log.name || log.driver_name || 'Unknown Driver'}`;
                 }
 
                 return `
@@ -688,10 +697,19 @@
 
                         let statusText = "";
 
+                        // if (log.status == null) {
+                        //     statusText = `Comment: ${log.comments} by ${log.name}`;
+                        // } else if (log.status !== null) {
+                        //     statusText = `Status changed to: ${log.status_name} by ${log.name}`;
+                        // }
+
                         if (log.status == null) {
-                            statusText = `Comment: ${log.comments} by ${log.name}`;
+                            statusText = log.name ?
+                                `Comment: ${log.comments} by ${log.name}` :
+                                `Comment: ${log.comments} by ${log.driver_name || 'Unknown Driver'}`;
                         } else if (log.status !== null) {
-                            statusText = `Status changed to: ${log.status_name} by ${log.name}`;
+                            statusText =
+                                `Status changed to: ${log.status_name} by ${log.name || log.driver_name || 'Unknown Driver'}`;
                         }
 
                         return `

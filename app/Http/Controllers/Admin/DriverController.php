@@ -58,7 +58,7 @@ class DriverController extends Controller
 
     public function save(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $drivers = new Driver;
         $drivers->driver_code = $request->input('driver_code');
         $drivers->employee_code = $request->input('employee_code');

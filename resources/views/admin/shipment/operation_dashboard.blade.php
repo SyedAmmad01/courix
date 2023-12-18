@@ -113,9 +113,12 @@
                                             <div class="menu-item px-3">
                                                 <a href="javascript:void(0);" class="menu-link px-3"
                                                     onclick="exportToExcel(selectedIDs)">Export To Excel</a>
-                                                <a href="javascript:void(0);" class="menu-link px-3" onclick="detailsexportToExcel(selectedIDs)">Export To Excel with Details</a>
+                                                <a href="javascript:void(0);" class="menu-link px-3"
+                                                    onclick="detailsexportToExcel(selectedIDs)">Export To Excel with
+                                                    Details</a>
                                                 <a href="javascript:void(0);" data-toggle="modal" class="menu-link px-3"
-                                                    data-target="#print_airways_bills" id="print_airways_bills_link">AWBZ Label</a>
+                                                    data-target="#print_airways_bills" id="print_airways_bills_link">AWBZ
+                                                    Label</a>
                                                 <a href="javascript:void(0);" data-toggle="modal" class="menu-link px-3"
                                                     data-target="#batch_update" id="batch_update_link">Batch Update</a>
                                                 <a href="javascript:void(0);" data-toggle="modal" class="menu-link px-3"
@@ -140,8 +143,8 @@
                                             </div>
                                         </div>
                                         &nbsp;
-                                        <a href="{{ route('admin.shipment.get_manifest') }}"
-                                            class="btn btn-primary btn-sm" title="Print" type="button" id="printButton">Download Manifest</a>
+                                        <a href="{{ route('admin.shipment.get_manifest') }}" class="btn btn-primary btn-sm"
+                                            title="Print" type="button" id="printButton">Download Manifest</a>
                                         {{-- <button type="button" class="btn btn-primary btn-sm">Download Manifest</button> --}}
                                     </div>
                                 </div>
@@ -408,7 +411,8 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" data-toggle="tab" href="#tabs-2"
                                                     role="tab"><strong>TO
-                                                        BE PICKED UP</strong><span class="badge text-black">{{ $to_be_picked }}</span></a>
+                                                        BE PICKED UP</strong><span
+                                                        class="badge text-black">{{ $to_be_picked }}</span></a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" data-toggle="tab" href="#tabs-3"
@@ -418,7 +422,8 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" data-toggle="tab" href="#tabs-4"
                                                     role="tab"><strong>TO
-                                                        BE DELIVERED</strong><span class="badge text-black">{{ $to_be_delivered }}</span></a>
+                                                        BE DELIVERED</strong><span
+                                                        class="badge text-black">{{ $to_be_delivered }}</span></a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" data-toggle="tab" href="#tabs-5"
@@ -428,12 +433,14 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" data-toggle="tab" href="#tabs-6"
                                                     role="tab"><strong>LOST
-                                                        & DAMAGES</strong><span class="badge text-black">{{ $lost_damages }}</span></a>
+                                                        & DAMAGES</strong><span
+                                                        class="badge text-black">{{ $lost_damages }}</span></a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" data-toggle="tab" href="#tabs-7"
                                                     role="tab"><strong>TO
-                                                        BE RETURNED</strong><span class="badge text-black">{{ $returned }}</span></a>
+                                                        BE RETURNED</strong><span
+                                                        class="badge text-black">{{ $returned }}</span></a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" data-toggle="tab" href="#tabs-8"
@@ -522,14 +529,15 @@
                                                                                         <td></td>
                                                                                         <td>{{ $ship->account_name }}</td>
                                                                                         <td>
-                                                                                            @if($ship->service_charges == null)
+                                                                                            @if ($ship->service_charges == null)
                                                                                             @else
-                                                                                            {{ $ship->service_charges }}.00
+                                                                                                {{ $ship->service_charges }}.00
                                                                                             @endif
                                                                                         </td>
                                                                                         <td></td>
                                                                                         <td>{{ $ship->order_date }}</td>
-                                                                                        <td>{{ $ship->delivery_attempt }}</td>
+                                                                                        <td>{{ $ship->delivery_attempt }}
+                                                                                        </td>
                                                                                         <td>{{ $ship->status_name }}</td>
                                                                                         <td></td>
                                                                                         <td></td>
@@ -609,7 +617,8 @@
                                                                                             </a>
                                                                                         </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $picked_up->shipper_name }}</td>
+                                                                                        <td>{{ $picked_up->shipper_name }}
+                                                                                        </td>
                                                                                         <td>
                                                                                             @if ($picked_up->driver_id == null)
                                                                                                 <span></span>
@@ -619,23 +628,29 @@
                                                                                                 <span>{{ $picked_up->employee_mobile }}</span>
                                                                                             @endif
                                                                                         </td>
-                                                                                        <td>{{ $picked_up->city_name }}</td>
+                                                                                        <td>{{ $picked_up->city_name }}
+                                                                                        </td>
                                                                                         <td>{{ $picked_up->reciver_name }}
                                                                                             <span>{{ $picked_up->mobile_1 }}</span>
                                                                                         </td>
-                                                                                        <td>{{ $picked_up->instruction }}</td>
+                                                                                        <td>{{ $picked_up->instruction }}
+                                                                                        </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $picked_up->account_name }}</td>
+                                                                                        <td>{{ $picked_up->account_name }}
+                                                                                        </td>
                                                                                         <td>
-                                                                                            @if($picked_up->service_charges == null)
+                                                                                            @if ($picked_up->service_charges == null)
                                                                                             @else
-                                                                                            {{ $picked_up->service_charges }}.00
+                                                                                                {{ $picked_up->service_charges }}.00
                                                                                             @endif
                                                                                         </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $picked_up->order_date }}</td>
-                                                                                        <td>{{ $picked_up->delivery_attempt }}</td>
-                                                                                        <td>{{ $picked_up->status_name }}</td>
+                                                                                        <td>{{ $picked_up->order_date }}
+                                                                                        </td>
+                                                                                        <td>{{ $picked_up->delivery_attempt }}
+                                                                                        </td>
+                                                                                        <td>{{ $picked_up->status_name }}
+                                                                                        </td>
                                                                                         <td></td>
                                                                                         <td></td>
                                                                                         <td></td>
@@ -713,7 +728,8 @@
                                                                                             </a>
                                                                                         </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $shipments_picked->shipper_name }}</td>
+                                                                                        <td>{{ $shipments_picked->shipper_name }}
+                                                                                        </td>
                                                                                         <td>
                                                                                             @if ($shipments_picked->driver_id == null)
                                                                                                 <span></span>
@@ -723,23 +739,29 @@
                                                                                                 <span>{{ $shipments_picked->employee_mobile }}</span>
                                                                                             @endif
                                                                                         </td>
-                                                                                        <td>{{ $shipments_picked->city_name }}</td>
+                                                                                        <td>{{ $shipments_picked->city_name }}
+                                                                                        </td>
                                                                                         <td>{{ $shipments_picked->reciver_name }}
                                                                                             <span>{{ $shipments_picked->mobile_1 }}</span>
                                                                                         </td>
-                                                                                        <td>{{ $shipments_picked->instruction }}</td>
+                                                                                        <td>{{ $shipments_picked->instruction }}
+                                                                                        </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $shipments_picked->account_name }}</td>
+                                                                                        <td>{{ $shipments_picked->account_name }}
+                                                                                        </td>
                                                                                         <td>
-                                                                                            @if($shipments_picked->service_charges == null)
+                                                                                            @if ($shipments_picked->service_charges == null)
                                                                                             @else
-                                                                                            {{ $shipments_picked->service_charges }}.00
+                                                                                                {{ $shipments_picked->service_charges }}.00
                                                                                             @endif
                                                                                         </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $shipments_picked->order_date }}</td>
-                                                                                        <td>{{ $shipments_picked->delivery_attempt }}</td>
-                                                                                        <td>{{ $shipments_picked->status_name }}</td>
+                                                                                        <td>{{ $shipments_picked->order_date }}
+                                                                                        </td>
+                                                                                        <td>{{ $shipments_picked->delivery_attempt }}
+                                                                                        </td>
+                                                                                        <td>{{ $shipments_picked->status_name }}
+                                                                                        </td>
                                                                                         <td></td>
                                                                                         <td></td>
                                                                                         <td></td>
@@ -818,7 +840,8 @@
                                                                                             </a>
                                                                                         </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $shipments_delivered->shipper_name }}</td>
+                                                                                        <td>{{ $shipments_delivered->shipper_name }}
+                                                                                        </td>
                                                                                         <td>
                                                                                             @if ($shipments_delivered->driver_id == null)
                                                                                                 <span></span>
@@ -828,23 +851,29 @@
                                                                                                 <span>{{ $shipments_delivered->employee_mobile }}</span>
                                                                                             @endif
                                                                                         </td>
-                                                                                        <td>{{ $shipments_delivered->city_name }}</td>
+                                                                                        <td>{{ $shipments_delivered->city_name }}
+                                                                                        </td>
                                                                                         <td>{{ $shipments_delivered->reciver_name }}
                                                                                             <span>{{ $shipments_delivered->mobile_1 }}</span>
                                                                                         </td>
-                                                                                        <td>{{ $shipments_delivered->instruction }}</td>
+                                                                                        <td>{{ $shipments_delivered->instruction }}
+                                                                                        </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $shipments_delivered->account_name }}</td>
+                                                                                        <td>{{ $shipments_delivered->account_name }}
+                                                                                        </td>
                                                                                         <td>
-                                                                                            @if($shipments_delivered->service_charges == null)
+                                                                                            @if ($shipments_delivered->service_charges == null)
                                                                                             @else
-                                                                                            {{ $shipments_delivered->service_charges }}.00
+                                                                                                {{ $shipments_delivered->service_charges }}.00
                                                                                             @endif
                                                                                         </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $shipments_delivered->order_date }}</td>
-                                                                                        <td>{{ $shipments_delivered->delivery_attempt }}</td>
-                                                                                        <td>{{ $shipments_delivered->status_name }}</td>
+                                                                                        <td>{{ $shipments_delivered->order_date }}
+                                                                                        </td>
+                                                                                        <td>{{ $shipments_delivered->delivery_attempt }}
+                                                                                        </td>
+                                                                                        <td>{{ $shipments_delivered->status_name }}
+                                                                                        </td>
                                                                                         <td></td>
                                                                                         <td></td>
                                                                                         <td></td>
@@ -880,7 +909,8 @@
                                                                                 <th scope="col">
                                                                                     <input type="checkbox" id="selectAll">
                                                                                 </th>
-                                                                                <th scope="col"> Tracking No Reference</th>
+                                                                                <th scope="col"> Tracking No Reference
+                                                                                </th>
                                                                                 <th scope="col"> Courier </th>
                                                                                 <th scope="col"> Shipper </th>
                                                                                 <th scope="col"> Driver </th>
@@ -900,7 +930,7 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                           {{-- @dd($ship_delivered); --}}
+                                                                            {{-- @dd($ship_delivered); --}}
                                                                             @if ($ship_delivered->isNotEmpty())
                                                                                 @foreach ($ship_delivered as $del)
                                                                                     <tr>
@@ -941,14 +971,15 @@
                                                                                         <td></td>
                                                                                         <td>{{ $del->account_name }}</td>
                                                                                         <td>
-                                                                                            @if($del->service_charges == null)
+                                                                                            @if ($del->service_charges == null)
                                                                                             @else
-                                                                                            {{ $del->service_charges }}.00
+                                                                                                {{ $del->service_charges }}.00
                                                                                             @endif
                                                                                         </td>
                                                                                         <td></td>
                                                                                         <td>{{ $del->order_date }}</td>
-                                                                                        <td>{{ $del->delivery_attempt }}</td>
+                                                                                        <td>{{ $del->delivery_attempt }}
+                                                                                        </td>
                                                                                         <td>{{ $del->status_name }}</td>
                                                                                         <td></td>
                                                                                         <td></td>
@@ -1028,7 +1059,8 @@
                                                                                             </a>
                                                                                         </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $shipments_lost->shipper_name }}</td>
+                                                                                        <td>{{ $shipments_lost->shipper_name }}
+                                                                                        </td>
                                                                                         <td>
                                                                                             @if ($shipments_lost->driver_id == null)
                                                                                                 <span></span>
@@ -1038,23 +1070,29 @@
                                                                                                 <span>{{ $shipments_lost->employee_mobile }}</span>
                                                                                             @endif
                                                                                         </td>
-                                                                                        <td>{{ $shipments_lost->city_name }}</td>
+                                                                                        <td>{{ $shipments_lost->city_name }}
+                                                                                        </td>
                                                                                         <td>{{ $shipments_lost->reciver_name }}
                                                                                             <span>{{ $shipments_lost->mobile_1 }}</span>
                                                                                         </td>
-                                                                                        <td>{{ $shipments_lost->instruction }}</td>
+                                                                                        <td>{{ $shipments_lost->instruction }}
+                                                                                        </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $shipments_lost->account_name }}</td>
+                                                                                        <td>{{ $shipments_lost->account_name }}
+                                                                                        </td>
                                                                                         <td>
-                                                                                            @if($shipments_lost->service_charges == null)
+                                                                                            @if ($shipments_lost->service_charges == null)
                                                                                             @else
-                                                                                            {{ $shipments_lost->service_charges }}.00
+                                                                                                {{ $shipments_lost->service_charges }}.00
                                                                                             @endif
                                                                                         </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $shipments_lost->order_date }}</td>
-                                                                                        <td>{{ $shipments_lost->delivery_attempt }}</td>
-                                                                                        <td>{{ $shipments_lost->status_name }}</td>
+                                                                                        <td>{{ $shipments_lost->order_date }}
+                                                                                        </td>
+                                                                                        <td>{{ $shipments_lost->delivery_attempt }}
+                                                                                        </td>
+                                                                                        <td>{{ $shipments_lost->status_name }}
+                                                                                        </td>
                                                                                         <td></td>
                                                                                         <td></td>
                                                                                         <td></td>
@@ -1133,7 +1171,8 @@
                                                                                             </a>
                                                                                         </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $shipments_returned->shipper_name }}</td>
+                                                                                        <td>{{ $shipments_returned->shipper_name }}
+                                                                                        </td>
                                                                                         <td>
                                                                                             @if ($shipments_returned->driver_id == null)
                                                                                                 <span></span>
@@ -1143,23 +1182,29 @@
                                                                                                 <span>{{ $shipments_returned->employee_mobile }}</span>
                                                                                             @endif
                                                                                         </td>
-                                                                                        <td>{{ $shipments_returned->city_name }}</td>
+                                                                                        <td>{{ $shipments_returned->city_name }}
+                                                                                        </td>
                                                                                         <td>{{ $shipments_returned->reciver_name }}
                                                                                             <span>{{ $shipments_returned->mobile_1 }}</span>
                                                                                         </td>
-                                                                                        <td>{{ $shipments_returned->instruction }}</td>
+                                                                                        <td>{{ $shipments_returned->instruction }}
+                                                                                        </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $shipments_returned->account_name }}</td>
+                                                                                        <td>{{ $shipments_returned->account_name }}
+                                                                                        </td>
                                                                                         <td>
-                                                                                            @if($shipments_returned->service_charges == null)
+                                                                                            @if ($shipments_returned->service_charges == null)
                                                                                             @else
-                                                                                            {{ $shipments_returned->service_charges }}.00
+                                                                                                {{ $shipments_returned->service_charges }}.00
                                                                                             @endif
                                                                                         </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $shipments_returned->order_date }}</td>
-                                                                                        <td>{{ $shipments_returned->delivery_attempt }}</td>
-                                                                                        <td>{{ $shipments_returned->status_name }}</td>
+                                                                                        <td>{{ $shipments_returned->order_date }}
+                                                                                        </td>
+                                                                                        <td>{{ $shipments_returned->delivery_attempt }}
+                                                                                        </td>
+                                                                                        <td>{{ $shipments_returned->status_name }}
+                                                                                        </td>
                                                                                         <td></td>
                                                                                         <td></td>
                                                                                         <td></td>
@@ -1238,7 +1283,8 @@
                                                                                             </a>
                                                                                         </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $cancelled->shipper_name }}</td>
+                                                                                        <td>{{ $cancelled->shipper_name }}
+                                                                                        </td>
                                                                                         <td>
                                                                                             @if ($cancelled->driver_id == null)
                                                                                                 <span></span>
@@ -1248,23 +1294,29 @@
                                                                                                 <span>{{ $cancelled->employee_mobile }}</span>
                                                                                             @endif
                                                                                         </td>
-                                                                                        <td>{{ $cancelled->city_name }}</td>
+                                                                                        <td>{{ $cancelled->city_name }}
+                                                                                        </td>
                                                                                         <td>{{ $cancelled->reciver_name }}
                                                                                             <span>{{ $cancelled->mobile_1 }}</span>
                                                                                         </td>
-                                                                                        <td>{{ $cancelled->instruction }}</td>
+                                                                                        <td>{{ $cancelled->instruction }}
+                                                                                        </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $cancelled->account_name }}</td>
+                                                                                        <td>{{ $cancelled->account_name }}
+                                                                                        </td>
                                                                                         <td>
-                                                                                            @if($cancelled->service_charges == null)
+                                                                                            @if ($cancelled->service_charges == null)
                                                                                             @else
-                                                                                            {{ $cancelled->service_charges }}.00
+                                                                                                {{ $cancelled->service_charges }}.00
                                                                                             @endif
                                                                                         </td>
                                                                                         <td></td>
-                                                                                        <td>{{ $cancelled->order_date }}</td>
-                                                                                        <td>{{ $cancelled->delivery_attempt }}</td>
-                                                                                        <td>{{ $cancelled->status_name }}</td>
+                                                                                        <td>{{ $cancelled->order_date }}
+                                                                                        </td>
+                                                                                        <td>{{ $cancelled->delivery_attempt }}
+                                                                                        </td>
+                                                                                        <td>{{ $cancelled->status_name }}
+                                                                                        </td>
                                                                                         <td></td>
                                                                                         <td></td>
                                                                                         <td></td>
@@ -1361,14 +1413,15 @@
                                                                                         <td></td>
                                                                                         <td>{{ $rtos->account_name }}</td>
                                                                                         <td>
-                                                                                            @if($rtos->service_charges == null)
+                                                                                            @if ($rtos->service_charges == null)
                                                                                             @else
-                                                                                            {{ $rtos->service_charges }}.00
+                                                                                                {{ $rtos->service_charges }}.00
                                                                                             @endif
                                                                                         </td>
                                                                                         <td></td>
                                                                                         <td>{{ $rtos->order_date }}</td>
-                                                                                        <td>{{ $rtos->delivery_attempt }}</td>
+                                                                                        <td>{{ $rtos->delivery_attempt }}
+                                                                                        </td>
                                                                                         <td>{{ $rtos->status_name }}</td>
                                                                                         <td></td>
                                                                                         <td></td>
@@ -2166,13 +2219,24 @@
                                 const formattedDate = updatedDate.toLocaleDateString();
                                 const formattedTime = updatedDate.toLocaleTimeString();
 
+                                // console.log(log);
                                 let statusText = "";
 
+                                // if (log.status == null) {
+                                //     statusText = `Comment: ${log.comments} by ${log.name}`;
+                                // } else if (log.status !== null) {
+                                //     statusText = `Status changed to: ${log.status_name} by ${log.name}`;
+                                // }
+
                                 if (log.status == null) {
-                                    statusText = `Comment: ${log.comments} by ${log.name}`;
+                                    statusText = log.name ?
+                                        `Comment: ${log.comments} by ${log.name}` :
+                                        `Comment: ${log.comments} by ${log.driver_name || 'Unknown Driver'}`;
                                 } else if (log.status !== null) {
-                                    statusText = `Status changed to: ${log.status_name} by ${log.name}`;
+                                    statusText =
+                                        `Status changed to: ${log.status_name} by ${log.name || log.driver_name || 'Unknown Driver'}`;
                                 }
+
 
                                 return `
                         <div class="col-12 mb-5">
@@ -2267,62 +2331,62 @@
                 }
 
 
-    function exportToExcel(selectedIDs) {
-    // Send an AJAX request to get data
-    $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': "{{ csrf_token() }}",
-        },
-        url: "{{ route('admin.shipment.exportToExcel') }}",
-        type: "POST",
-        data: {
-            id: selectedIDs,
-        },
-        xhrFields: {
-            responseType: 'blob' // This is important for handling binary data
-        },
-        success: function (response, status, xhr) {
-            const blob = response;
-            const fileName = 'ExportExcel.xlsx';
+                function exportToExcel(selectedIDs) {
+                    // Send an AJAX request to get data
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                        },
+                        url: "{{ route('admin.shipment.exportToExcel') }}",
+                        type: "POST",
+                        data: {
+                            id: selectedIDs,
+                        },
+                        xhrFields: {
+                            responseType: 'blob' // This is important for handling binary data
+                        },
+                        success: function(response, status, xhr) {
+                            const blob = response;
+                            const fileName = 'ExportExcel.xlsx';
 
-            // Trigger the download using FileSaver.js
-            saveAs(blob, fileName);
-        },
-        error: function (xhr, textStatus, error) {
-            // Handle AJAX error
-            console.error("Export failed:", error);
-            // Add user-friendly error handling here
-        }
-    });
-}
+                            // Trigger the download using FileSaver.js
+                            saveAs(blob, fileName);
+                        },
+                        error: function(xhr, textStatus, error) {
+                            // Handle AJAX error
+                            console.error("Export failed:", error);
+                            // Add user-friendly error handling here
+                        }
+                    });
+                }
 
-function detailsexportToExcel(selectedIDs) {
-    // Send an AJAX request to get data
-    $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': "{{ csrf_token() }}",
-        },
-        url: "{{ route('admin.shipment.detailsexportToExcel') }}",
-        type: "POST",
-        data: {
-            id: selectedIDs,
-        },
-        xhrFields: {
-            responseType: 'blob' // This is important for handling binary data
-        },
-        success: function (response, status, xhr) {
-            const blob = response;
-            const fileName = 'ExportExcel.xlsx';
+                function detailsexportToExcel(selectedIDs) {
+                    // Send an AJAX request to get data
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                        },
+                        url: "{{ route('admin.shipment.detailsexportToExcel') }}",
+                        type: "POST",
+                        data: {
+                            id: selectedIDs,
+                        },
+                        xhrFields: {
+                            responseType: 'blob' // This is important for handling binary data
+                        },
+                        success: function(response, status, xhr) {
+                            const blob = response;
+                            const fileName = 'ExportExcel.xlsx';
 
-            // Trigger the download using FileSaver.js
-            saveAs(blob, fileName);
-        },
-        error: function (xhr, textStatus, error) {
-            // Handle AJAX error
-            console.error("Export failed:", error);
-            // Add user-friendly error handling here
-        }
-    });
-}
+                            // Trigger the download using FileSaver.js
+                            saveAs(blob, fileName);
+                        },
+                        error: function(xhr, textStatus, error) {
+                            // Handle AJAX error
+                            console.error("Export failed:", error);
+                            // Add user-friendly error handling here
+                        }
+                    });
+                }
             </script>
         @endsection

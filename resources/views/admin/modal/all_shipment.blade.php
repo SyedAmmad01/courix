@@ -173,7 +173,7 @@
                                             <a class="nav-link" data-toggle="tab" href="#tabs-15"
                                                 role="tab"><strong>SIGNATURE</strong></a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item d-none" id="delivery_jobs">
                                             <a class="nav-link" data-toggle="tab" href="#tabs-16"
                                                 role="tab"><strong>DELIVERY JOBS</strong></a>
                                         </li>
@@ -1087,6 +1087,10 @@
     $('.close').click(function() {
         $('#operationeditorder').modal('hide'); // Hide the modal
     });
+
+
+
+
 
 
 </script>
