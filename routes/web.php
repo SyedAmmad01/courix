@@ -196,6 +196,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/shipment/get_remarks', [App\Http\Controllers\Admin\ShipmentController::class, 'get_remarks'])->name('admin.shipment.get_remarks');
         Route::post('/shipment/get_images', [App\Http\Controllers\Admin\ShipmentController::class, 'get_images'])->name('admin.shipment.get_images');
         Route::delete('/shipment/delete/{id}', [App\Http\Controllers\Admin\ShipmentController::class, 'images_destroy'])->name('admin.shipment.images_delete');
+        Route::post('/shipment/get_delivery_jobs', [App\Http\Controllers\Admin\ShipmentController::class, 'get_delivery_jobs'])->name('admin.shipment.get_delivery_jobs');
+
 
         //
 

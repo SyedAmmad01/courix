@@ -2328,6 +2328,53 @@
                             console.error(error);
                         }
                     });
+
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                        },
+                        url: "{{ route('admin.shipment.get_delivery_jobs') }}",
+                        type: "POST",
+                        data: {
+                            id: id,
+                        },
+                        success: function(response) {
+                            // console.log(response);
+                            var html = response.map((response) => {
+                                const createdDate = new Date(response.created_at);
+                                const formattedDate = createdDate.toLocaleDateString();
+                                const formattedTime = createdDate.toLocaleTimeString();
+
+                                // console.log(log);
+                                let statusText = "";
+
+                                if (response.status == null) {
+                                    statusText = `In Hands: ${response.app_username}`;
+                                }
+                                else if (response.status !== null) {
+                                    statusText = `In Hands: ${response.app_username}`;
+                                }
+
+                                if (response == null){
+                                }else {
+                                    $('#delivery').removeClass('d-none');
+                                }
+
+                                return `
+                                    <div class="col-12 mb-5">
+                                        <div>
+                                            <strong class="text-dark">${formattedDate} ${formattedTime}</strong>
+                                            &nbsp;
+                                            ${statusText}
+                                        </div>
+                                    </div>`;
+                            }).join('');
+
+                            var logsElement = document.getElementById('delivery_jobs');
+                            logsElement.innerHTML = html;
+                        }
+                    });
+
                 }
 
 

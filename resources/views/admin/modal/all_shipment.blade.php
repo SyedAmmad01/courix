@@ -94,17 +94,23 @@
                                         <div class="col-sm-4">
                                         </div>
                                         <div class="col-sm-4">
-                                            <form action="{{route('admin.shipment.operation_print_airways')}}" method="POST" enctype="multipart/form-data" class="d-inline" id="exportForm">
+                                            <form action="{{ route('admin.shipment.operation_print_airways') }}"
+                                                method="POST" enctype="multipart/form-data" class="d-inline"
+                                                id="exportForm">
                                                 @csrf
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="dropdown">
-                                                            <input type="hidden" id="id" name="id" class="s-id">
+                                                            <input type="hidden" id="id" name="id"
+                                                                class="s-id">
                                                             <select class="form-select btn-lg"
-                                                                style="background-color:#4d4d4d; color:#fff;" name="pab_options" onchange="submitForm()">
+                                                                style="background-color:#4d4d4d; color:#fff;"
+                                                                name="pab_options" onchange="submitForm()">
                                                                 <option selected disabled>AWBZ Labels</option>
-                                                                <option value="1" class="menu-item">AWBZ Label</option>
-                                                                <option value="2"class="menu-item">AWBZ 4x6 Label</option>
+                                                                <option value="1" class="menu-item">AWBZ Label
+                                                                </option>
+                                                                <option value="2"class="menu-item">AWBZ 4x6 Label
+                                                                </option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -136,8 +142,8 @@
                                             </div>
                                         </div> --}}
                                         <div class="col-sm-4">
-                                            <a href="javascript:void(0);" id="open_edit_modal_button" data-toggle="modal"
-                                                class="btn btn-sm" type="button"
+                                            <a href="javascript:void(0);" id="open_edit_modal_button"
+                                                data-toggle="modal" class="btn btn-sm" type="button"
                                                 style="background-color: #4d4d4d; color:#fff;">EDIT ORDER</a>
                                         </div>
                                     </div>
@@ -173,7 +179,7 @@
                                             <a class="nav-link" data-toggle="tab" href="#tabs-15"
                                                 role="tab"><strong>SIGNATURE</strong></a>
                                         </li>
-                                        <li class="nav-item d-none" id="delivery_jobs">
+                                        <li class="nav-item d-none" id="delivery">
                                             <a class="nav-link" data-toggle="tab" href="#tabs-16"
                                                 role="tab"><strong>DELIVERY JOBS</strong></a>
                                         </li>
@@ -186,7 +192,9 @@
                                                     <div class="col-6 mb-2">
                                                         <div class="card">
                                                             <div class="card-body text-dark">
-                                                                <input type="hidden" id="reference_number" name="reference_number" class="s-reference_number">
+                                                                <input type="hidden" id="reference_number"
+                                                                    name="reference_number"
+                                                                    class="s-reference_number">
                                                                 <div class="row">
                                                                     <div class="col-lg-4">
                                                                         <div href="javascript:void(0);"
@@ -432,7 +440,50 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-lg-12 p-0 m-l-4">
+                                                                    <div class="col-lg-12">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-4">
+                                                                                <br>
+                                                                                <div class="font-weight-bold">PUBLIC
+                                                                                    SERVICE FEE</div>
+                                                                                <br>
+                                                                                <div class="font-weight-bold">CASH ON
+                                                                                    DELIVERY </div>
+                                                                            </div>
+
+                                                                            <div class="col-lg-4">
+                                                                                <br>
+                                                                                <div
+                                                                                    class="pull-right font-weight-bold pl-5"
+                                                                                    id="PublicServiceFee">14</div>
+                                                                                <br>
+                                                                                <div
+                                                                                    class="font-weight-bold text-uppercase"
+                                                                                    id="CashOnDeliveryTotal">50</div>
+                                                                            </div>
+
+                                                                            <div class="col-lg-4">
+                                                                                <br>
+                                                                                <div
+                                                                                    class="font-weight-bold">TOTAL</div>
+                                                                                <div
+                                                                                    class="font-weight-bold text-uppercase"
+                                                                                    id="CashOnDeliveryTotal">50
+                                                                                    AED</div>
+
+                                                                                    <div
+                                                                                    class="font-weight-bold">TOTAL</div>
+                                                                                <div
+                                                                                    class="font-weight-bold text-uppercase"
+                                                                                    id="PublicServiceFeeTotal">14</div>
+
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    {{-- <div class="col-lg-12 p-0 m-l-4">
                                                                         <div
                                                                             class="email-to col-lg-8 p-t-20 pull-left">
                                                                             <span class="font-weight-bold">PUBLIC
@@ -452,11 +503,12 @@
                                                                                     id="CashOnDeliveryTotal">50
                                                                                     AED</span>
                                                                             </div>
+
                                                                         </div>
 
 
-                                                                    </div>
-                                                                    <div class="col-lg-12 p-0  m-l-4">
+                                                                    </div> --}}
+                                                                    {{-- <div class="col-lg-12 p-0  m-l-4">
                                                                         <div
                                                                             class="email-to col-lg-8 p-t-20 pull-left">
                                                                             <span class="font-weight-bold">CASH ON
@@ -474,7 +526,7 @@
                                                                                     id="PublicServiceFeeTotal">14</span>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </div> --}}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -589,27 +641,7 @@
                                                                                 <!-- end timeline -->
                                                                             </div>
                                                                             <br>
-                                                                            <form class="needs-validation"
-                                                                                id="InternalRemarksHistoryComment"
-                                                                                novalidate>
-                                                                                <div class="row">
-                                                                                    <div class="col-sm-11">
-                                                                                        <input type="hidden"
-                                                                                            id=""
-                                                                                            name="id"
-                                                                                            class="s-id">
-                                                                                        <input type="text"
-                                                                                            class="form-control"
-                                                                                            placeholder="Please write your remarks here..."
-                                                                                            id="i-remarks"
-                                                                                            name="i-remarks">
-                                                                                    </div>
-                                                                                    <div class="col-sm-1">
-                                                                                        <button type="submit"
-                                                                                            class="btn btn-success pull-right">Post</button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </form>
+
                                                                         </div>
                                                                         <!-- end tab-content -->
                                                                     </div>
@@ -718,7 +750,7 @@
                                         </div>
                                         <div class="tab-pane" id="tabs-16" role="tabpanel">
                                             <br>
-                                            <div class="container-fluid">
+                                            {{-- <div class="container-fluid">
                                                 <div class="row">
                                                     <div class="col-12 mb-2">
                                                         <div class="card">
@@ -748,6 +780,54 @@
                                                                                 </li>
                                                                             </ul>
                                                                         </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> --}}
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-12 mb-2">
+                                                        <div class="card">
+                                                            <div class="card-body text-dark">
+                                                                <div class="row">
+                                                                    <div class="col-lg-10 printableArea">
+                                                                        <!-- begin tab-content -->
+                                                                        <div class="tab-content p-0">
+                                                                            <!-- begin #profile-post tab -->
+                                                                            <div class="tab-pane fade show active"
+                                                                                id="profile-post">
+                                                                                <!-- begin timeline -->
+                                                                                <ul class="timeline"
+                                                                                    id="ulShipmentStatusTracking">
+                                                                                    <li
+                                                                                        ng-repeat="item in retailer_history">
+                                                                                        <div class="timeline-time">
+                                                                                            <span
+                                                                                                class="date"></span>
+                                                                                        </div>
+                                                                                        <div class="timeline-body">
+                                                                                            <div
+                                                                                                class="timeline-header">
+                                                                                                <span></span>
+                                                                                            </div>
+                                                                                            <div class="row"
+                                                                                                id="delivery_jobs"
+                                                                                                style="max-height: 300px; overflow-y: auto;">
+                                                                                                <!-- The remarks will be dynamically added here using JavaScript -->
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </li>
+                                                                                </ul>
+                                                                                <!-- end timeline -->
+                                                                            </div>
+                                                                            <br>
+                                                                            <br>
+                                                                            <br>
+                                                                        </div>
+                                                                        <!-- end tab-content -->
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1019,79 +1099,72 @@
     }
 
     $("#open_edit_modal_button").on("click", function() {
-            var id = $('.s-reference_number').val();
-            // alert(id);
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
-                },
-                url: "{{ route('admin.shipment.get_search') }}",
-                type: "POST",
-                data: {
-                    id: id,
-                },
-                success: function(response) {
-                    // console.log(response);
-                    $('#operationeditorder').modal('show'); // Show the modal
-                    $('.e-id').val(response.id);
-                    $('.e-reference_number').val(response.reference_number);
-                    $('.e-barcode').val(response.barcode);
-                    $('.e-status').val(response.status_name);
-                    $('.e-status_id').val(response.status);
-                    $('.e-order_date').val(response.order_date);
-                    $('.e-shipper_code').val(response.shipper_code);
-                    $('.e-shippers_contact').val(response.shipper_contact);
-                    $('.e-reciver_name').val(response.reciver_name);
-                    $('.e-shipper_country').val(response.shipper_country);
-                    $('.e-shipper_city').val(response.shipper_city);
-                    $('.e-shipper_area').val(response.shipper_area);
-                    $('.e-shipper_address').val(response.shipper_address);
-                    $('.e-reciver_country').val(response.country);
-                    $('.e-reciver_city').val(response.city);
-                    $('.e-reciver_area').val(response.area);
-                    $('.e-reciver_address').val(response.street_address);
-                    $('.e-mobile_1').val(response.mobile_1);
-                    $('.e-driver_id').val(response.driver_id);
-                    $('.e-employee_mobile').val(response.employee_mobile);
-                    $('.e-driver_code').val(response.driver_code);
-                    $('.e-cod').val(response.cod);
-                    $('.e-instruction').val(response.instruction);
-                    $('.e-description').val(response.description);
-                    $('.e-shipper_name').val(response.shipper_name);
-                    $('.e-s_code').val(response.s_code);
-                    $('.e-service_charges').val(response.service_charges);
-                    $('.e-contact_office_1').val(response.contact_office_1);
-                    $('.e-mobile_2').val(response.mobile_2);
-                    $('.e-no_of_peices').val(response.no_of_peices);
-                    $('.e-service_type').val(response.service_type);
-                    $('.e-delivery_code').val(response.delivery_code);
-                    // $('.u-details_of_products').val(response.details_of_products);
-                    // $('.u-cod_peice').val(response.cod_peice);
+        var id = $('.s-reference_number').val();
+        // alert(id);
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}",
+            },
+            url: "{{ route('admin.shipment.get_search') }}",
+            type: "POST",
+            data: {
+                id: id,
+            },
+            success: function(response) {
+                // console.log(response);
+                $('#operationeditorder').modal('show'); // Show the modal
+                $('.e-id').val(response.id);
+                $('.e-reference_number').val(response.reference_number);
+                $('.e-barcode').val(response.barcode);
+                $('.e-status').val(response.status_name);
+                $('.e-status_id').val(response.status);
+                $('.e-order_date').val(response.order_date);
+                $('.e-shipper_code').val(response.shipper_code);
+                $('.e-shippers_contact').val(response.shipper_contact);
+                $('.e-reciver_name').val(response.reciver_name);
+                $('.e-shipper_country').val(response.shipper_country);
+                $('.e-shipper_city').val(response.shipper_city);
+                $('.e-shipper_area').val(response.shipper_area);
+                $('.e-shipper_address').val(response.shipper_address);
+                $('.e-reciver_country').val(response.country);
+                $('.e-reciver_city').val(response.city);
+                $('.e-reciver_area').val(response.area);
+                $('.e-reciver_address').val(response.street_address);
+                $('.e-mobile_1').val(response.mobile_1);
+                $('.e-driver_id').val(response.driver_id);
+                $('.e-employee_mobile').val(response.employee_mobile);
+                $('.e-driver_code').val(response.driver_code);
+                $('.e-cod').val(response.cod);
+                $('.e-instruction').val(response.instruction);
+                $('.e-description').val(response.description);
+                $('.e-shipper_name').val(response.shipper_name);
+                $('.e-s_code').val(response.s_code);
+                $('.e-service_charges').val(response.service_charges);
+                $('.e-contact_office_1').val(response.contact_office_1);
+                $('.e-mobile_2').val(response.mobile_2);
+                $('.e-no_of_peices').val(response.no_of_peices);
+                $('.e-service_type').val(response.service_type);
+                $('.e-delivery_code').val(response.delivery_code);
+                // $('.u-details_of_products').val(response.details_of_products);
+                // $('.u-cod_peice').val(response.cod_peice);
 
-                    var detailsArray = response.details_of_products.split(',').map(item => item.trim());
-                    var codArray = response.cod_peice.split(',').map(item => item.trim());
+                var detailsArray = response.details_of_products.split(',').map(item => item.trim());
+                var codArray = response.cod_peice.split(',').map(item => item.trim());
 
-                    $('.e-details_of_products').each(function(index, element) {
-                        $(element).val(detailsArray[index]);
-                    });
+                $('.e-details_of_products').each(function(index, element) {
+                    $(element).val(detailsArray[index]);
+                });
 
-                    $('.e-cod_peice').each(function(index, element) {
-                        $(element).val(codArray[index]);
-                    });
+                $('.e-cod_peice').each(function(index, element) {
+                    $(element).val(codArray[index]);
+                });
 
-                }
-            });
+            }
         });
+    });
 
     // Close the modal when the close button is clicked
     $('.close').click(function() {
         $('#operationeditorder').modal('hide'); // Hide the modal
     });
-
-
-
-
-
-
 </script>
-

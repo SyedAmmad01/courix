@@ -1013,6 +1013,7 @@ class ShipmentController extends Controller
                     $DeliveryJobs->shipment_id = $shipment->id;
                     $DeliveryJobs->status_type = 1;
                     $DeliveryJobs->auth_id = Auth::user()->id;
+                    $DeliveryJobs->driver_id = $request->input('o_driver_id');
                     $DeliveryJobs->save();
                 }
             }
@@ -1314,6 +1315,13 @@ class ShipmentController extends Controller
     {
         // dd($request->all());
         $get_data = ShipmentFile::where('shipment_id', $request->id)->get();
+        return $get_data;
+    }
+
+
+    public function get_delivery_jobs(Request $request)
+    {
+        $get_data = DeliveryJobs::leftJoin('drivers', 'delivery_jobs.driver_id', '=', 'drivers.id')->select('delivery_jobs.*' , 'drivers.employee_name' , 'drivers.app_username')->where('shipment_id', $request->id)->get();
         return $get_data;
     }
 
