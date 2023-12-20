@@ -50,6 +50,7 @@ return new class extends Migration
             $table->string('delivery_attempt')->nullable();
             $table->string('payment_method')->nullable();
             $table->string('transition_id')->nullable();
+            $table->string('job_status')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

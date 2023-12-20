@@ -214,6 +214,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/distribution/collectionpendings', [App\Http\Controllers\Admin\DispatchController::class, 'pendings'])->name('admin.dispatch.pendings');
         Route::get('/distribution/collectionjobs', [App\Http\Controllers\Admin\DispatchController::class, 'collection_jobs'])->name('admin.dispatch.collection_jobs');
         Route::get('/driver/alldriverslocation', [App\Http\Controllers\Admin\DispatchController::class, 'driver_location'])->name('admin.dispatch.driver_location');
+        Route::post('/dispatch/getarea', [App\Http\Controllers\Admin\DispatchController::class, 'getarea'])->name('admin.dispatch.getarea');
+        Route::post('/dispatch/getcity', [App\Http\Controllers\Admin\DispatchController::class, 'getcity'])->name('admin.dispatch.getcity');
+
         //
 
         // Distribution Routes On User

@@ -36,7 +36,8 @@
                                         data-kt-menu="true">
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
-                                            <a href="javascript:void(0);" class="menu-link px-3" onclick="singleexportToExcel()">Export To Excel</a>
+                                            <a href="javascript:void(0);" class="menu-link px-3"
+                                                onclick="singleexportToExcel()">Export To Excel</a>
                                             <a href="javascript:void(0);" class="menu-link px-3">AWBZ Label</a>
                                             <a href="javascript:void(0);" class="menu-link px-3" data-toggle="modal"
                                                 data-target="#single_batch_update" onclick="get()">Batch Update</a>
@@ -107,10 +108,15 @@
                     // name: name,
                 },
                 success: function(response) {
-                    // console.log(response.reference_number);
-                    var responseData = response;
-                    var html = "";
-                    html += `<tr>
+                    if (response.id == null) {
+                        alert("Data is not found.");
+                        $("#preview").empty();
+                        return;
+                    } else {
+                        // console.log(response.reference_number);
+                        var responseData = response;
+                        var html = "";
+                        html += `<tr>
                                 <td>${responseData.awb_number}</td>
                                 <td>${responseData.reference_number}</td>
                                 <td>${responseData.shipper_name}</td>
@@ -122,15 +128,17 @@
                                 <td>${responseData.status_name}</td>
                             </tr>`;
 
-                    var previewElement = document.getElementById('preview');
-                    if (previewElement) {
-                        previewElement.innerHTML = html;
-                    }
-                    var inputField = document.getElementById("id");
-                    inputField.value = response.id;
+                        var previewElement = document.getElementById('preview');
+                        if (previewElement) {
+                            previewElement.innerHTML = html;
+                        }
+                        var inputField = document.getElementById("id");
+                        inputField.value = response.id;
 
-                    var inputField1 = document.getElementById("tracking_no");
-                    inputField1.value = response.reference_number;
+                        var inputField1 = document.getElementById("tracking_no");
+                        inputField1.value = response.reference_number;
+                    }
+
                 }
             });
         }
@@ -143,34 +151,33 @@
         }
 
         function singleexportToExcel() {
-        var id = $('#id').val();
-        // Send an AJAX request to get data
-        $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': "{{ csrf_token() }}",
-        },
-        url: "{{ route('admin.shipment.singleexportToExcel') }}",
-        type: "POST",
-        data: {
-            id: id,
-        },
-        xhrFields: {
-            responseType: 'blob' // This is important for handling binary data
-        },
-        success: function (response, status, xhr) {
-            const blob = response;
-            const fileName = 'ExportExcel.xlsx';
+            var id = $('#id').val();
+            // Send an AJAX request to get data
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                },
+                url: "{{ route('admin.shipment.singleexportToExcel') }}",
+                type: "POST",
+                data: {
+                    id: id,
+                },
+                xhrFields: {
+                    responseType: 'blob' // This is important for handling binary data
+                },
+                success: function(response, status, xhr) {
+                    const blob = response;
+                    const fileName = 'ExportExcel.xlsx';
 
-            // Trigger the download using FileSaver.js
-            saveAs(blob, fileName);
-        },
-        error: function (xhr, textStatus, error) {
-            // Handle AJAX error
-            console.error("Export failed:", error);
-            // Add user-friendly error handling here
+                    // Trigger the download using FileSaver.js
+                    saveAs(blob, fileName);
+                },
+                error: function(xhr, textStatus, error) {
+                    // Handle AJAX error
+                    console.error("Export failed:", error);
+                    // Add user-friendly error handling here
+                }
+            });
         }
-    });
-}
-
     </script>
 @endsection

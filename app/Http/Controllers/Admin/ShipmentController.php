@@ -1224,8 +1224,10 @@ class ShipmentController extends Controller
                 'shipper.city As shipper_city',
                 'shipper.area As shipper_area',
             )
-            ->where('reference_number', $request->id)
+            ->where('barcode', $request->id)
+            ->orWhere('tracking_number', $request->id)
             ->orWhere('awb_number', $request->id)
+            ->orWhere('reference_number', $request->id)
             ->firstOrFail();
 
         $get_data['shipment_files'] = ShipmentFile::where('shipment_id', $get_data->id)->get();
@@ -1399,6 +1401,7 @@ class ShipmentController extends Controller
 
     public function update_status_search_bar(Request $request)
     {
+        // dd($request->all());
 
         if (is_numeric($request->id)) {
             $get_data = Shipment::join('citys', 'shipments.city', '=', 'citys.id')
@@ -1410,7 +1413,11 @@ class ShipmentController extends Controller
                     'status.name as status_name',
                     'drivers.employee_name',
                     'drivers.employee_mobile'
-                )->where('reference_number', 'LIKE', '%' . $request->id . '%')->first();
+                )->where('barcode', 'LIKE', '%' . $request->id . '%')
+                ->orWhere('tracking_number', 'LIKE', '%' . $request->id . '%')
+                ->orWhere('reference_number', 'LIKE', '%' . $request->id . '%')
+                ->orWhere('awb_number', 'LIKE', '%' . $request->id . '%')
+                ->first();
         } else {
             $get_data = Shipment::join('citys', 'shipments.city', '=', 'citys.id')
                 ->join('status', 'shipments.status', '=', 'status.id')
@@ -1425,6 +1432,7 @@ class ShipmentController extends Controller
         }
 
         return $get_data;
+
     }
 
     public function single_batch_update(Request $request)

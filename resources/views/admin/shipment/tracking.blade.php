@@ -511,97 +511,104 @@
                     id: id,
                 },
                 success: function(response) {
-
-                    updateShipmentFilesTable(response)
-
-                    updateTrackingHistoryTable(response)
-
-                    updateInternalRemarksHistoryTable(response)
-
-                    var fullName = response.emp_first_name + ' ' + response.emp_middle_name + ' ' +
-                        response
-                        .emp_last_name;
-                    // Assuming response.updated_at is in ISO 8601 format
-                    const updatedDate = new Date(response.updated_at);
-                    const createdDate = new Date(response.created_at);
-
-                    // Format the date and time
-                    const formattedDate = updatedDate.toLocaleDateString();
-                    const formattedTime = updatedDate.toLocaleTimeString();
-
-                    const Dateformatted = createdDate.toLocaleDateString();
-                    const Timeformatted = createdDate.toLocaleTimeString();
-
-                    // Update the content of the element with id "s-updated_at"
-                    // $('#employee_name').val(fullName);
-                    $('.s-id').val(response.id);
-                    $('#s-reference_number').html(response.reference_number);
-                    $('#s-status').html(response.status_name);
-                    $('.s-updated_at').html(formattedDate + ' ' + formattedTime);
-                    $('.s-created_at').html(Dateformatted + ' ' + Timeformatted);
-                    $('#s-shipper_name').html(response.shipper_name);
-                    $('#s-shippers_contact').html(response.shipper_contact);
-                    $('#s-reciver_name').html(response.reciver_name);
-                    $('#s-shipper_country').html(response.shipper_country_name);
-                    $('#s-shipper_city').html(response.shipper_city_name);
-                    $('#s-shipper_area').html(response.shipper_area_name);
-                    $('#s-shipper_address').html(response.shipper_address);
-                    $('#s-reciver_country').html(response.shipment_country_name);
-                    $('#s-reciver_city').html(response.shipment_city_name);
-                    $('#s-reciver_area').html(response.shipment_area_name);
-                    $('#s-reciver_address').html(response.street_address);
-                    $('#s-mobile_1').html(response.mobile_1);
-                    $('#s-driver_name').html(response.employee_name);
-                    $('#s-employee_mobile').html(response.employee_mobile);
-                    $('#s-driver_code').html(response.driver_code);
-                    $('#s-cod').html(response.cod);
-                    $('#s-instruction').html(response.instruction);
-                    $('#s-description').html(response.description);
-
-                    var responseData = response;
-                    var html = "";
-                    // console.log(responseData);
-
-                    if (Array.isArray(responseData)) {
-                        responseData.forEach((item) => {});
+                    if (response == null) {
+                        alert("Data is not found.");
+                        return;
                     } else {
-                        var detailsValues = responseData.details_of_products.split(',');
-                        var codPieceValues = responseData.cod_peice.split(',');
+                        updateShipmentFilesTable(response)
 
-                        if (detailsValues.length === codPieceValues.length) {
-                            for (var i = 0; i < detailsValues.length; i++) {
-                                var index = i + 1;
-                                html += `<tr>
-                    <td>${index}</td>
-                    <td>${detailsValues[i]}</td>
-                    <td>${codPieceValues[i]}</td>
-                    </tr>`;
-                            }
-                        } else {
-                            console.log("Number of details and cod piece values do not match.");
-                        }
-                    }
-                    document.getElementById('preview').innerHTML = html;
+                        updateTrackingHistoryTable(response)
 
-                    // Function to update shipment files table
-                    function updateShipmentFilesTable(response) {
+                        updateInternalRemarksHistoryTable(response)
+
+                        var fullName = response.emp_first_name + ' ' + response.emp_middle_name + ' ' +
+                            response
+                            .emp_last_name;
+                        // Assuming response.updated_at is in ISO 8601 format
+                        const updatedDate = new Date(response.updated_at);
+                        const createdDate = new Date(response.created_at);
+
+                        // Format the date and time
+                        const formattedDate = updatedDate.toLocaleDateString();
+                        const formattedTime = updatedDate.toLocaleTimeString();
+
+                        const Dateformatted = createdDate.toLocaleDateString();
+                        const Timeformatted = createdDate.toLocaleTimeString();
+
+                        // Update the content of the element with id "s-updated_at"
+                        // $('#employee_name').val(fullName);
+                        $('.s-id').val(response.id);
+                        $('#s-reference_number').html(response.reference_number);
+                        $('#s-status').html(response.status_name);
+                        $('.s-updated_at').html(formattedDate + ' ' + formattedTime);
+                        $('.s-created_at').html(Dateformatted + ' ' + Timeformatted);
+                        $('#s-shipper_name').html(response.shipper_name);
+                        $('#s-shippers_contact').html(response.shipper_contact);
+                        $('#s-reciver_name').html(response.reciver_name);
+                        $('#s-shipper_country').html(response.shipper_country_name);
+                        $('#s-shipper_city').html(response.shipper_city_name);
+                        $('#s-shipper_area').html(response.shipper_area_name);
+                        $('#s-shipper_address').html(response.shipper_address);
+                        $('#s-reciver_country').html(response.shipment_country_name);
+                        $('#s-reciver_city').html(response.shipment_city_name);
+                        $('#s-reciver_area').html(response.shipment_area_name);
+                        $('#s-reciver_address').html(response.street_address);
+                        $('#s-mobile_1').html(response.mobile_1);
+                        $('#s-driver_name').html(response.employee_name);
+                        $('#s-employee_mobile').html(response.employee_mobile);
+                        $('#s-driver_code').html(response.driver_code);
+                        $('#s-cod').html(response.cod);
+                        $('#s-instruction').html(response.instruction);
+                        $('#s-description').html(response.description);
+
+                        var responseData = response;
                         var html = "";
+                        // console.log(responseData);
 
-                        response.shipment_files.forEach((file) => {
-                            html += `<tr>
-                    <td>${file.file_name}</td>
-                    <td><button type="button" class="btn btn-primary btn-sm fa fa-eye" onclick="showImage('${file.selected_file}')"></button></td>
-                </tr>`;
-                        });
+                        if (Array.isArray(responseData)) {
+                            responseData.forEach((item) => {});
+                        } else {
+                            var detailsValues = responseData.details_of_products.split(',');
+                            var codPieceValues = responseData.cod_peice.split(',');
 
-                        var reviewElement = document.getElementById('review');
-                        if (reviewElement) {
-                            reviewElement.innerHTML = html;
+                            if (detailsValues.length === codPieceValues.length) {
+                                for (var i = 0; i < detailsValues.length; i++) {
+                                    var index = i + 1;
+                                    html += `<tr>
+                                <td>${index}</td>
+                                <td>${detailsValues[i]}</td>
+                                <td>${codPieceValues[i]}</td>
+                                </tr>`;
+                                }
+                            } else {
+                                console.log("Number of details and cod piece values do not match.");
+                            }
+                        }
+                        document.getElementById('preview').innerHTML = html;
+
+                        // Function to update shipment files table
+                        function updateShipmentFilesTable(response) {
+                            var html = "";
+
+                            response.shipment_files.forEach((file) => {
+                                html += `<tr>
+                                <td>${file.file_name}</td>
+                                <td><button type="button" class="btn btn-primary btn-sm fa fa-eye" onclick="showImage('${file.selected_file}')"></button></td>
+                            </tr>`;
+                            });
+
+                            var reviewElement = document.getElementById('review');
+                            if (reviewElement) {
+                                reviewElement.innerHTML = html;
+                            }
                         }
                     }
                 }
             });
         });
+
+
+
 
 
         function updateTrackingHistoryTable(response) {

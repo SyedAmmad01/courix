@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Dispatch;
+use App\Models\Driver;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DispatchController extends Controller
 {
@@ -12,9 +14,36 @@ class DispatchController extends Controller
 
         $page_title = 'Delivery Jobs';
         $page_description = 'Dispatch / Delivery Jobs';
+        $drivers = Driver::where('status', 1)->get();
+        $citys = DB::table('citys')->get();
+        $data = array(
+            'page_title' => $page_title,
+            'page_description' => $page_description,
+            'fetch_drivers' => $drivers,
+            'fetch_citys' => $citys,
+        );
+        return view('admin.dispatch.delivery_jobs')->with($data);
+    }
 
-        return view('admin.dispatch.delivery_jobs', compact('page_title', 'page_description'));
+    public function getarea(Request $request)
+    {
+        $zones = DB::table('zones')->where('city', $request->cid)->orderby('id', 'asc')->get();
+        $html = '';
+        $html = '<option value="" selected disabled>Please Select Zone</option>';
+        foreach ($zones as $zone) {
+            $html .= '<option value="' . $zone->id . '">' . $zone->zone_name . '</option>';
+        }
+        return $html;
+    }
 
+    public function getcity(Request $request)
+    {
+        $sections = DB::table('areas')->where('city_id', $request->cid)->orderby('id', 'asc')->get();
+        $html = '<option value="" selected disabled>Please Select Area</option>';
+        foreach ($sections as $section) {
+            $html .= '<option value="' . $section->id . '">' . $section->name . '</option>';
+        }
+        return $html;
     }
 
     public function inscan(Request $request){
