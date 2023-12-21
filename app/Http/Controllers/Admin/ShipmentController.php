@@ -175,17 +175,32 @@ class ShipmentController extends Controller
         // dd($request->all());
         $lastShipment = Shipment::orderBy('id', 'desc')->first();
         if ($lastShipment) {
-        $lastBarcode = $lastShipment->barcode;  // Get the last inserted barcode
+            $lastBarcode = $lastShipment->barcode;  // Get the last inserted barcode
         } else {
-        // Handle the case where there are no records in the 'Shipment' table.
-        $lastBarcode = null; // Initialize $lastBarcode to null if no records exist.
+            // Handle the case where there are no records in the 'Shipment' table.
+            $lastBarcode = null; // Initialize $lastBarcode to null if no records exist.
         }
 
         if ($lastBarcode === null) {
-        $lastBarcode = 1000000000; // Set an initial value if no barcode is found.
+            $lastBarcode = 1000000000; // Set an initial value if no barcode is found.
         } else {
-        $lastBarcode += 1; // Increment the last barcode by 1.
+            $lastBarcode += 1; // Increment the last barcode by 1.
         }
+
+        $last_job_code = Shipment::orderBy('id', 'desc')->first();
+        if ($last_job_code) {
+            $last_code = $last_job_code->id;  // Get the last inserted barcode
+        } else {
+            // Handle the case where there are no records in the 'Shipment' table.
+            $last_code = null; // Initialize $lastBarcode to null if no records exist.
+        }
+
+        if ($last_code === null) {
+            $last_code = 1; // Set an initial value if no barcode is found.
+        } else {
+            $last_code += 1; // Increment the last barcode by 1.
+        }
+
         // Now, $lastBarcode contains the next available barcode.
 
         $shipments = new Shipment();
@@ -218,6 +233,10 @@ class ShipmentController extends Controller
         $shipments->outscan = 0;
         $shipments->status = 2;
         $shipments->delivery_attempt = 0;
+        $shipments->job_code = $last_code;
+        // Job Status Means That 1 = Created , 2 = Started , 3 = Delivered //
+        $shipments->job_status = 1;
+        // Job Status Means That 1 = Created , 2 = Started , 3 = Delivered //
         $detailsOfProducts = $request->input('details_of_products');
         if (is_array($detailsOfProducts)) {
             $shipments->details_of_products = implode(',', $detailsOfProducts);
@@ -261,6 +280,10 @@ class ShipmentController extends Controller
         $shipment_logs->outscan = 0;
         $shipment_logs->status = 2;
         $shipment_logs->delivery_attempt = 0;
+        $shipment_logs->job_code = $last_code;
+        // Job Status Means That 1 = Created , 2 = Started , 3 = Delivered //
+        $shipment_logs->job_status = 1;
+        // Job Status Means That 1 = Created , 2 = Started , 3 = Delivered //
         $detailsOfProducts = $request->input('details_of_products');
         if (is_array($detailsOfProducts)) {
             $shipment_logs->details_of_products = implode(',', $detailsOfProducts);
@@ -395,42 +418,42 @@ class ShipmentController extends Controller
 
     public function import_shipments(Request $request)
     {
-    $request->validate([
-        'selected_file' => 'required|mimes:xls,xlsx',
-    ]);
+        $request->validate([
+            'selected_file' => 'required|mimes:xls,xlsx',
+        ]);
 
-    $file = $request->file('selected_file');
+        $file = $request->file('selected_file');
 
-    $excelData = Excel::toArray([], $file);
+        $excelData = Excel::toArray([], $file);
 
-    $data = $excelData[0];
+        $data = $excelData[0];
 
-    $processedData = [];
+        $processedData = [];
 
 
-    for ($i = 1; $i < count($data); $i++) {
-        $row = $data[$i];
+        for ($i = 1; $i < count($data); $i++) {
+            $row = $data[$i];
 
-        $rowData = [
-        'reference_number' => $row[4],
-        'service_type' => $row[0],
-        'contact_office_1' => $row[3],
-        'account_name' => $row[12],
-        'reciver_name' => $row[1],
-        'cod' => $row[2],
-        'instruction' => $row[9],
-        'description' => $row[10],
-        'country' => $row[5],
-        'city' => $row[6],
-        'area' => $row[7],
-        'street_address' => $row[8],
-        'no_of_peices' => $row[11],
-        ];
+            $rowData = [
+                'reference_number' => $row[4],
+                'service_type' => $row[0],
+                'contact_office_1' => $row[3],
+                'account_name' => $row[12],
+                'reciver_name' => $row[1],
+                'cod' => $row[2],
+                'instruction' => $row[9],
+                'description' => $row[10],
+                'country' => $row[5],
+                'city' => $row[6],
+                'area' => $row[7],
+                'street_address' => $row[8],
+                'no_of_peices' => $row[11],
+            ];
 
-        $processedData[] = $rowData;
-    }
+            $processedData[] = $rowData;
+        }
 
-    return $processedData;
+        return $processedData;
     }
 
     public function save_shipments(Request $request)
@@ -499,33 +522,31 @@ class ShipmentController extends Controller
 
     public function booking_pdf($id)
     {
-            $booking = Booking::find($id);
-            $records = []; // Initialize an empty array to store records
+        $booking = Booking::find($id);
+        $records = []; // Initialize an empty array to store records
 
-            for ($i = 0; $i < $booking->count; $i++) {
+        for ($i = 0; $i < $booking->count; $i++) {
             $record = Booking::leftjoin('shippers', 'bookings.shipper', '=', 'shippers.id')
-            ->leftjoin('drivers', 'shippers.driver', '=', 'drivers.id')
-            ->leftjoin('zones', 'drivers.zones', '=', 'zones.id')
-            ->select('shippers.shipper_code', 'shippers.company_name', 'zones.zone_name')
-            ->where('bookings.id', $id)
-            ->get();
+                ->leftjoin('drivers', 'shippers.driver', '=', 'drivers.id')
+                ->leftjoin('zones', 'drivers.zones', '=', 'zones.id')
+                ->select('shippers.shipper_code', 'shippers.company_name', 'zones.zone_name')
+                ->where('bookings.id', $id)
+                ->get();
 
             // Append the current record to the $records array
             $records[] = $record;
-            }
+        }
 
-            // Now $records contains all the records fetched in the loop
-            $data = [
+        // Now $records contains all the records fetched in the loop
+        $data = [
             'title' => 'Sample PDF',
             'content' => 'This is a sample PDF generated using Laravel and DomPDF.',
             'records' => $records,
-            ];
+        ];
 
-            $pdf = PDF::loadView('admin.pdf.document', $data);
+        $pdf = PDF::loadView('admin.pdf.document', $data);
 
-            return $pdf->download('bookingcodereport.pdf');
-
-
+        return $pdf->download('bookingcodereport.pdf');
     }
 
     public function operation_print_airways(Request $request)
@@ -565,13 +586,13 @@ class ShipmentController extends Controller
             ->where('shipments.id', $request->id)
             ->first();
 
-            // dd($shipments);
+        // dd($shipments);
 
         // Determine the view based on $request->pab_options
         $view = ($request->pab_options == 1) ? 'admin.files.operation_print_air_anb' : 'admin.files.operation_airway_bills';
 
         // Pass the results directly to the view
-        return view($view, ['shipments' => $shipments , 'current_time' => $current_time]);
+        return view($view, ['shipments' => $shipments, 'current_time' => $current_time]);
     }
 
 
@@ -643,15 +664,15 @@ class ShipmentController extends Controller
 
     public function get_manifest_download(Request $request)
     {
-    date_default_timezone_set('Asia/Dubai');
+        date_default_timezone_set('Asia/Dubai');
 
-    $current_time = date('h:i:s A m-d-Y');
-    $current_date = date('d, F Y');
+        $current_time = date('h:i:s A m-d-Y');
+        $current_date = date('d, F Y');
 
-    return view('admin.files.get_manifest', [
-        'current_date' => $current_date,
-        'current_time' => $current_time,
-    ]);
+        return view('admin.files.get_manifest', [
+            'current_date' => $current_date,
+            'current_time' => $current_time,
+        ]);
     }
 
 
@@ -668,15 +689,15 @@ class ShipmentController extends Controller
     public function data(Request $request)
     {
         $get_data = Shipment::join('citys', 'shipments.city', '=', 'citys.id')
-        ->join('status', 'shipments.status', '=', 'status.id')
-        ->leftJoin('drivers', 'shipments.driver_id', '=', 'drivers.id')
-        ->select(
-        'shipments.*',
-        'citys.name as city_name',
-        'status.name as status_name',
-        'drivers.employee_name',
-        'drivers.employee_mobile'
-        )->get();
+            ->join('status', 'shipments.status', '=', 'status.id')
+            ->leftJoin('drivers', 'shipments.driver_id', '=', 'drivers.id')
+            ->select(
+                'shipments.*',
+                'citys.name as city_name',
+                'status.name as status_name',
+                'drivers.employee_name',
+                'drivers.employee_mobile'
+            )->get();
 
         return $get_data;
     }
@@ -842,13 +863,13 @@ class ShipmentController extends Controller
             ->whereIn('shipments.id', $u_ids)
             ->get();
 
-            // dd($shipments);
+        // dd($shipments);
 
         // Determine the view based on $request->pab_options
         $view = ($request->pab_options == 1) ? 'admin.files.print_air_anb' : 'admin.files.get_airway_bills';
 
         // Pass the results directly to the view
-        return view($view, ['shipments' => $shipments , 'current_time' => $current_time]);
+        return view($view, ['shipments' => $shipments, 'current_time' => $current_time]);
     }
 
 
@@ -887,13 +908,13 @@ class ShipmentController extends Controller
             ->where('shipments.id', $request->id)
             ->first();
 
-            // dd($shipments);
+        // dd($shipments);
 
         // Determine the view based on $request->pab_options
         $view = 'admin.files.tracking_print_air_anb';
 
         // Pass the results directly to the view
-        return view($view, ['shipments' => $shipments , 'current_time' => $current_time]);
+        return view($view, ['shipments' => $shipments, 'current_time' => $current_time]);
     }
 
     public function batch_update(Request $request)
@@ -1235,7 +1256,7 @@ class ShipmentController extends Controller
         $get_data['logs'] = logs::leftJoin('admins', 'logs.auth_id', '=', 'admins.id')
             ->leftJoin('status', 'logs.status', '=', 'status.id')
             ->leftJoin('drivers', 'logs.driver_id', '=', 'drivers.id')
-            ->select('logs.*', 'admins.name', 'status.name AS status_name' , 'drivers.app_username AS driver_name')
+            ->select('logs.*', 'admins.name', 'status.name AS status_name', 'drivers.app_username AS driver_name')
             ->where('shipment_id', $get_data->id)
             ->whereIn('status_type', [1, 2]) // Use whereIn to match multiple values
             ->get();
@@ -1280,7 +1301,7 @@ class ShipmentController extends Controller
         $get_data = logs::leftJoin('admins', 'logs.auth_id', '=', 'admins.id')
             ->leftJoin('status', 'logs.status', '=', 'status.id')
             ->leftJoin('drivers', 'logs.driver_id', '=', 'drivers.id')
-            ->select('logs.*', 'admins.name', 'status.name AS status_name' , 'drivers.app_username AS driver_name')
+            ->select('logs.*', 'admins.name', 'status.name AS status_name', 'drivers.app_username AS driver_name')
             ->where('shipment_id', $request->id)
             ->where(function ($query) {
                 $query->where('status_type', 1)
@@ -1323,7 +1344,7 @@ class ShipmentController extends Controller
 
     public function get_delivery_jobs(Request $request)
     {
-        $get_data = DeliveryJobs::leftJoin('drivers', 'delivery_jobs.driver_id', '=', 'drivers.id')->select('delivery_jobs.*' , 'drivers.employee_name' , 'drivers.app_username')->where('shipment_id', $request->id)->get();
+        $get_data = DeliveryJobs::leftJoin('drivers', 'delivery_jobs.driver_id', '=', 'drivers.id')->select('delivery_jobs.*', 'drivers.employee_name', 'drivers.app_username')->where('shipment_id', $request->id)->get();
         return $get_data;
     }
 
@@ -1396,7 +1417,7 @@ class ShipmentController extends Controller
         $status = DB::table('status')->get();
 
 
-        return view('admin.shipment.update_status', compact('page_title', 'page_description' , 'status'));
+        return view('admin.shipment.update_status', compact('page_title', 'page_description', 'status'));
     }
 
     public function update_status_search_bar(Request $request)
@@ -1432,40 +1453,39 @@ class ShipmentController extends Controller
         }
 
         return $get_data;
-
     }
 
     public function single_batch_update(Request $request)
     {
-    $shipment = Shipment::find($request->u_id); // Trim to remove any leading/trailing spaces
+        $shipment = Shipment::find($request->u_id); // Trim to remove any leading/trailing spaces
 
-    // Check if the shipment exists
-    if (!$shipment) {
-        return redirect()->back()->with('error', 'Shipment not found.');
+        // Check if the shipment exists
+        if (!$shipment) {
+            return redirect()->back()->with('error', 'Shipment not found.');
+        }
+
+        // Update shipment attributes
+        $shipment->status = $request->input('u_status');
+        $shipment->comments = $request->input('u_comments');
+        $shipment->update();
+
+        // Create a new log entry
+        $logs = new Logs();
+        $logs->shipment_id = $shipment->id; // Use the ID of the updated shipment
+        $logs->status_type = 1;
+        $logs->status = $request->input('u_status');
+        $logs->auth_id = Auth::user()->id;
+        $logs->save();
+
+        // Create the Order Status first entry
+        $orderStatus = new OrderStatus;
+        $orderStatus->shipment_id = $shipment->id;
+        $orderStatus->status = $request->input('u_status');
+        $orderStatus->auth_id = Auth::user()->id;
+        $orderStatus->save();
+
+        return redirect()->back();
     }
-
-    // Update shipment attributes
-    $shipment->status = $request->input('u_status');
-    $shipment->comments = $request->input('u_comments');
-    $shipment->update();
-
-    // Create a new log entry
-    $logs = new Logs();
-    $logs->shipment_id = $shipment->id; // Use the ID of the updated shipment
-    $logs->status_type = 1;
-    $logs->status = $request->input('u_status');
-    $logs->auth_id = Auth::user()->id;
-    $logs->save();
-
-    // Create the Order Status first entry
-    $orderStatus = new OrderStatus;
-    $orderStatus->shipment_id = $shipment->id;
-    $orderStatus->status = $request->input('u_status');
-    $orderStatus->auth_id = Auth::user()->id;
-    $orderStatus->save();
-
-    return redirect()->back();
-   }
 
 
     public function send_sms(Request $request)
@@ -1606,40 +1626,38 @@ class ShipmentController extends Controller
 
     public function get_tracking(Request $request)
     {
-        $get_data = ShipmentLogs::leftJoin('areas', 'shipment_logs.area', '=', 'areas.id')->select('shipment_logs.*' , 'areas.name As area_name')->where('barcode' , $request->id)->orWhere('reference_number' , $request->id)->get();
+        $get_data = ShipmentLogs::leftJoin('areas', 'shipment_logs.area', '=', 'areas.id')->select('shipment_logs.*', 'areas.name As area_name')->where('barcode', $request->id)->orWhere('reference_number', $request->id)->get();
         return $get_data;
     }
 
-        public function shipment_view($id)
-        {
-            $shipmentLogs = ShipmentLogs::leftJoin('areas', 'shipment_logs.area', '=', 'areas.id')
+    public function shipment_view($id)
+    {
+        $shipmentLogs = ShipmentLogs::leftJoin('areas', 'shipment_logs.area', '=', 'areas.id')
             ->leftJoin('citys', 'shipment_logs.city', '=', 'citys.id')
             ->leftJoin('countrys', 'shipment_logs.country', '=', 'countrys.id')
             ->leftJoin('drivers', 'shipment_logs.driver_id', '=', 'drivers.id')
-            ->select('shipment_logs.*', 'areas.name as area_name' , 'citys.name As city_name' , 'countrys.name As country_name' , 'drivers.employee_name')->findOrFail($id);
+            ->select('shipment_logs.*', 'areas.name as area_name', 'citys.name As city_name', 'countrys.name As country_name', 'drivers.employee_name')->findOrFail($id);
 
-            // dd($shipmentLogs);
+        // dd($shipmentLogs);
 
-            // Find the corresponding Shipment record by barcode
-            $shipment = Shipment::where('barcode', $shipmentLogs->barcode)->firstOrFail();
+        // Find the corresponding Shipment record by barcode
+        $shipment = Shipment::where('barcode', $shipmentLogs->barcode)->firstOrFail();
 
-            // Initialize an array to store the columns with changed values
-            $changedColumns = [];
+        // Initialize an array to store the columns with changed values
+        $changedColumns = [];
 
-            // Loop through the columns of ShipmentLogs and compare with Shipment
-            foreach ($shipmentLogs->getAttributes() as $column => $value) {
-                // Check if the column exists in Shipment and has a different value
-                if (isset($shipment->$column) && $shipment->$column !== $value) {
-                    $changedColumns[$column] = [
-                        'old' => $value,
-                        'new' => $shipment->$column,
-                    ];
-                }
+        // Loop through the columns of ShipmentLogs and compare with Shipment
+        foreach ($shipmentLogs->getAttributes() as $column => $value) {
+            // Check if the column exists in Shipment and has a different value
+            if (isset($shipment->$column) && $shipment->$column !== $value) {
+                $changedColumns[$column] = [
+                    'old' => $value,
+                    'new' => $shipment->$column,
+                ];
             }
-
-            return response()->json(['changedColumns' => $changedColumns , 'shipmentLogs' => $shipmentLogs]);
-            // $changedColumns now contains the columns with changed values and their old and new values
         }
 
-
+        return response()->json(['changedColumns' => $changedColumns, 'shipmentLogs' => $shipmentLogs]);
+        // $changedColumns now contains the columns with changed values and their old and new values
+    }
 }

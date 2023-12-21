@@ -7,6 +7,10 @@ use App\Models\Driver;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+
+
 
 class DispatchController extends Controller
 {
@@ -44,6 +48,65 @@ class DispatchController extends Controller
             $html .= '<option value="' . $section->id . '">' . $section->name . '</option>';
         }
         return $html;
+    }
+
+    public function get_orders(Request $request)
+    {
+        dd($request->all());
+        // Validate the input data before proceeding
+        $validator = Validator::make($request->all(), [
+            'created_from_date' => 'date',
+            'created_to_date' => 'date|after_or_equal:created_from_date',
+            'id' => 'array',
+            'shipper_id' => 'array',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        // Convert date strings to Carbon instances
+        $startDate = Carbon::parse($request->input('created_from_date'));
+        $endDate = Carbon::parse($request->input('created_to_date'));
+        $ids = $request->input('id');
+        $shipperIds = $request->input('shipper_id');
+
+        // Start building the query with necessary joins and selects
+        $query = Shipment::query()
+            ->leftJoin('citys', 'shipments.city', '=', 'citys.id')
+            ->leftJoin('status', 'shipments.status', '=', 'status.id')
+            ->leftJoin('drivers', 'shipments.driver_id', '=', 'drivers.id')
+            ->select(
+                'shipments.*',
+                'citys.name as city_name',
+                'status.name as status_name',
+                'drivers.employee_name',
+                'drivers.employee_mobile'
+            );
+
+        // dd($query);
+
+        // Apply date filter if provided
+        if ($startDate && $endDate) {
+            $query->whereBetween('order_date', [$startDate, $endDate]);
+        }
+
+        // Apply 'id' filter if provided
+        if ($ids) {
+            $query->whereIn('shipments.city', $ids); // Specify the table alias or name
+        }
+
+        // Apply 'shipper_id' filter if provided
+        if ($shipperIds) {
+            $query->whereIn('shipments.shipper_code', $shipperIds); // Specify the table alias or name
+        }
+
+        // Execute the query and retrieve the data
+        $data = $query->get();
+
+        // dd($data);
+
+        return $data;
     }
 
     public function inscan(Request $request){

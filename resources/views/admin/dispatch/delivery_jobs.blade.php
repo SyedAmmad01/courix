@@ -23,118 +23,137 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label class="text-lg-right col-form-label">From Date<span
-                                                class="text-danger">*</span></label>
-                                        <div class="input-group m-b-10">
-                                            <div class="input-group-prepend"><span class="input-group-text">
-                                                    <i class="fas fa-lg fa-fw  fa-calendar-alt"></i></span></div>
-                                            <input type="date" id="" name="" placeholder=""
-                                                class="form-control">
+                            <form class="forms-sample" id="get_orders" novalidate>
+
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label class="text-lg-right col-form-label">From Date<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group m-b-10">
+                                                <div class="input-group-prepend"><span class="input-group-text">
+                                                        <i class="fas fa-lg fa-fw  fa-calendar-alt"></i></span></div>
+                                                <input type="date" id="" name="" placeholder=""
+                                                    class="form-control">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label class="text-lg-right col-form-label">To Date<span
-                                                class="text-danger">*</span></label>
-                                        <div class="input-group m-b-10">
-                                            <div class="input-group-prepend"><span class="input-group-text">
-                                                    <i class="fas fa-lg fa-fw  fa-calendar-alt"></i></span></div>
-                                            <input type="date" id="" name="" placeholder=""
-                                                class="form-control">
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label class="text-lg-right col-form-label">To Date<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group m-b-10">
+                                                <div class="input-group-prepend"><span class="input-group-text">
+                                                        <i class="fas fa-lg fa-fw  fa-calendar-alt"></i></span></div>
+                                                <input type="date" id="" name="" placeholder=""
+                                                    class="form-control">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label class="text-lg-right col-form-label">Driver<span
-                                                class="text-danger">*</span></label>
-                                        <div class="input-group m-b-10">
-                                            <div class="input-group-prepend"><span class="input-group-text">
-                                                    <i class="fas fa-lg fa-fw fa-user"></i></span></div>
-                                            <select class="form-control kt-select2 select2" id="driver" name="driver"
-                                                style="width:80%;">
-                                                <option value="" disabled selected>Please Select Driver
-                                                </option>
-                                                @foreach ($fetch_drivers as $key)
-                                                    @if (old('driver') == $key->id)
-                                                        <option value="{{ $key->id }}" selected>
-                                                            {{ $key->driver_code }} |
-                                                            {{ $key->employee_name }}
-                                                        </option>
-                                                    @else
-                                                        <option value="{{ $key->id }}">
-                                                            {{ $key->driver_code }} |
-                                                            {{ $key->employee_name }}
-                                                        </option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label class="text-lg-right col-form-label">Driver<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group m-b-10">
+                                                <div class="input-group-prepend"><span class="input-group-text">
+                                                        <i class="fas fa-lg fa-fw fa-user"></i></span></div>
+                                                <select class="form-control kt-select2 select2" id="driver"
+                                                    name="driver" style="width:80%;">
+                                                    <option value="" disabled selected>Please Select Driver
+                                                    </option>
+                                                    @foreach ($fetch_drivers as $key)
+                                                        @if (old('driver') == $key->id)
+                                                            <option value="{{ $key->id }}" selected>
+                                                                {{ $key->driver_code }} |
+                                                                {{ $key->employee_name }}
+                                                            </option>
+                                                        @else
+                                                            <option value="{{ $key->id }}">
+                                                                {{ $key->driver_code }} |
+                                                                {{ $key->employee_name }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
+
+
                                 </div>
 
-
-                            </div>
-
-                            <div class="row">
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label class="text-lg-right col-form-label">City<span
-                                                class="text-danger">*</span></label>
-                                        <div class="input-group m-b-10">
-                                            <div class="input-group-prepend"><span class="input-group-text">
-                                                    <i class="fas fa-lg fa-fw fa-building"></i></span></div>
-                                            <select class="form-control kt-select2 city" id="city" name="city" style="width:80%;">
-                                                <option value="" disabled selected>Please Select City</option>
-                                                @foreach ($fetch_citys as $key)
-                                                    @if (old('city') == $key->id)
-                                                        <option value="{{ $key->id }}" selected>{{ $key->name }}
-                                                        </option>
-                                                    @else
-                                                        <option value="{{ $key->id }}">{{ $key->name }}</option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label class="text-lg-right col-form-label">City<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group m-b-10">
+                                                <div class="input-group-prepend"><span class="input-group-text">
+                                                        <i class="fas fa-lg fa-fw fa-building"></i></span></div>
+                                                <select class="form-control kt-select2 city" id="city" name="city"
+                                                    style="width:80%;">
+                                                    <option value="" disabled selected>Please Select City</option>
+                                                    @foreach ($fetch_citys as $key)
+                                                        @if (old('city') == $key->id)
+                                                            <option value="{{ $key->id }}" selected>{{ $key->name }}
+                                                            </option>
+                                                        @else
+                                                            <option value="{{ $key->id }}">{{ $key->name }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label class="text-lg-right col-form-label">Zones<span
-                                                class="text-danger">*</span></label>
-                                        <div class="input-group m-b-10">
-                                            <div class="input-group-prepend"><span class="input-group-text">
-                                                    <i class="fas fa-lg fa-fw fa-map-marker-alt"></i></span></div>
-                                            <select class="form-control" id="zones" name="zones" required>
-                                                <option value="" disabled selected>Please Select Zone</option>
-                                            </select>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label class="text-lg-right col-form-label">Zones<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group m-b-10">
+                                                <div class="input-group-prepend"><span class="input-group-text">
+                                                        <i class="fas fa-lg fa-fw fa-map-marker-alt"></i></span></div>
+                                                <select class="form-control" id="zones" name="zones" required>
+                                                    <option value="" disabled selected>Please Select Zone</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label class="text-lg-right col-form-label">Areas<span
-                                                class="text-danger">*</span></label>
-                                        <div class="input-group m-b-10">
-                                            <div class="input-group-prepend"><span class="input-group-text">
-                                                    <i class="fas fa-lg fa-fw fa-street-view"></i></span></div>
-                                            <select class="form-control kt-select2" id="area" name="area" required>
-                                                <option value="" disabled selected>Please Select Area</option>
-                                            </select>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label class="text-lg-right col-form-label">Areas<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group m-b-10">
+                                                <div class="input-group-prepend"><span class="input-group-text">
+                                                        <i class="fas fa-lg fa-fw fa-street-view"></i></span></div>
+                                                <select class="form-control kt-select2" id="area" name="area"
+                                                    required>
+                                                    <option value="" disabled selected>Please Select Area</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
+
+
+
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-primary btn-sm hold"><i
+                                                class="fa fa-spinner"></i>Load</button>
+                                        </div>
+                                    </div>
+
+
                                 </div>
 
 
-                            </div>
+
+
+
+                            </form>
 
                             <div class="row">
                                 <div class="col-4" style="margin-top: 45px;">
@@ -327,5 +346,69 @@
                 });
             });
         });
+
+        function get_data() {
+            var created_from_date = $('#created_from_date').val();
+            var created_to_date = $('#created_to_date').val();
+            var id = $('#cities').val();
+            var shipper_id = $('#shipper').val();
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                },
+                url: "{{ route('admin.shipment.get_orders') }}",
+                type: "POST",
+                data: {
+                    created_from_date: created_from_date,
+                    created_to_date: created_to_date,
+                    id: id,
+                    shipper_id: shipper_id,
+                },
+                success: function(response) {
+                    // console.log(response);
+                    var responseData = response;
+                    var html = "";
+
+                    responseData.forEach((item) => {
+                        html += `<tr>
+                                <td><input type="checkbox"  class="checkbox" value="${item.id}" name="checkbox[]"></td>
+                                <td><a href="javascript:void(0);" id="show-employee" data-toggle="modal" data-target="${item.id ? '{{ route('admin.shipment.get_edit_orders', ['id' => "' + item.id + '"]) }}' : ''}  onclick="comments(${item.id})">${item.tracking_number}
+                                    <br>
+                                    ${item.awb_number}
+                                    <br>
+                                    ${item.reference_number}
+                                    </a></td>
+                                <td></td>
+                                <td>${item.shipper_name}</td>
+                                <td>${item.driver_id === null
+                                ? '<span></span>'
+                                : `<span>${item.employee_name}</span>&nbsp;<span>${item.employee_mobile}</span>`
+                                }</td>
+                                <td>${item.city_name}</td>
+                                <td>${item.reciver_name}
+                                <span>${item.mobile_1}</span>
+                                </td>
+                                <td>${item.instruction}</td>
+                                <td></td>
+                                <td>${item.account_name}</td>
+                                <td>${item.service_charges !== null ? `${item.service_charges}.00` : ''}</td>
+                                <td></td>
+                                <td>${item.order_date}</td>
+                                <td>${item.delivery_attempt}</td>
+                                <td>${item.status_name}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>`;
+                    });
+
+                    var previewElement = document.getElementById('preview');
+                    if (previewElement) {
+                        previewElement.innerHTML = html;
+                    }
+                }
+            });
+
+        }
     </script>
 @endsection
