@@ -84,6 +84,7 @@ class DriverController extends Controller
 
     public function edit($id)
     {
+        dd($id);
         $drivers = Driver::join('employees', 'drivers.employee_code', '=', 'employees.id')
             ->select('drivers.*', 'employees.emp_code', 'employees.emp_first_name')
             ->where('drivers.id', $id)->first();

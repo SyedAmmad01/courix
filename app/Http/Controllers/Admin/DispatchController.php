@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Dispatch;
 use App\Models\Driver;
+use App\Models\Shipment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,8 @@ use Carbon\Carbon;
 
 class DispatchController extends Controller
 {
-    public function delivery_jobs(Request $request){
+    public function delivery_jobs(Request $request)
+    {
 
         $page_title = 'Delivery Jobs';
         $page_description = 'Dispatch / Delivery Jobs';
@@ -52,13 +54,14 @@ class DispatchController extends Controller
 
     public function get_orders(Request $request)
     {
-        dd($request->all());
         // Validate the input data before proceeding
         $validator = Validator::make($request->all(), [
-            'created_from_date' => 'date',
-            'created_to_date' => 'date|after_or_equal:created_from_date',
-            'id' => 'array',
-            'shipper_id' => 'array',
+            'from_date' => 'date',
+            'to_date' => 'date|after_or_equal:from_date',
+            'driver_id' => 'required',
+            'city_id' => 'required',
+            'area_id' => 'required',
+            'zones_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -66,50 +69,63 @@ class DispatchController extends Controller
         }
 
         // Convert date strings to Carbon instances
-        $startDate = Carbon::parse($request->input('created_from_date'));
-        $endDate = Carbon::parse($request->input('created_to_date'));
-        $ids = $request->input('id');
-        $shipperIds = $request->input('shipper_id');
+        $startDate = Carbon::parse($request->input('from_date'));
+        $endDate = Carbon::parse($request->input('to_date'));
+        $driver_id = $request->input('driver_id');
+        $city_id = $request->input('city_id');
+        $area_id = $request->input('area_id');
+        $zone_id = $request->input('zones_id');
 
         // Start building the query with necessary joins and selects
         $query = Shipment::query()
             ->leftJoin('citys', 'shipments.city', '=', 'citys.id')
+            ->leftJoin('countrys', 'shipments.country', '=', 'countrys.id')
+            ->leftJoin('areas', 'shipments.area', '=', 'areas.id')
             ->leftJoin('status', 'shipments.status', '=', 'status.id')
             ->leftJoin('drivers', 'shipments.driver_id', '=', 'drivers.id')
             ->select(
                 'shipments.*',
                 'citys.name as city_name',
+                'countrys.name as country_name',
+                'areas.name as area_name',
                 'status.name as status_name',
                 'drivers.employee_name',
                 'drivers.employee_mobile'
             );
 
-        // dd($query);
-
         // Apply date filter if provided
         if ($startDate && $endDate) {
-            $query->whereBetween('order_date', [$startDate, $endDate]);
+            $query->whereDate('order_date', '>=', $startDate)
+                ->whereDate('order_date', '<=', $endDate);
         }
 
         // Apply 'id' filter if provided
-        if ($ids) {
-            $query->whereIn('shipments.city', $ids); // Specify the table alias or name
+        if ($driver_id) {
+            $query->whereIn('shipments.driver_id', (array)$driver_id);
         }
 
         // Apply 'shipper_id' filter if provided
-        if ($shipperIds) {
-            $query->whereIn('shipments.shipper_code', $shipperIds); // Specify the table alias or name
+        if ($city_id) {
+            $query->whereIn('shipments.city', (array)$city_id);
+        }
+
+        if ($area_id) {
+            $query->whereIn('shipments.area', (array)$area_id);
         }
 
         // Execute the query and retrieve the data
         $data = $query->get();
 
-        // dd($data);
+        if ($data->isEmpty()) {
+            return response()->json(['message' => 'No records found.'], 404);
+        }
 
         return $data;
     }
 
-    public function inscan(Request $request){
+
+    public function inscan(Request $request)
+    {
 
         $page_title = 'Inscan';
         $page_description = 'Dispatch / Inscan';
@@ -117,16 +133,17 @@ class DispatchController extends Controller
         return view('admin.dispatch.inscan', compact('page_title', 'page_description'));
     }
 
-    public function outscan(Request $request){
+    public function outscan(Request $request)
+    {
 
         $page_title = 'Outscan';
         $page_description = 'Dispatch / Outscan';
 
         return view('admin.dispatch.outscan', compact('page_title', 'page_description'));
-
     }
 
-    public function shipment_pickup(Request $request){
+    public function shipment_pickup(Request $request)
+    {
 
         $page_title = 'Pick Up Request';
         $page_description = 'Dispatch / Pick Up Request';
@@ -134,7 +151,8 @@ class DispatchController extends Controller
         return view('admin.dispatch.pickup_req', compact('page_title', 'page_description'));
     }
 
-    public function manifest(Request $request){
+    public function manifest(Request $request)
+    {
 
         $page_title = 'Manifest';
         $page_description = 'Dispatch / Manifest';
@@ -142,7 +160,8 @@ class DispatchController extends Controller
         return view('admin.dispatch.manifest', compact('page_title', 'page_description'));
     }
 
-    public function pendings(Request $request){
+    public function pendings(Request $request)
+    {
 
         $page_title = 'Pending';
         $page_description = 'Dispatch / Pending';
@@ -150,7 +169,8 @@ class DispatchController extends Controller
         return view('admin.dispatch.pendings', compact('page_title', 'page_description'));
     }
 
-    public function collection_jobs(Request $request){
+    public function collection_jobs(Request $request)
+    {
 
         $page_title = 'Collection Jobs';
         $page_description = 'Dispatch / Collection Jobs';
@@ -158,7 +178,8 @@ class DispatchController extends Controller
         return view('admin.dispatch.collection_jobs', compact('page_title', 'page_description'));
     }
 
-    public function driver_location(Request $request){
+    public function driver_location(Request $request)
+    {
 
         $page_title = 'Driver Location';
         $page_description = 'Dispatch / Driver Location';
@@ -166,4 +187,3 @@ class DispatchController extends Controller
         return view('admin.dispatch.driver_location', compact('page_title', 'page_description'));
     }
 }
-

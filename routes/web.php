@@ -216,6 +216,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/driver/alldriverslocation', [App\Http\Controllers\Admin\DispatchController::class, 'driver_location'])->name('admin.dispatch.driver_location');
         Route::post('/dispatch/getarea', [App\Http\Controllers\Admin\DispatchController::class, 'getarea'])->name('admin.dispatch.getarea');
         Route::post('/dispatch/getcity', [App\Http\Controllers\Admin\DispatchController::class, 'getcity'])->name('admin.dispatch.getcity');
+        Route::post('/dispatch/get_orders', [App\Http\Controllers\Admin\DispatchController::class, 'get_orders'])->name('admin.dispatch.get_orders');
+
 
         //
 
