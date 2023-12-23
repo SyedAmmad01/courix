@@ -138,7 +138,7 @@
 
                                     <div class="col-4 mt-5">
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-sm hold">Submit</button>
+                                            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
                                         </div>
                                     </div>
 
@@ -178,13 +178,12 @@
 
 
                             <div class="row hidden" style="display:none;">
-                                <div class="col-12" style="margin-top: 45px;">
-                                    <div class="form-group">
-                                        <input type="text" id="" name="" placeholder="Search"
-                                            class="form-control ">
+                                    <div class="col-12" style="margin-top: 45px;">
+                                        <div class="form-group">
+                                            <input type="text" id="search_box" name="search_box" placeholder="Search"
+                                                class="form-control" onblur="search_bar()">
+                                        </div>
                                     </div>
-                                </div>
-
                             </div>
                             <hr>
 
@@ -269,11 +268,11 @@
     </div>
 
     {{-- Delivery Jobs Update Status Modal --}}
-    @include('admin.modal.edit_delivery_jobs');
+    @include('admin.modal.edit_delivery_jobs')
     {{-- Delivery Jobs Update Status Modal --}}
 
     {{-- Delivery Jobs Delete Data Modal --}}
-    @include('admin.modal.delete_delivery_jobs');
+    @include('admin.modal.delete_delivery_jobs')
     {{-- Delivery Jobs Delete Data Modal --}}
 
 @endsection
@@ -357,17 +356,17 @@
                     zones_id: zones_id,
                 },
                 success: function(response) {
-                    console.log(response);
+                    // console.log(response);
                     var responseData = response;
                     var html = "";
                     responseData.forEach((item) => {
                         // Check the job_code value and display corresponding status
                         var statusText = "";
-                        if (item.job_code == 1) {
+                        if (item.job_status == 1) {
                             statusText = "Created";
-                        } else if (item.job_code == 2) {
+                        } else if (item.job_status == 2) {
                             statusText = "Started";
-                        } else if (item.job_code == 3) {
+                        } else if (item.job_status == 3) {
                             statusText = "Delivered";
                         }
                         html += `<tr>
@@ -382,7 +381,7 @@
                             <td><span style="display:flex;">
                                 <a href="javascript:void(0);" id="show-employee" data-toggle="modal"
                                         data-target="#EditDeliveryJobsModal"
-                                        data-url=""
+                                        data-url="{{ url('admin/dispatch/edit/${item.id}') }}"
                                         class="btn btn-primary btn-sm fa fa-edit" type="button" style="background-color: #007aff;
                                         border-color: #007aff;">
                                     </a>
@@ -403,34 +402,156 @@
             });
         });
 
+        function get_orders() {
+            var from_date = $('#from_date').val();
+            var to_date = $('#to_date').val();
+            var driver_id = $('#driver').val();
+            var city_id = $('#city').val();
+            var area_id = $('#area').val();
+            var zones_id = $('#zones').val();
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                },
+                url: "{{ route('admin.dispatch.get_orders') }}",
+                type: "POST",
+                data: {
+                    from_date: from_date,
+                    to_date: to_date,
+                    driver_id: driver_id,
+                    city_id: city_id,
+                    area_id: area_id,
+                    zones_id: zones_id,
+                },
+                success: function(response) {
+                    // console.log(response);
+                    var responseData = response;
+                    var html = "";
+                    responseData.forEach((item) => {
+                        // Check the job_code value and display corresponding status
+                        var statusText = "";
+                        if (item.job_status == 1) {
+                            statusText = "Created";
+                        } else if (item.job_status == 2) {
+                            statusText = "Started";
+                        } else if (item.job_status == 3) {
+                            statusText = "Delivered";
+                        }
+                        html += `<tr>
+                            <td><input class="checkbox-tick" type="checkbox" name="checkbox" value="${item.id}"></td>
+                            <td>${item.job_code}</td>
+                            <td>${item.tracking_number}</td>
+                            <td>${item.reference_number}</td>
+                            <td>${item.area_name}</td>
+                            <td>${item.country_name},${item.city_name},${item.area_name},${item.street_address}</td>
+                            <td>${statusText}</td>
+                            <td>${item.status_name}</td>
+                            <td><span style="display:flex;">
+                                <a href="javascript:void(0);" id="show-employee" data-toggle="modal"
+                                        data-target="#EditDeliveryJobsModal"
+                                        data-url="{{ url('admin/dispatch/edit/${item.id}') }}"
+                                        class="btn btn-primary btn-sm fa fa-edit" type="button" style="background-color: #007aff;
+                                        border-color: #007aff;">
+                                    </a>
+                                    &nbsp;
+                                <button class="delete-btn btn btn-danger btn-sm fa fa-trash"
+                                    data-driver-id="" data-toggle="modal"
+                                    data-target="#DeleteDeliveryJobsModal"></button>
+                                &nbsp;
+                            </td>
+                        </tr>`;
+                    });
+
+                    var previewElement = document.getElementById('preview');
+                    if (previewElement) {
+                        previewElement.innerHTML = html;
+                    }
+                }
+            });
+        }
+
+
+        function search_bar() {
+            var id = $('#search_box').val();
+            // alert(id);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                },
+                url: "{{ route('admin.dispatch.search_bar') }}",
+                type: "POST",
+                data: {
+                    id: id,
+                    // name: name,
+                },
+                success: function(response) {
+                    // console.log(response);
+                    var responseData = response;
+                    var html = "";
+                    responseData.forEach((item) => {
+                        // Check the job_code value and display corresponding status
+                        var statusText = "";
+                        if (item.job_status == 1) {
+                            statusText = "Created";
+                        } else if (item.job_status == 2) {
+                            statusText = "Started";
+                        } else if (item.job_status == 3) {
+                            statusText = "Delivered";
+                        }
+                        html += `<tr>
+                            <td><input class="checkbox-tick" type="checkbox" name="checkbox" value="${item.id}"></td>
+                            <td>${item.job_code}</td>
+                            <td>${item.tracking_number}</td>
+                            <td>${item.reference_number}</td>
+                            <td>${item.area_name}</td>
+                            <td>${item.country_name},${item.city_name},${item.area_name},${item.street_address}</td>
+                            <td>${statusText}</td>
+                            <td>${item.status_name}</td>
+                            <td><span style="display:flex;">
+                                <a href="javascript:void(0);" id="show-employee" data-toggle="modal"
+                                        data-target="#EditDeliveryJobsModal"
+                                        data-url="{{ url('admin/dispatch/edit/${item.id}') }}"
+                                        class="btn btn-primary btn-sm fa fa-edit" type="button" style="background-color: #007aff;
+                                        border-color: #007aff;">
+                                    </a>
+                                    &nbsp;
+                                <button class="delete-btn btn btn-danger btn-sm fa fa-trash"
+                                    data-driver-id="" data-toggle="modal"
+                                    data-target="#DeleteDeliveryJobsModal"></button>
+                                &nbsp;
+                            </td>
+                        </tr>`;
+                    });
+
+                    var previewElement = document.getElementById('preview');
+                    if (previewElement) {
+                        previewElement.innerHTML = html;
+                    }
+                }
+            });
+
+        }
+
+
+
+
 
         $("body").on("click", "#show-employee", function() {
-                var candidateURL = $(this).data('url');
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.get(candidateURL, function(data) {
-                    // console.log(data);
-                    var fullName = data.emp_code + ' | ' + data.emp_first_name;
-                    $('#EditDeliveryJobsModal').modal('show');
-                    $('#d-id').val(data.id);
-                    $('#d-driver_code').val(data.driver_code);
-                    $('#d-employee_code').val(fullName);
-                    $('#d-emp_code').val(data.employee_code);
-                    $('#d-employee_name').val(data.employee_name);
-                    $('#d-employee_mobile').val(data.employee_mobile);
-                    $('#d-city').val(data.city);
-                    $('#d-zones').val(data.zones);
-                    $('#d-app_username').val(data.app_username);
-                    $('#d-app_password').val(data.app_password);
-                    $('#d-app_confirm_password').val(data.app_confirm_password);
-                });
+            var candidateURL = $(this).data('url');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             });
-            $('.close_modal').click(function() {
-                $('#driverShowModalEdit').modal('hide');
+            $.get(candidateURL, function(data) {
+                // console.log(data);
+                var fullName = data.emp_code + ' | ' + data.emp_first_name;
+                $('#EditDeliveryJobsModal').modal('show');
+                $('#s-id').val(data.id);
             });
-
+        });
+        $('.close_modal').click(function() {
+            $('#driverShowModalEdit').modal('hide');
+        });
     </script>
 @endsection

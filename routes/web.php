@@ -217,6 +217,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/dispatch/getarea', [App\Http\Controllers\Admin\DispatchController::class, 'getarea'])->name('admin.dispatch.getarea');
         Route::post('/dispatch/getcity', [App\Http\Controllers\Admin\DispatchController::class, 'getcity'])->name('admin.dispatch.getcity');
         Route::post('/dispatch/get_orders', [App\Http\Controllers\Admin\DispatchController::class, 'get_orders'])->name('admin.dispatch.get_orders');
+        Route::get('/dispatch/edit/{id}', [App\Http\Controllers\Admin\DispatchController::class, 'edit_orders'])->name('admin.dispatch.order_edit');
+        Route::post('/dispatch/update_order', [App\Http\Controllers\Admin\DispatchController::class, 'update_order'])->name('admin.dispatch.update_order');
+        Route::post('/dispatch/search_bar', [App\Http\Controllers\Admin\DispatchController::class, 'search_bar'])->name('admin.dispatch.search_bar');
 
 
         //

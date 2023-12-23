@@ -79,6 +79,7 @@ class DispatchController extends Controller
         // Start building the query with necessary joins and selects
         $query = Shipment::query()
             ->leftJoin('citys', 'shipments.city', '=', 'citys.id')
+            // ->leftJoin('citys', 'shipments.city', '=', 'citys.id')
             ->leftJoin('countrys', 'shipments.country', '=', 'countrys.id')
             ->leftJoin('areas', 'shipments.area', '=', 'areas.id')
             ->leftJoin('status', 'shipments.status', '=', 'status.id')
@@ -121,6 +122,61 @@ class DispatchController extends Controller
         }
 
         return $data;
+    }
+
+    public function edit_orders($id)
+    {
+        $shipments = Shipment::where('id', $id)->first();
+        return response()->json($shipments);
+    }
+
+
+    public function update_order(Request $request)
+    {
+        $shipments = Shipment::find($request->id);
+        $shipments->job_status = $request->input('jobstatus');
+        $shipments->update();
+
+        return response()->json(['status' => 'success']);
+    }
+
+    public function search_bar(Request $request)
+    {
+        // dd($request->all());
+        if (is_numeric($request->id)) {
+            $get_data = Shipment::leftJoin('citys', 'shipments.city', '=', 'citys.id')
+                ->leftJoin('countrys', 'shipments.country', '=', 'countrys.id')
+                ->leftJoin('areas', 'shipments.area', '=', 'areas.id')
+                ->leftJoin('status', 'shipments.status', '=', 'status.id')
+                ->leftJoin('drivers', 'shipments.driver_id', '=', 'drivers.id')
+                ->select(
+                    'shipments.*',
+                    'citys.name as city_name',
+                    'countrys.name as country_name',
+                    'areas.name as area_name',
+                    'status.name as status_name',
+                    'drivers.employee_name',
+                    'drivers.employee_mobile'
+                )->where('reference_number', 'LIKE', '%' . $request->id . '%')->get();
+        } else {
+            $get_data = Shipment::leftJoin('citys', 'shipments.city', '=', 'citys.id')
+                ->leftJoin('countrys', 'shipments.country', '=', 'countrys.id')
+                ->leftJoin('areas', 'shipments.area', '=', 'areas.id')
+                ->leftJoin('status', 'shipments.status', '=', 'status.id')
+                ->leftJoin('drivers', 'shipments.driver_id', '=', 'drivers.id')
+                ->select(
+                    'shipments.*',
+                    'citys.name as city_name',
+                    'countrys.name as country_name',
+                    'areas.name as area_name',
+                    'status.name as status_name',
+                    'drivers.employee_name',
+                    'drivers.employee_mobile'
+                )->where('shipper_name', 'LIKE', '%' . $request->id . '%')->get();
+        }
+
+        // dd($get_data);
+        return $get_data;
     }
 
 
