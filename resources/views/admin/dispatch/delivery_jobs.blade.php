@@ -164,12 +164,18 @@
                                     </div>
                                     <div class="col-5" style="margin-top: 45px;">
                                         <div class="form-group">
-                                            <button type="button" class="btn btn-danger btn-sm"><i
-                                                    class="fa-solid fa-pen-to-square"></i>Update Job Code</button>
-                                            <button type="button" class="btn btn-success btn-sm"><i
-                                                    class="fa-solid fa-truck"></i>PDf Report</button>
-                                            <button type="button" class="btn btn-primary btn-sm"><i
-                                                    class="fa-solid fa-truck"></i>Excel Report</button>
+                                            {{-- <button type="button" class="btn btn-danger btn-sm"><i
+                                                    class="fa-solid fa-pen-to-square"></i>Update Job Code</button> --}}
+                                            <a type="button" id="employee" href="javascript:void(0);" data-target="#UpdateDeliveryJobsModal" class="btn btn-danger btn-sm"
+                                                onclick="updatecode(selectedIDs)"><i class="fa-solid fa-pen-to-square"></i>Update Job Code</a>
+
+                                            <a type="button" href="javascript:void(0);" class="btn btn-success btn-sm"
+                                                onclick="pdfexport(selectedIDs)"><i class="fa-solid fa-truck"></i>PDf
+                                                Report</a>
+
+                                            <a type="button" href="javascript:void(0);" class="btn btn-primary btn-sm"
+                                                onclick="exportToExcel(selectedIDs)"><i
+                                                    class="fa-solid fa-truck"></i>Export To Excel</a>
                                         </div>
                                     </div>
                                 </div>
@@ -178,12 +184,12 @@
 
 
                             <div class="row hidden" style="display:none;">
-                                    <div class="col-12" style="margin-top: 45px;">
-                                        <div class="form-group">
-                                            <input type="text" id="search_box" name="search_box" placeholder="Search"
-                                                class="form-control" onblur="search_bar()">
-                                        </div>
+                                <div class="col-12" style="margin-top: 45px;">
+                                    <div class="form-group">
+                                        <input type="text" id="search_box" name="search_box" placeholder="Search"
+                                            class="form-control" onblur="search_bar()">
                                     </div>
+                                </div>
                             </div>
                             <hr>
 
@@ -274,6 +280,10 @@
     {{-- Delivery Jobs Delete Data Modal --}}
     @include('admin.modal.delete_delivery_jobs')
     {{-- Delivery Jobs Delete Data Modal --}}
+
+    {{-- Delivery Jobs Update Status Modal --}}
+    @include('admin.modal.update_jobcode_delivery_jobs')
+    {{-- Delivery Jobs Update Status Modal --}}
 
 @endsection
 {{-- Scripts Section --}}
@@ -370,7 +380,7 @@
                             statusText = "Delivered";
                         }
                         html += `<tr>
-                            <td><input class="checkbox-tick" type="checkbox" name="checkbox" value="${item.id}"></td>
+                            <td><input class="checkbox-tick checkbox" type="checkbox" name="checkbox" value="${item.id}"></td>
                             <td>${item.job_code}</td>
                             <td>${item.tracking_number}</td>
                             <td>${item.reference_number}</td>
@@ -438,7 +448,7 @@
                             statusText = "Delivered";
                         }
                         html += `<tr>
-                            <td><input class="checkbox-tick" type="checkbox" name="checkbox" value="${item.id}"></td>
+                            <td><input class="checkbox-tick checkbox" type="checkbox" name="checkbox" value="${item.id}"></td>
                             <td>${item.job_code}</td>
                             <td>${item.tracking_number}</td>
                             <td>${item.reference_number}</td>
@@ -499,7 +509,7 @@
                             statusText = "Delivered";
                         }
                         html += `<tr>
-                            <td><input class="checkbox-tick" type="checkbox" name="checkbox" value="${item.id}"></td>
+                            <td><input class="checkbox-tick checkbox" type="checkbox" name="checkbox" value="${item.id}"></td>
                             <td>${item.job_code}</td>
                             <td>${item.tracking_number}</td>
                             <td>${item.reference_number}</td>
@@ -553,5 +563,90 @@
         $('.close_modal').click(function() {
             $('#driverShowModalEdit').modal('hide');
         });
+
+
+        // // Array to hold selected checkbox IDs
+        var selectedIDs = [];
+
+        // Checkbox click event handler using event delegation
+        $(document).on('change', '.checkbox', function() {
+            var id = $(this).val();
+            // alert(id);
+            if (this.checked) {
+                selectedIDs.push(id);
+            } else {
+                var index = selectedIDs.indexOf(id);
+                if (index !== -1) {
+                    selectedIDs.splice(index, 1);
+                }
+            }
+        });
+
+        function exportToExcel(selectedIDs) {
+            // alert(selectedIDs);
+            // Send an AJAX request to get data
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                },
+                url: "{{ route('admin.dispatch.exportToExcel') }}",
+                type: "POST",
+                data: {
+                    id: selectedIDs,
+                },
+                xhrFields: {
+                    responseType: 'blob' // This is important for handling binary data
+                },
+                success: function(response, status, xhr) {
+                    const blob = response;
+                    const fileName = 'ExportExcel.xlsx';
+
+                    // Trigger the download using FileSaver.js
+                    saveAs(blob, fileName);
+                },
+                error: function(xhr, textStatus, error) {
+                    // Handle AJAX error
+                    console.error("Export failed:", error);
+                    // Add user-friendly error handling here
+                }
+            });
+        }
+
+        function pdfexport(selectedIDs) {
+            // alert(selectedIDs);
+            // Send an AJAX request to get data
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                },
+                url: "{{ route('admin.dispatch.pdf_export') }}",
+                type: "POST",
+                data: {
+                    id: selectedIDs,
+                },
+                xhrFields: {
+                    responseType: 'blob' // This is important for handling binary data
+                },
+                success: function(response, status, xhr) {
+                    const blob = response;
+                    const fileName = 'deliveryjobs.pdf'; // Specify the desired file name
+
+                    // Trigger the download using FileSaver.js
+                    saveAs(blob, fileName);
+                },
+                error: function(xhr, textStatus, error) {
+                    // Handle AJAX error
+                    console.error("Export failed:", error);
+                    // Add user-friendly error handling here
+                }
+            });
+        }
+
+
+
+
+
+
+
     </script>
 @endsection

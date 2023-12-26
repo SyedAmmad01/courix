@@ -220,6 +220,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/dispatch/edit/{id}', [App\Http\Controllers\Admin\DispatchController::class, 'edit_orders'])->name('admin.dispatch.order_edit');
         Route::post('/dispatch/update_order', [App\Http\Controllers\Admin\DispatchController::class, 'update_order'])->name('admin.dispatch.update_order');
         Route::post('/dispatch/search_bar', [App\Http\Controllers\Admin\DispatchController::class, 'search_bar'])->name('admin.dispatch.search_bar');
+        Route::post('/dispatch/export_to_excel', [App\Http\Controllers\Admin\DispatchController::class, 'exportToExcel'])->name('admin.dispatch.exportToExcel');
+        Route::post('/dispatch/pdf_export', [App\Http\Controllers\Admin\DispatchController::class, 'pdf_export'])->name('admin.dispatch.pdf_export');
 
 
         //

@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PDF;
 
 
 
@@ -177,6 +180,330 @@ class DispatchController extends Controller
 
         // dd($get_data);
         return $get_data;
+    }
+
+
+    public function exportToExcel(Request $request)
+    {
+        // dd($request->all());
+        // Generate or fetch the Excel file
+        $spreadsheet = new Spreadsheet();
+
+        // Initialize row counter
+        $row = 1;
+
+        // Add column headers to the spreadsheet
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Barcode');
+        $sheet->setCellValue('B1', 'Tracking_No');
+        $sheet->setCellValue('C1', 'ShipperName');
+        $sheet->setCellValue('D1', 'LocationFrom');
+        $sheet->setCellValue('E1', 'LocationTo');
+        $sheet->setCellValue('F1', 'Remarks');
+        $sheet->setCellValue('G1', 'JobCode');
+        $sheet->setCellValue('H1', 'JobStatus');
+        $sheet->setCellValue('I1', 'Recipient_Name');
+        $sheet->setCellValue('J1', 'AccountName');
+        $sheet->setCellValue('K1', 'RecipientMobile1');
+        $sheet->setCellValue('L1', 'RecipientMobile2');
+        $sheet->setCellValue('M1', 'ContactNo_Office1');
+        $sheet->setCellValue('O1', 'ContactNo_Office2');
+        $sheet->setCellValue('P1', 'CostOfGoods');
+        $sheet->setCellValue('Q1', 'Shipment_Date');
+        $sheet->setCellValue('R1', 'TrackingStatus');
+        $sheet->setCellValue('S1', 'DriverName');
+        $sheet->setCellValue('T1', 'LastUpdatedBy');
+        $sheet->setCellValue('U1', 'LastUpdatedOn');
+        $sheet->setCellValue('V1', 'Area');
+        $sheet->setCellValue('W1', 'City');
+        $sheet->setCellValue('X1', 'SalePersonName');
+        $sheet->setCellValue('Y1', 'ServiceCharges');
+        $sheet->setCellValue('Z1', 'JobCode');
+        $sheet->setCellValue('AA1', 'DeliveryAttempts');
+        $sheet->setCellValue('AB1', 'SerialNo');
+        $sheet->setCellValue('AC1', 'No_Of_Pieces');
+        $sheet->setCellValue('AD1', 'CreatedOn');
+        $sheet->setCellValue('AE1', 'Description');
+        $sheet->setCellValue('AF1', 'CSRemarks');
+        $sheet->setCellValue('AG1', 'ShipmentRemarksInternal');
+        $sheet->setCellValue('AH1', 'Courier');
+        $sheet->setCellValue('AI1', 'ThirdPartyTrackingStatus');
+        $sheet->setCellValue('AJ1', 'ThirdPartyShipmentDate');
+        $sheet->setCellValue('AK1', 'ThirdPartyLastUpdateDateTime');
+        $sheet->setCellValue('AL1', 'ThirdPartyRemarks');
+
+
+        // Loop through the request IDs
+        foreach ($request->id as $shipmentId) {
+            // Fetch a single Shipment model instance based on the current ID
+            $shipmentData = Shipment::leftJoin('status', 'shipments.status', '=', 'status.id')
+                ->leftJoin('shippers AS shipper', 'shipments.shipper_code', '=', 'shipper.id')
+                ->leftJoin('countrys AS shipment_country', 'shipments.country', '=', 'shipment_country.id')
+                ->leftJoin('citys AS shipment_city', 'shipments.city', '=', 'shipment_city.id')
+                ->leftJoin('areas AS shipment_area', 'shipments.area', '=', 'shipment_area.id')
+                ->leftJoin('countrys AS shipper_country', 'shipper.country', '=', 'shipper_country.id')
+                ->leftJoin('citys AS shipper_city', 'shipper.city', '=', 'shipper_city.id')
+                ->leftJoin('areas AS shipper_area', 'shipper.area', '=', 'shipper_area.id')
+                ->leftJoin('drivers', 'shipments.driver_id', '=', 'drivers.id')
+                ->select(
+                    'shipments.*',
+                    'status.name AS status_name',
+                    'shipper.street_address AS shipper_address',
+                    'shipper.contact_office_1 AS shipper_contact',
+                    'shipment_country.name AS shipment_country_name',
+                    'shipment_city.name AS shipment_city_name',
+                    'shipment_area.name AS shipment_area_name',
+                    'shipper_country.name AS shipper_country_name',
+                    'shipper_city.name AS shipper_city_name',
+                    'shipper_area.name AS shipper_area_name',
+                    'drivers.employee_name',
+                    'drivers.driver_code',
+                    'drivers.employee_mobile',
+                    'shipper.shipper_code As s_code',
+                    'shipper.country As shipper_country',
+                    'shipper.city As shipper_city',
+                    'shipper.area As shipper_area',
+                    'shipper.contact_office_1 As shipper_contact_1',
+                    'shipper.contact_office_2 As shipper_contact_2'
+                )->where('shipments.id',  $shipmentId)->first();
+
+            // dd($shipmentData);
+
+            if ($shipmentData) {
+                // Increment the row counter
+                $row++;
+
+                $combinedAddress = $shipmentData->shipper_address . ', ' . $shipmentData->shipper_area_name . ', ' . $shipmentData->shipper_city_name . ', ' . $shipmentData->shipper_country_name;
+
+                $shipAddress = $shipmentData->street_address . ', ' . $shipmentData->shipment_area_name . ', ' . $shipmentData->shipment_city_name . ', ' . $shipmentData->shipment_country_name;
+
+                // Populate data from the Shipment model into the Excel file
+                $sheet->setCellValue('A' . $row, $shipmentData->barcode);
+                $sheet->setCellValue('B' . $row, $shipmentData->reference_number);
+                $sheet->setCellValue('C' . $row, $shipmentData->shipper_name);
+                $sheet->setCellValue('D' . $row, $combinedAddress);
+                $sheet->setCellValue('E' . $row, $shipAddress);
+                $sheet->setCellValue('F' . $row, $shipmentData->shipper_name);
+                $sheet->setCellValue('G' . $row, $shipmentData->job_code);
+                if ($shipmentData->job_status == 1) {
+                    $text = 'Created';
+                } elseif ($shipmentData->job_status == 2) {
+                    $text = 'Started';
+                } elseif ($shipmentData->job_status == 3) {
+                    $text = 'Delivered';
+                }
+                $sheet->setCellValue('H' . $row, $text);
+                $sheet->setCellValue('I' . $row, $shipmentData->reciver_name);
+                $sheet->setCellValue('J' . $row, $shipmentData->account_name);
+                $sheet->setCellValue('K' . $row, $shipmentData->mobile_1);
+                $sheet->setCellValue('L' . $row, $shipmentData->mobile_2);
+                $sheet->setCellValue('M' . $row, $shipmentData->cod);
+                $sheet->setCellValue('N' . $row, $shipmentData->shipper_contact_1);
+                $sheet->setCellValue('O' . $row, $shipmentData->shipper_contact_2);
+                $sheet->setCellValue('P' . $row, $shipmentData->order_date);
+                $sheet->setCellValue('Q' . $row, $shipmentData->status_name);
+                $sheet->setCellValue('R' . $row, $shipmentData->employee_name);
+                $sheet->setCellValue('S' . $row, null);
+                $sheet->setCellValue('T' . $row, $shipmentData->updated_at);
+                $sheet->setCellValue('U' . $row, null);
+                $sheet->setCellValue('V' . $row, null);
+                $sheet->setCellValue('W' . $row, null);
+                $sheet->setCellValue('X' . $row, null);
+                $sheet->setCellValue('Y' . $row, null);
+                $sheet->setCellValue('Z' . $row, null);
+                $sheet->setCellValue('AA' . $row, null);
+                $sheet->setCellValue('AB' . $row, null);
+                $sheet->setCellValue('AC' . $row, null);
+                $sheet->setCellValue('AD' . $row, null);
+                $sheet->setCellValue('AE' . $row, null);
+                $sheet->setCellValue('AF' . $row, null);
+                $sheet->setCellValue('AI' . $row, null);
+                $sheet->setCellValue('AJ' . $row, null);
+                $sheet->setCellValue('AK' . $row, null);
+                $sheet->setCellValue('AL' . $row, null);
+                $sheet->setCellValue('AM' . $row, null);
+            }
+        }
+
+
+
+        // Adjust column width for column B (Shipment Name)
+        $sheet->getColumnDimension('A')->setWidth(20);
+        $sheet->getColumnDimension('B')->setWidth(30);
+        $sheet->getColumnDimension('C')->setWidth(30);
+        $sheet->getColumnDimension('D')->setWidth(80);
+        $sheet->getColumnDimension('E')->setWidth(80);
+        $sheet->getColumnDimension('F')->setWidth(25);
+        $sheet->getColumnDimension('G')->setWidth(25);
+        $sheet->getColumnDimension('H')->setWidth(25);
+        $sheet->getColumnDimension('I')->setWidth(25);
+        $sheet->getColumnDimension('J')->setWidth(25);
+        $sheet->getColumnDimension('K')->setWidth(25);
+        $sheet->getColumnDimension('L')->setWidth(25);
+        $sheet->getColumnDimension('M')->setWidth(25);
+        $sheet->getColumnDimension('N')->setWidth(25);
+        $sheet->getColumnDimension('O')->setWidth(25);
+        $sheet->getColumnDimension('P')->setWidth(25);
+        $sheet->getColumnDimension('Q')->setWidth(25);
+        $sheet->getColumnDimension('R')->setWidth(25);
+        $sheet->getColumnDimension('S')->setWidth(25);
+        $sheet->getColumnDimension('T')->setWidth(25);
+        $sheet->getColumnDimension('U')->setWidth(25);
+        $sheet->getColumnDimension('V')->setWidth(25);
+        $sheet->getColumnDimension('W')->setWidth(25);
+        $sheet->getColumnDimension('X')->setWidth(25);
+        $sheet->getColumnDimension('Y')->setWidth(25);
+        $sheet->getColumnDimension('Z')->setWidth(25);
+        $sheet->getColumnDimension('AA')->setWidth(25);
+        $sheet->getColumnDimension('AB')->setWidth(25);
+        $sheet->getColumnDimension('AC')->setWidth(25);
+        $sheet->getColumnDimension('AD')->setWidth(30);
+        $sheet->getColumnDimension('AE')->setWidth(30);
+        $sheet->getColumnDimension('AF')->setWidth(30);
+        $sheet->getColumnDimension('AG')->setWidth(30);
+        $sheet->getColumnDimension('AH')->setWidth(30);
+        $sheet->getColumnDimension('AI')->setWidth(30);
+        $sheet->getColumnDimension('AJ')->setWidth(30);
+        $sheet->getColumnDimension('AK')->setWidth(30);
+        $sheet->getColumnDimension('AL')->setWidth(30);
+        $sheet->getColumnDimension('AM')->setWidth(30);
+
+
+
+
+        // Create a temporary file to store the Excel data
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'excel_export');
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save($tempFilePath);
+
+        // Return the Excel file as a downloadable response
+        return response()->stream(
+            function () use ($tempFilePath) {
+                readfile($tempFilePath);
+                unlink($tempFilePath); // Delete the temporary file after sending
+            },
+            200,
+            [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment; filename="ExportExcel.xlsx"',
+            ]
+        );
+    }
+
+    // public function pdf_export(Request $request)
+    // {
+    //     $records = Shipment::leftJoin('status', 'shipments.status', '=', 'status.id')
+    //         ->leftJoin('shippers AS shipper', 'shipments.shipper_code', '=', 'shipper.id')
+    //         ->leftJoin('countrys AS shipment_country', 'shipments.country', '=', 'shipment_country.id')
+    //         ->leftJoin('citys AS shipment_city', 'shipments.city', '=', 'shipment_city.id')
+    //         ->leftJoin('areas AS shipment_area', 'shipments.area', '=', 'shipment_area.id')
+    //         ->leftJoin('countrys AS shipper_country', 'shipper.country', '=', 'shipper_country.id')
+    //         ->leftJoin('citys AS shipper_city', 'shipper.city', '=', 'shipper_city.id')
+    //         ->leftJoin('areas AS shipper_area', 'shipper.area', '=', 'shipper_area.id')
+    //         ->leftJoin('drivers', 'shipments.driver_id', '=', 'drivers.id')
+    //         ->select(
+    //             'shipments.*',
+    //             'status.name AS status_name',
+    //             'shipper.street_address AS shipper_address',
+    //             'shipper.contact_office_1 AS shipper_contact',
+    //             'shipment_country.name AS shipment_country_name',
+    //             'shipment_city.name AS shipment_city_name',
+    //             'shipment_area.name AS shipment_area_name',
+    //             'shipper_country.name AS shipper_country_name',
+    //             'shipper_city.name AS shipper_city_name',
+    //             'shipper_area.name AS shipper_area_name',
+    //             'drivers.employee_name',
+    //             'drivers.driver_code',
+    //             'drivers.employee_mobile',
+    //             'shipper.shipper_code As s_code',
+    //             'shipper.country As shipper_country',
+    //             'shipper.city As shipper_city',
+    //             'shipper.area As shipper_area',
+    //             'shipper.contact_office_1 As shipper_contact_1',
+    //             'shipper.contact_office_2 As shipper_contact_2'
+    //         )->where('shipments.id',  $request->id)->get();
+
+    //     $pdf = PDF::loadView('admin.pdf.deliveryjobs', $records);
+
+    //     return $pdf->download('deliveryjobs.pdf');
+    // }
+
+    // public function pdf_export(Request $request)
+    // {
+    //     dd($request->all());
+    //     $shipments = Shipment::find($request->id);
+    //     $count = $shipments->count();
+    //     $records = []; // Initialize an empty array to store records?
+
+    //     for ($i = 0; $i < $count; $i++) {
+    //         $record = Shipment::where('id',  $request->id)->get();
+
+    //         // Append the current record to the $records array
+    //         // $records[] = $record;
+    //     }
+
+    //     // Now $records contains all the records fetched in the loop
+    //     $data = [
+    //         'title' => 'Sample PDF',
+    //         'content' => 'This is a sample PDF generated using Laravel and DomPDF.',
+    //         'record' => $record,
+    //     ];
+
+    //     $pdf = PDF::loadView('admin.pdf.deliveryjobs', $data);
+
+    //     return $pdf->download('deliveryjobs.pdf');
+    // }
+
+    public function pdf_export(Request $request)
+    {
+        // Get an array of IDs from the request
+        $ids = $request->id;
+
+        // Find shipments based on the array of IDs
+        // $shipments = Shipment::whereIn('id', $ids)->get();
+
+        $shipments = Shipment::leftJoin('status', 'shipments.status', '=', 'status.id')
+            ->leftJoin('shippers AS shipper', 'shipments.shipper_code', '=', 'shipper.id')
+            ->leftJoin('countrys AS shipment_country', 'shipments.country', '=', 'shipment_country.id')
+            ->leftJoin('citys AS shipment_city', 'shipments.city', '=', 'shipment_city.id')
+            ->leftJoin('areas AS shipment_area', 'shipments.area', '=', 'shipment_area.id')
+            ->leftJoin('countrys AS shipper_country', 'shipper.country', '=', 'shipper_country.id')
+            ->leftJoin('citys AS shipper_city', 'shipper.city', '=', 'shipper_city.id')
+            ->leftJoin('areas AS shipper_area', 'shipper.area', '=', 'shipper_area.id')
+            ->leftJoin('drivers', 'shipments.driver_id', '=', 'drivers.id')
+            ->select(
+                'shipments.*',
+                'status.name AS status_name',
+                'shipper.street_address AS shipper_address',
+                'shipper.contact_office_1 AS shipper_contact',
+                'shipment_country.name AS shipment_country_name',
+                'shipment_city.name AS shipment_city_name',
+                'shipment_area.name AS shipment_area_name',
+                'shipper_country.name AS shipper_country_name',
+                'shipper_city.name AS shipper_city_name',
+                'shipper_area.name AS shipper_area_name',
+                'drivers.employee_name',
+                'drivers.driver_code',
+                'drivers.employee_mobile',
+                'shipper.shipper_code As s_code',
+                'shipper.country As shipper_country',
+                'shipper.city As shipper_city',
+                'shipper.area As shipper_area',
+                'shipper.contact_office_1 As shipper_contact_1',
+                'shipper.contact_office_2 As shipper_contact_2'
+            )->whereIn('shipments.id',  $ids)->get();
+
+        // Pass the shipments to the PDF view
+        $data = [
+            'title' => 'Sample PDF',
+            'shipments' => $shipments,
+        ];
+
+        // Load the PDF view with the data
+        $pdf = PDF::loadView('admin.pdf.deliveryjobs', $data);
+
+        // Download the PDF
+        return $pdf->download('deliveryjobs.pdf');
     }
 
 
