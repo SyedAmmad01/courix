@@ -506,6 +506,46 @@ class DispatchController extends Controller
         return $pdf->download('deliveryjobs.pdf');
     }
 
+    public function edit_job_code(Request $request)
+    {
+        $ids = $request->input('id', []); // Make sure 'id' is an array even if only one ID is provided
+        $get_data = Shipment::whereIn('id', $ids)->select('id')->get();
+        return $get_data;
+    }
+
+    // public function update_job_code(Request $request)
+    // {
+    //     dd($request->all());
+    //     $shipments = Shipment::find($request->id);
+    //     $shipments->job_code = $request->input('job_code');
+    //     $shipments->update();
+
+    //     return response()->json(['status' => 'success']);
+    // }
+
+
+    public function update_job_code(Request $request)
+    {
+
+        // dd($request->all());
+        $u_ids = explode(',', $request->id); // Convert "1,2" to an array ['1', '2']
+        // dd($u_ids);
+        $updatedShipments = [];
+
+        foreach ($u_ids as $u_id) {
+            $shipment = Shipment::find(trim($u_id)); // Trim to remove any leading/trailing spaces
+            // dd($shipment);
+            if ($shipment) {
+                // Update shipment attributes
+                $shipment->job_code = $request->input('job_code');
+                $shipment->update();
+                $updatedShipments[] = $shipment; // Collect updated shipments
+            }
+        }
+
+        return response()->json(['status' => 'success']);
+    }
+
 
     public function inscan(Request $request)
     {

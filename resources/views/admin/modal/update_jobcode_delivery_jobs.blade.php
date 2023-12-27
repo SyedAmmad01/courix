@@ -9,18 +9,19 @@
             <div class="modal-header">
                 <h2 class="modal-title" id="exampleModalLabel">Update Job Code </h2>
             </div>
-            <form class="needs-validation" id="editForm" novalidate>
+            <form class="form-sample" id="UdpateJobCodeForm">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12">
                             <div class="mb-3">
-                                <input type="text" id="e-id" name="id">
+                                <input type="hidden" id="update_id" name="update_id">
+                                <input type="text" id="u_id" name="id">
                                 <label class=" text-lg-right col-form-label">Job Code<span
                                         class="text-danger">*</span></label>
                                 <div class="input-group m-b-10">
                                     <div class="input-group-prepend"><span class="input-group-text">
                                         <i class="fas fa-lg fa-fw  fa-calendar-alt"></i></span></div>
-                                <input type="text" id="" name="" class="form-control">
+                                <input type="text" id="u_job_code" name="job_code" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -36,29 +37,37 @@
 </div>
 <script>
     $(document).ready(function() {
-        $("#editForm").on("submit", function(e) {
+        $("#UdpateJobCodeForm").on("submit", function(e) {
             e.preventDefault();
             var formData = new FormData();
             formData.append('_token', '{{ csrf_token() }}');
-            formData.append('id', $("#s-id").val());
-            formData.append('jobstatus', $("#s-job_status").val());
+            formData.append('id', $("#u_id").val());
+            formData.append('job_code', $("#u_job_code").val());
             $.ajax({
                 type: "POST",
-                url: "{{ route('admin.dispatch.update_order') }}",
+                url: "{{ route('admin.dispatch.update_job_code') }}",
                 data: formData,
                 processData: false,
                 contentType: false,
                 success: function(response) {
                     if (response.status === 'success') {
-                        alert('Order Updated Successfully');
-                        get_orders();
+                        alert('Job Code Updated Successfully');
+                        // var id = $('#u_id').val('');
+                        var search_box = $('#search_box').val();
+                        if(search_box == null){
+                            get_orders();
+                        }
+                        else{
+                            search_bar();
+                        }
+                        document.getElementById("UdpateJobCodeForm").reset();
                         // location.reload(true);
                     } else {
-                        alert('Order Updated Unsuccessfully');
+                        alert('Job Code Updated Unsuccessfully');
                     }
                 },
                 error: function(xhr, textStatus, errorThrown) {
-                    alert('Order Updated Unsuccessfully');
+                    alert('Job Code Updated Unsuccessfully');
                     // console.log(xhr);
                 }
             });

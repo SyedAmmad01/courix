@@ -138,7 +138,7 @@
 
                                     <div class="col-4 mt-5">
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                                            <button type="submit" class="btn btn-primary btn-sm">Search</button>
                                         </div>
                                     </div>
 
@@ -160,14 +160,17 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-7">
+                                    <div class="col-6">
                                     </div>
-                                    <div class="col-5" style="margin-top: 45px;">
+                                    <div class="col-6" style="margin-top: 45px;">
+
                                         <div class="form-group">
-                                            {{-- <button type="button" class="btn btn-danger btn-sm"><i
-                                                    class="fa-solid fa-pen-to-square"></i>Update Job Code</button> --}}
-                                            <a type="button" id="employee" href="javascript:void(0);" data-target="#UpdateDeliveryJobsModal" class="btn btn-danger btn-sm"
-                                                onclick="updatecode(selectedIDs)"><i class="fa-solid fa-pen-to-square"></i>Update Job Code</a>
+
+                                            <a type="button" href="javascript:void(0);" data-toggle="modal"
+                                                class="btn btn-danger btn-sm" data-target="#UpdateDeliveryJobsModal"
+                                                id="Update_Delivery_Jobs_Modal_link">
+                                                <i class="fa-solid fa-pen-to-square"></i>Update Job Code
+                                                Label</a>
 
                                             <a type="button" href="javascript:void(0);" class="btn btn-success btn-sm"
                                                 onclick="pdfexport(selectedIDs)"><i class="fa-solid fa-truck"></i>PDf
@@ -177,6 +180,7 @@
                                                 onclick="exportToExcel(selectedIDs)"><i
                                                     class="fa-solid fa-truck"></i>Export To Excel</a>
                                         </div>
+
                                     </div>
                                 </div>
 
@@ -565,22 +569,22 @@
         });
 
 
-        // // Array to hold selected checkbox IDs
-        var selectedIDs = [];
+        // // // Array to hold selected checkbox IDs
+        // var selectedIDs = [];
 
-        // Checkbox click event handler using event delegation
-        $(document).on('change', '.checkbox', function() {
-            var id = $(this).val();
-            // alert(id);
-            if (this.checked) {
-                selectedIDs.push(id);
-            } else {
-                var index = selectedIDs.indexOf(id);
-                if (index !== -1) {
-                    selectedIDs.splice(index, 1);
-                }
-            }
-        });
+        // // Checkbox click event handler using event delegation
+        // $(document).on('change', '.checkbox', function() {
+        //     var id = $(this).val();
+        //     // alert(id);
+        //     if (this.checked) {
+        //         selectedIDs.push(id);
+        //     } else {
+        //         var index = selectedIDs.indexOf(id);
+        //         if (index !== -1) {
+        //             selectedIDs.splice(index, 1);
+        //         }
+        //     }
+        // });
 
         function exportToExcel(selectedIDs) {
             // alert(selectedIDs);
@@ -611,6 +615,43 @@
                 }
             });
         }
+
+
+        // $('#Update_Delivery_Jobs_Modal_link').on('click', function() {
+        //     const reviewElement = document.getElementById('update_id');
+        //     reviewElement.value = (selectedIDs.length > 0) ?
+        //         selectedIDs.join(',') :
+        //         '';
+
+        //     // Send AJAX request
+        //     $.ajax({
+        //         headers: {
+        //             'X-CSRF-TOKEN': "{{ csrf_token() }}",
+        //         },
+        //         url: "{{ route('admin.dispatch.edit_job_code') }}",
+        //         type: "POST",
+        //         data: {
+        //             id: selectedIDs,
+        //         },
+        //         success: function(response) {
+        //             console.log(response);
+        //             // Extract the array of reference numbers from the response
+        //             const idNumbers = response.map(item => item.id);
+
+        //             // Join the reference numbers into a single string
+        //             const combinedIdNumbers = idNumbers.join(',');
+
+        //             // Set the value of the input fields
+        //             $('#u_id').val(combinedIdNumbers);
+        //             // $('#u_status').val(response[0].status);
+        //             // $('#u_comments').val(response[0].comments);
+
+        //             // Open the modal
+        //             $('#UpdateDeliveryJobsModal').modal('show');
+        //         }
+        //     });
+        // });
+
 
         function pdfexport(selectedIDs) {
             // alert(selectedIDs);
@@ -643,10 +684,66 @@
         }
 
 
+        // changes of code
 
 
+        // Array to hold selected checkbox IDs
+        var selectedIDs = [];
+
+        // Checkbox click event handler using event delegation
+        $(document).on('change', '.checkbox', function() {
+            var id = $(this).val();
+            if (this.checked) {
+                selectedIDs.push(id);
+            } else {
+                var index = selectedIDs.indexOf(id);
+                if (index !== -1) {
+                    selectedIDs.splice(index, 1);
+                }
+            }
+        });
+
+        // Update Delivery Jobs Modal click event handler
+        $('#Update_Delivery_Jobs_Modal_link').on('click', function() {
+            const reviewElement = document.getElementById('update_id');
+            reviewElement.value = (selectedIDs.length > 0) ? selectedIDs.join(',') : '';
+
+            // Send AJAX request
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                },
+                url: "{{ route('admin.dispatch.edit_job_code') }}",
+                type: "POST",
+                data: {
+                    id: selectedIDs,
+                },
+                success: function(response) {
+                    // Extract the array of reference numbers from the response
+                    const idNumbers = response.map(item => item.id);
+
+                    // Join the reference numbers into a single string
+                    const combinedIdNumbers = idNumbers.join(',');
+
+                    // Set the value of the input fields
+                    $('#u_id').val(combinedIdNumbers);
+                    // $('#u_status').val(response[0].status);
+                    // $('#u_comments').val(response[0].comments);
+
+                    // Open the modal
+                    $('#UpdateDeliveryJobsModal').modal('show');
+
+                    // Reset the array after handling the response
+                    selectedIDs = [];
+                },
+                error: function(error) {
+                    // Handle the error, if needed
+                    console.error("Error in AJAX request:", error);
+                }
+            });
+        });
 
 
-
+        // changes of code
     </script>
 @endsection
