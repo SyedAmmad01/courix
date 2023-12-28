@@ -19,7 +19,7 @@
                     <div class="col-5">
                         <div class="form-group">
                             <div class="input-group m-b-10">
-                                <select class="form-control kt-select2 select2" id="" name="param">
+                                {{-- <select class="form-control kt-select2 select2" id="" name="param">
                                     <option value="DR0002 | Irfan Ullah Moula Din">DR0002 | Irfan Ullah
                                         Moula Din
                                     </option>
@@ -62,6 +62,24 @@
                                     <option value="DR00025 | Muhammad Qasim khalid Mehboob">DR00025 |
                                         Muhammad
                                         Qasim khalid Mehboob</option>
+                                </select> --}}
+                                <select class="form-control kt-select2 select2" id="driver" name="driver"
+                                    style="width:86%;">
+                                    <option value="" disabled selected>Please Select Driver
+                                    </option>
+                                    @foreach ($fetch_drivers as $key)
+                                        @if (old('driver') == $key->id)
+                                            <option value="{{ $key->id }}" selected>
+                                                {{ $key->driver_code }} |
+                                                {{ $key->employee_name }}
+                                            </option>
+                                        @else
+                                            <option value="{{ $key->id }}">
+                                                {{ $key->driver_code }} |
+                                                {{ $key->employee_name }}
+                                            </option>
+                                        @endif
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

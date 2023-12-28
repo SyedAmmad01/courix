@@ -16,7 +16,7 @@
                         <div class="input-group m-b-10">
                             <div class="input-group-prepend"><span class="input-group-text"><i
                                 class="fas fa-lg fa-fw fa-plus"></i></span></div>
-                            <select class="form-control kt-select2 select2" id="" name="param">
+                            <select class="form-control kt-select2 select2" id="" name="param" style="width:86%;">
                                 <option value="">Please Select Rack</option>
                             </select>
                         </div>

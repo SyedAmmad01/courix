@@ -549,11 +549,15 @@ class DispatchController extends Controller
 
     public function inscan(Request $request)
     {
-
         $page_title = 'Inscan';
         $page_description = 'Dispatch / Inscan';
-
-        return view('admin.dispatch.inscan', compact('page_title', 'page_description'));
+        $drivers = Driver::where('status', 1)->get();
+        $data = array(
+            'page_title' => $page_title,
+            'page_description' => $page_description,
+            'fetch_drivers' => $drivers,
+        );
+        return view('admin.dispatch.inscan')->with($data);
     }
 
     public function outscan(Request $request)
